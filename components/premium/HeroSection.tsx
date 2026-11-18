@@ -10,8 +10,7 @@ export default function HeroSection() {
           <h1>Every race has<br />a <em>story.</em> Find yours.</h1>
           <p>Discover marathons across India, find your people, and make every finish line feel closer.</p>
           <div className="hero-actions">
-            <a className="button button-orange" href="#events">Explore marathons <Icon name="arrow" /></a>
-            <a className="button button-glass" href="#community"><Icon name="users" /> Join the community</a>
+            <a className="button button-orange" href="/events">Find a race <Icon name="arrow" /></a>
           </div>
           <div className="hero-note"><span className="mini-avatars"><i>R</i><i>A</i><i>M</i></span><span>Made for every kind of runner</span></div>
         </div>

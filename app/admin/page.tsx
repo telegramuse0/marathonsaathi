@@ -115,11 +115,9 @@ const MASTER_EVENTS: AdminMarathon[] = [
   },
 ];
 
-const RESULTS_STORAGE_KEY = 'marathonSaathiResultsLinks';
-const LEGACY_RESULTS_STORAGE_KEY = 'marathon_saathi_results_links';
 const MARATHONS_STORAGE_KEY = 'marathon_saathi_list';
 
-type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; schedule: string | null; photos_url: string | null; results_url: string | null };
+type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; location_details: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; rating: number | null; schedule: string | null; photos_url: string | null; results_url: string | null; awards: string | null; runner_benefits: string | null };
 
 const rowToEvent = (row: MarathonRow): AdminMarathon => {
   const venue = row.venue || '';
@@ -127,9 +125,9 @@ const rowToEvent = (row: MarathonRow): AdminMarathon => {
   return {
     id: Number(row.id), name: row.name || '', city: parts[0] || venue || '', state: parts.slice(1).join(', '),
     date: row.date || '', distance: row.distance || '', registrationUrl: row.registration_link || '',
-    organizer: row.organizer || '', badge: row.status || 'Upcoming', rating: 5,
+    organizer: row.organizer || '', badge: row.status || 'Upcoming', rating: Number(row.rating) || 5,
     bannerImage: row.image || '', about: row.description || '', venue,
-    entryFee: row.fee || '', schedule: row.schedule || '', photosUrl: row.photos_url || '', resultsUrl: row.results_url || '', awards: '', runnerBenefits: '',
+    entryFee: row.fee || '', schedule: row.schedule || '', photosUrl: row.photos_url || '', resultsUrl: row.results_url || '', awards: row.awards || '', runnerBenefits: row.runner_benefits || '',
   };
 };
 
@@ -137,16 +135,20 @@ const eventToRow = (event: AdminMarathon) => ({
   name: event.name,
   description: event.about || null,
   venue: [event.city, event.state].filter(Boolean).join(', '),
+  location_details: event.venue || null,
   date: event.date,
   registration_link: event.registrationUrl,
   image: event.bannerImage || null,
   status: event.badge || 'Upcoming',
   distance: event.distance,
   organizer: event.organizer,
+  rating: event.rating,
   fee: event.entryFee || null,
   schedule: event.schedule || null,
   photos_url: event.photosUrl || null,
   results_url: event.resultsUrl || null,
+  awards: event.awards || null,
+  runner_benefits: event.runnerBenefits || null,
 });
 
 const formatDate = (dateString: string) => {
@@ -171,7 +173,9 @@ export default function AdminPage() {
 
   const [marathons, setMarathons] = useState<AdminMarathon[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
-  const [resultsLinks, setResultsLinks] = useState<AdminResultLink[]>([]);
+  const resultsLinks = useMemo<AdminResultLink[]>(() => marathons
+    .filter((event) => event.photosUrl || event.resultsUrl)
+    .map((event) => ({ id: event.id, eventId: event.id, resultsUrl: event.resultsUrl || '', photosUrl: event.photosUrl || '' })), [marathons]);
   const [products, setProducts] = useState<StoreProduct[]>([]);
   const [productsLoading, setProductsLoading] = useState(false);
   const [productSaving, setProductSaving] = useState(false);
@@ -261,19 +265,6 @@ export default function AdminPage() {
         if (!cancelled) setEventsLoading(false);
       }
 
-      try {
-        const savedResults = localStorage.getItem(RESULTS_STORAGE_KEY) || localStorage.getItem(LEGACY_RESULTS_STORAGE_KEY);
-        if (savedResults) {
-          const parsed = JSON.parse(savedResults);
-          if (Array.isArray(parsed) && !cancelled) {
-            const normalized: AdminResultLink[] = parsed.map((item) => ({
-              id: Number(item.id) || Date.now(), eventId: Number(item.eventId) || 0,
-              resultsUrl: String(item.resultsUrl || item.resultsLink || ''), photosUrl: String(item.photosUrl || item.photosLink || ''),
-            })).filter((item) => item.eventId > 0);
-            setResultsLinks(normalized);
-          }
-        }
-      } catch (error) { console.error('Could not load local results links:', error); }
     };
     void loadData();
     return () => { cancelled = true; };
@@ -379,13 +370,6 @@ export default function AdminPage() {
     setProducts((current) => current.map((item) => item.id === product.id ? data as StoreProduct : item));
   };
 
-  const saveResultsLinks = (updated: AdminResultLink[]) => {
-    setResultsLinks(updated);
-    localStorage.setItem(RESULTS_STORAGE_KEY, JSON.stringify(updated));
-    // Keep the old key updated too for compatibility with older local builds.
-    localStorage.setItem(LEGACY_RESULTS_STORAGE_KEY, JSON.stringify(updated));
-  };
-
   const saveMarathons = (updated: AdminMarathon[]) => {
     setMarathons(updated);
     // Keep a local cache for compatibility, but Supabase is the source of truth.
@@ -464,7 +448,7 @@ export default function AdminPage() {
     }
   };
 
-  const handlePublish = (e: React.FormEvent) => {
+  const handlePublish = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const eventId = Number(selectedEventId);
@@ -486,14 +470,13 @@ export default function AdminPage() {
       return;
     }
 
-    const newRecord: AdminResultLink = {
-      id: Date.now(),
-      eventId,
-      resultsUrl: cleanResultsUrl,
-      photosUrl: cleanPhotosUrl,
-    };
-
-    saveResultsLinks([newRecord, ...resultsLinks]);
+    const { data, error } = await supabase.from('marathons').update({
+      results_url: cleanResultsUrl || null,
+      photos_url: cleanPhotosUrl || null,
+    }).eq('id', eventId).select('*').single();
+    if (error) { alert(`Links save nahi huye: ${error.message}`); return; }
+    const saved = rowToEvent(data as MarathonRow);
+    setMarathons((current) => current.map((event) => event.id === eventId ? saved : event));
 
     setSelectedEventId('');
     setResultsUrl('');
@@ -516,7 +499,7 @@ export default function AdminPage() {
     setEditPhotosUrl('');
   };
 
-  const saveEdit = (id: number) => {
+  const saveEdit = async (id: number) => {
     const eventId = Number(editEventId);
     const cleanResultsUrl = editResultsUrl.trim();
     const cleanPhotosUrl = editPhotosUrl.trim();
@@ -526,35 +509,31 @@ export default function AdminPage() {
       return;
     }
 
-    const duplicate = resultsLinks.some(
-      (item) => item.id !== id && item.eventId === eventId
-    );
-
-    if (duplicate) {
-      alert('Another record already exists for this event.');
+    if (resultsLinks.some((item) => item.eventId === eventId && item.eventId !== id)) {
+      alert('This event already has official links. Edit that event’s links instead.');
       return;
     }
 
-    const updated = resultsLinks.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            eventId,
-            resultsUrl: cleanResultsUrl,
-            photosUrl: cleanPhotosUrl,
-          }
-        : item
-    );
-
-    saveResultsLinks(updated);
+    if (eventId !== id) {
+      const { error: clearError } = await supabase.from('marathons').update({ results_url: null, photos_url: null }).eq('id', id);
+      if (clearError) { alert(`Purane event ke links update nahi huye: ${clearError.message}`); return; }
+    }
+    const { data, error } = await supabase.from('marathons').update({
+      results_url: cleanResultsUrl || null,
+      photos_url: cleanPhotosUrl || null,
+    }).eq('id', eventId).select('*').single();
+    if (error) { alert(`Links update nahi huye: ${error.message}`); return; }
+    const saved = rowToEvent(data as MarathonRow);
+    setMarathons((current) => current.map((event) => event.id === eventId ? saved : event.id === id && eventId !== id ? { ...event, photosUrl: '', resultsUrl: '' } : event));
     cancelEdit();
     alert('Event links updated successfully.');
   };
 
-  const handleDeleteResult = (id: number) => {
+  const handleDeleteResult = async (id: number) => {
     if (!window.confirm('Delete this Results & Photos record?')) return;
-
-    saveResultsLinks(resultsLinks.filter((item) => item.id !== id));
+    const { error } = await supabase.from('marathons').update({ results_url: null, photos_url: null }).eq('id', id);
+    if (error) { alert(`Links delete nahi huye: ${error.message}`); return; }
+    setMarathons((current) => current.map((event) => event.id === id ? { ...event, photosUrl: '', resultsUrl: '' } : event));
   };
 
   const handleEventBannerImageUpload = (file: File | undefined) => {
@@ -714,10 +693,7 @@ export default function AdminPage() {
     const event = marathons.find((item) => item.id === id);
     if (!event) return;
 
-    const linked = resultsLinks.some((item) => item.eventId === id);
-    const message = linked
-      ? `"${event.name}" has Results/Photos attached. Delete the event and its attached Results/Photos record too?`
-      : `Delete "${event.name}" from the marathon list?`;
+    const message = `Delete "${event.name}" from the marathon list? Any attached timing and photo links will be removed with it.`;
 
     if (!window.confirm(message)) return;
 
@@ -729,7 +705,6 @@ export default function AdminPage() {
         return;
       }
       saveMarathons(marathons.filter((item) => item.id !== id));
-      if (linked) saveResultsLinks(resultsLinks.filter((item) => item.eventId !== id));
     })();
   };
 
@@ -835,7 +810,7 @@ export default function AdminPage() {
                   Admin Access Active
                 </p>
                 <p className="text-[10px] text-emerald-700 mt-0.5">
-                  You can now publish, edit and remove event Results & Photos links.
+                  Event details, race links and products you save here appear on the public website.
                 </p>
               </div>
               <button
@@ -847,8 +822,15 @@ export default function AdminPage() {
               </button>
             </div>
 
+            <nav aria-label="Admin sections" className="sticky top-2 z-20 flex gap-2 overflow-x-auto rounded-xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
+              <a href="#admin-events" className="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Events</a>
+              <a href="#admin-results" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Timing &amp; photos</a>
+              <a href="#admin-products" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Products</a>
+              <a href="#admin-published" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Saved links</a>
+            </nav>
+
             {/* RUNNER'S STORE PRODUCT MANAGEMENT */}
-            <section className="space-y-5 rounded-2xl border border-orange-200 bg-orange-50/50 p-5 sm:p-6">
+            <section id="admin-products" className="scroll-mt-24 space-y-5 rounded-2xl border border-orange-200 bg-orange-50/50 p-5 sm:p-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">🛍️ Runner’s Store — Products ({products.length})</h4>
@@ -884,7 +866,7 @@ export default function AdminPage() {
             </section>
 
             {/* MANAGE MARATHON EVENTS */}
-            <section className="space-y-4">
+            <section id="admin-events" className="scroll-mt-24 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">
@@ -1199,7 +1181,7 @@ export default function AdminPage() {
             </section>
 
             {/* PUBLISH RESULTS & PHOTOS */}
-            <section className="bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200 space-y-5">
+            <section id="admin-results" className="scroll-mt-24 bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200 space-y-5">
               <div>
                 <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">
                   🏁 Publish Results & Organizer Photos
@@ -1296,14 +1278,14 @@ export default function AdminPage() {
             </section>
 
             {/* PUBLISHED RECORDS */}
-            <section className="space-y-4">
+            <section id="admin-published" className="scroll-mt-24 space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">
                     Manage Results & Photo Links
                   </h4>
                   <p className="text-[10px] text-slate-500 mt-1">
-                    {resultsLinks.length} event record{resultsLinks.length === 1 ? '' : 's'} published in this browser.
+                    {resultsLinks.length} event record{resultsLinks.length === 1 ? '' : 's'} saved in Supabase.
                   </p>
                 </div>
               </div>

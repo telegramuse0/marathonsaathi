@@ -11,9 +11,9 @@ export default function RunnerHub() {
         </div>
         <div className="hub-stats">
           <div className="hub-stat"><strong>03</strong><span>Featured races</span></div><div className="stat-divider" />
-          <div className="hub-stat"><strong>01</strong><span>Running community</span></div><div className="stat-divider" />
+          <div className="hub-stat"><strong>↗</strong><span>Across India</span></div><div className="stat-divider" />
           <div className="hub-stat"><strong>∞</strong><span>Reasons to run</span></div>
-          <a className="hub-link" href="#events">Explore the hub <Icon name="arrow" size={17} /></a>
+          <a className="hub-link" href="/events">Explore all races <Icon name="arrow" size={17} /></a>
         </div>
         <div className="shortcut-grid">
           {shortcuts.map((item) => (

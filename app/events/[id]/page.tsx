@@ -2,7 +2,9 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Footer from '@/components/Footer';
+import SiteHeader from '@/components/premium/SiteHeader';
+import SiteFooter from '@/components/premium/SiteFooter';
+import { supabase } from '@/lib/supabase';
 
 type EventRecord = {
   id: number;
@@ -12,6 +14,8 @@ type EventRecord = {
   date: string;
   distance: string | string[];
   registrationUrl?: string;
+  photosUrl?: string;
+  resultsUrl?: string;
   organizer: string;
   badge?: string;
   rating?: number;
@@ -38,8 +42,6 @@ type EventRecord = {
   facebook?: string;
   whatsapp?: string;
 };
-
-const EVENTS_KEY = 'marathon_saathi_list';
 
 function formatDate(value: string) {
   const raw = String(value || '').trim();
@@ -227,31 +229,29 @@ export default function EventDetailsPage() {
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadEvent = () => {
-      try {
-        const saved = localStorage.getItem(EVENTS_KEY);
-        const events: EventRecord[] = saved ? JSON.parse(saved) : [];
-        const id = Number(params?.id);
-
-        setEvent(
-          events.find((item) => Number(item.id) === id) || null
-        );
-      } catch {
-        setEvent(null);
-      } finally {
-        setLoaded(true);
-      }
+    let active = true;
+    const loadEvent = async () => {
+      const id = Number(params?.id);
+      if (!id) { setLoaded(true); return; }
+      const { data, error } = await supabase.from('marathons').select('*').eq('id', id).maybeSingle();
+      if (error) console.error('Could not load event details:', error);
+      if (active && data) {
+        const row = data as Record<string, unknown>;
+        const venue = String(row.venue || '');
+        const location = venue.split(',').map((part) => part.trim());
+        setEvent({
+          id: Number(row.id), name: String(row.name || ''), city: location[0] || 'India', state: location.slice(1).join(', '), rating: Number(row.rating || 5),
+          date: String(row.date || ''), distance: String(row.distance || ''), registrationUrl: String(row.registration_link || ''),
+          organizer: String(row.organizer || 'Event Organizer'), badge: String(row.status || 'Upcoming'), bannerImage: String(row.image || ''),
+          about: String(row.description || ''), venue: String(row.location_details || ''), entryFee: String(row.fee || ''),
+          schedule: String(row.schedule || ''), awards: String(row.awards || ''), runnerBenefits: String(row.runner_benefits || ''),
+          photosUrl: String(row.photos_url || ''), resultsUrl: String(row.results_url || ''),
+        });
+      } else if (active) setEvent(null);
+      if (active) setLoaded(true);
     };
-
-    loadEvent();
-
-    window.addEventListener('storage', loadEvent);
-    window.addEventListener('marathon-saathi-data-updated', loadEvent);
-
-    return () => {
-      window.removeEventListener('storage', loadEvent);
-      window.removeEventListener('marathon-saathi-data-updated', loadEvent);
-    };
+    void loadEvent();
+    return () => { active = false; };
   }, [params]);
 
   const distances = useMemo(
@@ -367,6 +367,8 @@ export default function EventDetailsPage() {
       `}</style>
 
       <div className="ms-body">
+
+        <SiteHeader />
 
         {/* Breadcrumb */}
         <div className="border-b border-slate-200 bg-white">
@@ -724,6 +726,14 @@ export default function EventDetailsPage() {
         </section>
 
         {/* Final registration CTA */}
+        {(event.photosUrl || event.resultsUrl) && (
+          <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-8">
+            <div className="flex flex-wrap gap-3">
+              {event.photosUrl && <a href={event.photosUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center border border-slate-200 text-slate-800 font-bold px-6 py-3 rounded-xl text-sm">Official Photos</a>}
+              {event.resultsUrl && <a href={event.resultsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl text-sm">Timing / Results</a>}
+            </div>
+          </section>
+        )}
         {event.registrationUrl && (
           <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-12">
             <div className="bg-slate-900 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5">
@@ -749,7 +759,7 @@ export default function EventDetailsPage() {
         )}
       </div>
 
-      <Footer />
+      <SiteFooter />
     </main>
   );
 }

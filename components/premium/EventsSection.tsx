@@ -12,6 +12,7 @@ type MarathonRow = {
   date: string | null;
   distance: string | null;
   status: string | null;
+  rating?: number | null;
   registration_link?: string | null;
   image?: string | null;
   photos_url?: string | null;
@@ -43,6 +44,7 @@ function toPublicEvent(row: MarathonRow): Marathon {
     city: locationParts[0] || 'India',
     distance: row.distance?.trim() || 'Multiple distances',
     status: row.status?.trim() || 'Upcoming',
+    rating: row.rating == null ? 5 : Number(row.rating),
     registrationUrl: row.registration_link?.trim() || '',
     imageUrl: row.image?.trim() || '',
     photosUrl: row.photos_url?.trim() || '',
@@ -51,9 +53,10 @@ function toPublicEvent(row: MarathonRow): Marathon {
   };
 }
 
-export default function EventsSection() {
+export default function EventsSection({ featuredOnly = true }: { featuredOnly?: boolean }) {
   const [events, setEvents] = useState<Marathon[]>(marathons);
   const [search, setSearch] = useState('');
+  const [eventFilter, setEventFilter] = useState<'upcoming' | 'completed' | 'all'>('upcoming');
 
   useEffect(() => {
     let active = true;
@@ -61,7 +64,7 @@ export default function EventsSection() {
     const loadEvents = async () => {
       const { data, error } = await supabase
         .from('marathons')
-        .select('id,name,venue,date,distance,status,registration_link,image,photos_url,results_url,schedule')
+        .select('id,name,venue,date,distance,status,rating,registration_link,image,photos_url,results_url,schedule')
         .order('date', { ascending: true });
 
       if (error) {
@@ -81,22 +84,38 @@ export default function EventsSection() {
     };
   }, []);
 
-  const filtered = useMemo(
-    () => events.filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(search.toLowerCase())),
-    [events, search],
-  );
+  const sortedEvents = useMemo(() => [...events].sort((a, b) => {
+    const aPast = isPastEvent(a.eventDate || a.date);
+    const bPast = isPastEvent(b.eventDate || b.date);
+    if (aPast !== bPast) return Number(aPast) - Number(bPast);
+    const aFeatured = a.status.toLowerCase().includes('featured') ? 0 : 1;
+    const bFeatured = b.status.toLowerCase().includes('featured') ? 0 : 1;
+    if (featuredOnly && aFeatured !== bFeatured) return aFeatured - bFeatured;
+    return new Date(a.eventDate || a.date).getTime() - new Date(b.eventDate || b.date).getTime();
+  }), [events, featuredOnly]);
+
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return sortedEvents
+      .filter((event) => featuredOnly ? !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
+      .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
+      .slice(0, featuredOnly ? 3 : undefined);
+  }, [sortedEvents, search, eventFilter, featuredOnly]);
 
   return (
-    <section className="events-section page-width" id="events">
+    <section className={`events-section page-width ${featuredOnly ? 'featured-events-section' : 'all-events-section'}`} id="events">
       <div className="section-heading">
-        <div><span className="eyebrow">THE ROAD IS CALLING</span><h2>Find your next <em>race.</em></h2></div>
-        <a className="text-link" href="#all-events">View all events <Icon name="arrow" size={17} /></a>
+        <div><span className="eyebrow">{featuredOnly ? 'HANDPICKED FOR RUNNERS' : 'RACES ACROSS INDIA'}</span><h2>{featuredOnly ? <>Featured <em>Events.</em></> : <>Find your next <em>race.</em></>}</h2></div>
+        {featuredOnly && <a className="text-link" href="/events">View all races <Icon name="arrow" size={17} /></a>}
       </div>
       <div className="event-tools">
-        <p>Good runs start with a date on the calendar.</p>
-        <label className="search-box"><Icon name="search" size={19} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by city or event" aria-label="Search marathons by city or event" /><kbd>⌘ K</kbd></label>
+        <p>{featuredOnly ? 'Find a start line worth running for.' : 'Search events by name or city; switch between upcoming and completed races.'}</p>
+        {!featuredOnly && <label className="search-box"><Icon name="search" size={19} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search event or city" aria-label="Search events by city or event" /></label>}
       </div>
-      <div className="event-grid" id="all-events">
+      {!featuredOnly && <div className="event-filters" aria-label="Filter events">
+        {(['upcoming', 'completed', 'all'] as const).map((filter) => <button type="button" className={eventFilter === filter ? 'is-active' : ''} onClick={() => setEventFilter(filter)} key={filter}>{filter === 'all' ? 'All races' : filter[0].toUpperCase() + filter.slice(1)}</button>)}
+      </div>}
+      <div className="event-grid" id={featuredOnly ? 'featured-events' : 'all-events'}>
         {filtered.length ? filtered.map((event, index) => (
           <article className="event-card" key={event.id ?? event.name}>
             <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
@@ -106,7 +125,7 @@ export default function EventsSection() {
             <div className="event-info">
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
-              <div className="event-bottom"><span>{event.distance}</span></div>
+              <div className="event-bottom"><span>{event.distance}</span><span className="event-rating">★ {event.rating?.toFixed(1) || '5.0'}</span></div>
               {isPastEvent(event.eventDate || event.date) ? (
                 <div className="event-actions">
                   {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Official Photos</a>}
