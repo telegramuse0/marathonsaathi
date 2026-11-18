@@ -1,6 +1,19 @@
 import type { IconName } from './Icon';
 
-export type Marathon = { id?: number; name: string; date: string; city: string; distance: string; status: string };
+export type Marathon = {
+  id?: number;
+  name: string;
+  date: string;
+  eventDate?: string;
+  city: string;
+  distance: string;
+  status: string;
+  registrationUrl?: string;
+  imageUrl?: string;
+  photosUrl?: string;
+  resultsUrl?: string;
+  schedule?: string;
+};
 export const marathons: Marathon[] = [
   { name: 'Delhi Marathon', date: '12 Oct 2026', city: 'New Delhi', distance: 'Multiple distances', status: 'Featured' },
   { name: 'Mumbai Marathon', date: '20 Nov 2026', city: 'Mumbai', distance: 'Half & full marathon', status: 'Coming up' },

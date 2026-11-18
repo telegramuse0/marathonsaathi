@@ -21,6 +21,8 @@ type AdminMarathon = {
   venue?: string;
   entryFee?: string;
   schedule?: string;
+  photosUrl?: string;
+  resultsUrl?: string;
   awards?: string;
   runnerBenefits?: string;
 };
@@ -117,7 +119,7 @@ const RESULTS_STORAGE_KEY = 'marathonSaathiResultsLinks';
 const LEGACY_RESULTS_STORAGE_KEY = 'marathon_saathi_results_links';
 const MARATHONS_STORAGE_KEY = 'marathon_saathi_list';
 
-type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null };
+type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; schedule: string | null; photos_url: string | null; results_url: string | null };
 
 const rowToEvent = (row: MarathonRow): AdminMarathon => {
   const venue = row.venue || '';
@@ -127,7 +129,7 @@ const rowToEvent = (row: MarathonRow): AdminMarathon => {
     date: row.date || '', distance: row.distance || '', registrationUrl: row.registration_link || '',
     organizer: row.organizer || '', badge: row.status || 'Upcoming', rating: 5,
     bannerImage: row.image || '', about: row.description || '', venue,
-    entryFee: row.fee || '', schedule: '', awards: '', runnerBenefits: '',
+    entryFee: row.fee || '', schedule: row.schedule || '', photosUrl: row.photos_url || '', resultsUrl: row.results_url || '', awards: '', runnerBenefits: '',
   };
 };
 
@@ -142,6 +144,9 @@ const eventToRow = (event: AdminMarathon) => ({
   distance: event.distance,
   organizer: event.organizer,
   fee: event.entryFee || null,
+  schedule: event.schedule || null,
+  photos_url: event.photosUrl || null,
+  results_url: event.resultsUrl || null,
 });
 
 const formatDate = (dateString: string) => {
@@ -200,6 +205,8 @@ export default function AdminPage() {
     venue: '',
     entryFee: '',
     schedule: '',
+    photosUrl: '',
+    resultsUrl: '',
     awards: '',
     runnerBenefits: '',
   });
@@ -580,7 +587,7 @@ export default function AdminPage() {
     setEventForm({
       name: '', city: '', state: '', date: '', distance: '', registrationUrl: '',
       organizer: '', badge: '', rating: '5.0', bannerImage: '', about: '', venue: '',
-      entryFee: '', schedule: '', awards: '', runnerBenefits: '',
+      entryFee: '', schedule: '', photosUrl: '', resultsUrl: '', awards: '', runnerBenefits: '',
     });
     setEditingEventId(null);
     setShowAddEvent(false);
@@ -648,6 +655,8 @@ export default function AdminPage() {
       venue: eventForm.venue.trim(),
       entryFee: eventForm.entryFee.trim(),
       schedule: eventForm.schedule.trim(),
+      photosUrl: eventForm.photosUrl.trim(),
+      resultsUrl: eventForm.resultsUrl.trim(),
       awards: eventForm.awards.trim(),
       runnerBenefits: eventForm.runnerBenefits.trim(),
     };
@@ -693,6 +702,8 @@ export default function AdminPage() {
       venue: event.venue || '',
       entryFee: event.entryFee || '',
       schedule: event.schedule || '',
+      photosUrl: event.photosUrl || '',
+      resultsUrl: event.resultsUrl || '',
       awards: event.awards || '',
       runnerBenefits: event.runnerBenefits || '',
     });
@@ -1083,7 +1094,7 @@ export default function AdminPage() {
                       )}
 
                       <p className="text-[10px] text-slate-400 mt-1">
-                        This banner is shown on the individual Event Details page. Max 2 MB.
+                        This image appears on the event card and its details page. Max 2 MB.
                       </p>
                     </div>
 
@@ -1114,6 +1125,16 @@ export default function AdminPage() {
                           />
                         </div>
                       ))}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Official Photos URL</label>
+                        <input type="url" value={eventForm.photosUrl} onChange={(e) => handleEventFormChange('photosUrl', e.target.value)} placeholder="https://official-gallery.example" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Official Timing / Results URL</label>
+                        <input type="url" value={eventForm.resultsUrl} onChange={(e) => handleEventFormChange('resultsUrl', e.target.value)} placeholder="https://official-results.example" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
+                      </div>
                     </div>
                   </div>
 

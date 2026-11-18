@@ -12,6 +12,11 @@ type MarathonRow = {
   date: string | null;
   distance: string | null;
   status: string | null;
+  registration_link?: string | null;
+  image?: string | null;
+  photos_url?: string | null;
+  results_url?: string | null;
+  schedule?: string | null;
 };
 
 function formatEventDate(value: string | null) {
@@ -34,9 +39,15 @@ function toPublicEvent(row: MarathonRow): Marathon {
     id: row.id,
     name: row.name?.trim() || 'Marathon',
     date: formatEventDate(row.date),
+    eventDate: row.date || '',
     city: locationParts[0] || 'India',
     distance: row.distance?.trim() || 'Multiple distances',
     status: row.status?.trim() || 'Upcoming',
+    registrationUrl: row.registration_link?.trim() || '',
+    imageUrl: row.image?.trim() || '',
+    photosUrl: row.photos_url?.trim() || '',
+    resultsUrl: row.results_url?.trim() || '',
+    schedule: row.schedule?.trim() || '',
   };
 }
 
@@ -50,7 +61,7 @@ export default function EventsSection() {
     const loadEvents = async () => {
       const { data, error } = await supabase
         .from('marathons')
-        .select('id,name,venue,date,distance,status')
+        .select('id,name,venue,date,distance,status,registration_link,image,photos_url,results_url,schedule')
         .order('date', { ascending: true });
 
       if (error) {
@@ -88,15 +99,35 @@ export default function EventsSection() {
       <div className="event-grid" id="all-events">
         {filtered.length ? filtered.map((event, index) => (
           <article className="event-card" key={event.id ?? event.name}>
-            <div className={`event-art event-art-${index + 1}`}><span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span><span className="event-art-label">MARATHON<br />SAATHI</span></div>
+            <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
+              <span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span>
+              {!event.imageUrl && <span className="event-art-label">MARATHON<br />SAATHI</span>}
+            </div>
             <div className="event-info">
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
-              <div className="event-bottom"><span>{event.distance}</span><a href="#community" aria-label={`Learn more about ${event.name}`}><Icon name="arrow" size={18} /></a></div>
+              <div className="event-bottom"><span>{event.distance}</span></div>
+              {isPastEvent(event.eventDate || event.date) ? (
+                <div className="event-actions">
+                  {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Official Photos</a>}
+                  {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Timing / Results</a>}
+                  {!event.photosUrl && !event.resultsUrl && <a className="event-action event-action-secondary" href={event.id ? `/events/${event.id}` : '#events'}>Event details</a>}
+                </div>
+              ) : (
+                <div className="event-actions">
+                  <a className="event-action" href={event.registrationUrl || (event.id ? `/events/${event.id}` : '#events')} target={event.registrationUrl ? '_blank' : undefined} rel={event.registrationUrl ? 'noreferrer' : undefined}>Register Now <Icon name="arrow" size={15} /></a>
+                </div>
+              )}
             </div>
           </article>
         )) : <div className="empty-state">No races found for “{search}”. Try another city.</div>}
       </div>
     </section>
   );
+}
+
+function isPastEvent(value: string) {
+  if (!value) return false;
+  const parsed = new Date(value.length === 10 ? `${value}T23:59:59` : value);
+  return !Number.isNaN(parsed.getTime()) && parsed.getTime() < Date.now();
 }
