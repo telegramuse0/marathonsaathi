@@ -1,0 +1,35 @@
+'use client';
+
+import { useMemo, useState } from 'react';
+import { Icon } from './Icon';
+import { marathons } from './data';
+
+export default function EventsSection() {
+  const [search, setSearch] = useState('');
+  const filtered = useMemo(() => marathons.filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(search.toLowerCase())), [search]);
+
+  return (
+    <section className="events-section page-width" id="events">
+      <div className="section-heading">
+        <div><span className="eyebrow">THE ROAD IS CALLING</span><h2>Find your next <em>race.</em></h2></div>
+        <a className="text-link" href="#all-events">View all events <Icon name="arrow" size={17} /></a>
+      </div>
+      <div className="event-tools">
+        <p>Good runs start with a date on the calendar.</p>
+        <label className="search-box"><Icon name="search" size={19} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search by city or event" aria-label="Search marathons by city or event" /><kbd>⌘ K</kbd></label>
+      </div>
+      <div className="event-grid" id="all-events">
+        {filtered.length ? filtered.map((event, index) => (
+          <article className="event-card" key={event.name}>
+            <div className={`event-art event-art-${index + 1}`}><span className="event-status">{event.status}</span><span className="event-number">0{index + 1}</span><span className="event-art-label">MARATHON<br />SAATHI</span></div>
+            <div className="event-info">
+              <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
+              <h3>{event.name}</h3>
+              <div className="event-bottom"><span>{event.distance}</span><a href="#community" aria-label={`Learn more about ${event.name}`}><Icon name="arrow" size={18} /></a></div>
+            </div>
+          </article>
+        )) : <div className="empty-state">No races found for “{search}”. Try another city.</div>}
+      </div>
+    </section>
+  );
+}
