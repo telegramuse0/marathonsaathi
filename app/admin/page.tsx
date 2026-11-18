@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import Footer from '@/components/Footer';
+import SiteFooter from '@/components/premium/SiteFooter';
 import { supabase } from '@/lib/supabase';
 
 type AdminMarathon = {
@@ -1350,7 +1350,7 @@ export default function AdminPage() {
           </div>
         )}
       </div>
-      <Footer />
+      <SiteFooter />
     </div>
   );
 }

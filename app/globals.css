@@ -138,6 +138,7 @@ button,input{font:inherit}
 .footer-bottom{min-height:51px;border-top:1px solid rgba(255,255,255,.11);display:flex;align-items:center;justify-content:space-between;color:#8792a0;font-size:9px}
 .footer-bottom b{font-size:12px;color:#f29465;padding-inline:4px}
 .footer-bottom>a{color:#c9ced5}
+.affiliate-actions{display:flex;gap:9px;margin-top:12px;flex-wrap:wrap}.affiliate-actions a{display:inline-flex;min-height:38px;align-items:center;justify-content:center;gap:7px;padding:0 13px;border-radius:5px;background:var(--orange);color:#fff;font-size:11px;font-weight:800}.affiliate-actions a:hover{background:#df6330}
 @media(max-width:900px){.main-nav{gap:18px}.hub-card{padding:26px 23px}.shortcut-grid{grid-template-columns:repeat(3,1fr)}.shortcut:nth-child(n+4){margin-top:4px}.community-inner{gap:17px}.community-inner h2{font-size:24px}.footer-main{gap:28px}}
 @media(max-width:680px){.page-width{width:calc(100% - 36px)}.header-inner{width:calc(100% - 34px)}.site-header{height:70px}.brand-logo{width:42px;height:42px}.brand-copy strong{font-size:17px}.menu-toggle{display:block}.main-nav{display:none;position:absolute;top:69px;left:0;right:0;background:#fff;padding:14px 20px 20px;border-bottom:1px solid var(--line);box-shadow:0 12px 20px rgba(16,30,52,.1);flex-direction:column;align-items:stretch;gap:0}.main-nav.is-open{display:flex}.main-nav>a:not(.nav-cta){padding:13px 4px;border-bottom:1px solid #f0eee9}.nav-cta{justify-content:center;margin-top:13px}
 .hero,.hero-content{min-height:565px}.hero-image{background-image:linear-gradient(90deg,rgba(9,22,40,.88),rgba(9,22,40,.39)),linear-gradient(0deg,rgba(10,23,41,.48),transparent 55%),url("https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1100&q=80");background-position:57% center}
@@ -191,6 +192,8 @@ button,input{font:inherit}
   .affiliate-info p{font-size:12px}
   .affiliate-bottom strong{font-size:14px}
   .affiliate-bottom a{font-size:12px}
+  .affiliate-actions{gap:9px;margin-top:12px}
+  .affiliate-actions a{min-height:42px;padding-inline:15px;font-size:12px}
   .text-link{font-size:12px}
   .community-inner p{font-size:14px}
 }

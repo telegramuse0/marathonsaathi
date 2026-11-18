@@ -46,7 +46,6 @@ export default function AffiliateProductsSection() {
       {products.length ? (
         <div className="affiliate-grid">
           {products.map((product) => {
-            const link = product.amazon_url || product.flipkart_url;
             return (
               <article className="affiliate-card" key={product.id}>
                 <div className="affiliate-image">
@@ -58,8 +57,11 @@ export default function AffiliateProductsSection() {
                   {product.description && <p>{product.description}</p>}
                   <div className="affiliate-bottom">
                     <strong>{product.price !== null ? `₹${product.price.toLocaleString('en-IN')}` : 'Recommended gear'}</strong>
-                    {link && <a href={link} target="_blank" rel="sponsored noreferrer">View product <span aria-hidden="true">↗</span></a>}
                   </div>
+                  {(product.amazon_url || product.flipkart_url) && <div className="affiliate-actions">
+                    {product.amazon_url && <a href={product.amazon_url} target="_blank" rel="sponsored noreferrer">Amazon <span aria-hidden="true">↗</span></a>}
+                    {product.flipkart_url && <a href={product.flipkart_url} target="_blank" rel="sponsored noreferrer">Flipkart <span aria-hidden="true">↗</span></a>}
+                  </div>}
                 </div>
               </article>
             );
