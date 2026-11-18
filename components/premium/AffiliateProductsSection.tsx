@@ -54,10 +54,10 @@ export default function AffiliateProductsSection() {
                 </div>
                 <div className="affiliate-info">
                   <h3>{product.name}</h3>
-                  {(product.amazon_url || product.flipkart_url) && <div className="affiliate-actions">
-                    {product.amazon_url && <a href={product.amazon_url} target="_blank" rel="sponsored noreferrer">Amazon <span aria-hidden="true">↗</span></a>}
-                    {product.flipkart_url && <a href={product.flipkart_url} target="_blank" rel="sponsored noreferrer">Flipkart <span aria-hidden="true">↗</span></a>}
-                  </div>}
+                  <div className="affiliate-actions">
+                    {product.amazon_url ? <a href={product.amazon_url} target="_blank" rel="sponsored noreferrer">Amazon <span aria-hidden="true">↗</span></a> : <span className="affiliate-action-disabled">Amazon link pending</span>}
+                    {product.flipkart_url ? <a href={product.flipkart_url} target="_blank" rel="sponsored noreferrer">Flipkart <span aria-hidden="true">↗</span></a> : <span className="affiliate-action-disabled">Flipkart link pending</span>}
+                  </div>
                   {product.description && <p>{product.description}</p>}
                   <div className="affiliate-bottom">
                     <strong>{product.price !== null ? `₹${product.price.toLocaleString('en-IN')}` : 'Recommended gear'}</strong>
