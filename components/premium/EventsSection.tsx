@@ -128,8 +128,8 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               <div className="event-bottom"><span>{event.distance}</span><span className="event-rating">★ {event.rating?.toFixed(1) || '5.0'}</span></div>
               {isPastEvent(event.eventDate || event.date) ? (
                 <div className="event-actions">
-                  {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Official Photos</a>}
-                  {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Timing / Results</a>}
+                  {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Results</a>}
+                  {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Photos</a>}
                   {!event.photosUrl && !event.resultsUrl && <a className="event-action event-action-secondary" href={event.id ? `/events/${event.id}` : '#events'}>Event details</a>}
                 </div>
               ) : (

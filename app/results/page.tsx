@@ -25,7 +25,11 @@ export default function ResultsPage() {
         .order('date', { ascending: false });
       if (error) console.error('Could not load race archive:', error);
       if (active) {
-        setEvents(((data || []) as ArchiveEvent[]).filter((event) => event.photos_url || event.results_url));
+        setEvents(((data || []) as ArchiveEvent[]).filter((event) => {
+          if (!event.date) return false;
+          const raceEnd = new Date(`${event.date}T23:59:59`);
+          return !Number.isNaN(raceEnd.getTime()) && raceEnd.getTime() < Date.now();
+        }));
         setLoading(false);
       }
     };
@@ -56,8 +60,8 @@ export default function ResultsPage() {
               <h2>{event.name}</h2>
               {event.distance && <p>{event.distance}</p>}
               <div className="archive-actions">
-                {event.photos_url && <a className="event-action event-action-secondary" href={event.photos_url} target="_blank" rel="noreferrer">Official Photos ↗</a>}
-                {event.results_url && <a className="event-action" href={event.results_url} target="_blank" rel="noreferrer">Timing / Results ↗</a>}
+                {event.results_url && <a className="event-action" href={event.results_url} target="_blank" rel="noreferrer">Results ↗</a>}
+                {event.photos_url && <a className="event-action event-action-secondary" href={event.photos_url} target="_blank" rel="noreferrer">Photos ↗</a>}
               </div>
             </article>
           );

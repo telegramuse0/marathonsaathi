@@ -151,3 +151,46 @@ button,input{font:inherit}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 @media(max-width:680px){.event-actions{gap:6px;margin-top:10px}.event-action{min-height:32px;padding:0 8px;font-size:9px}.affiliate-section{padding-top:0;padding-bottom:52px}.affiliate-heading{gap:9px;align-items:flex-start;flex-direction:column;margin-bottom:16px}.affiliate-note{font-size:9px}.affiliate-grid{grid-template-columns:1fr;gap:11px}.affiliate-card{display:grid;grid-template-columns:36% 1fr;min-height:130px}.affiliate-image{height:100%;min-height:130px}.affiliate-info{padding:12px}.affiliate-info h3{font-size:13px}.affiliate-info p{font-size:9px}.affiliate-bottom{margin-top:10px;padding-top:9px}}
 @media(max-width:680px){.route-intro,.archive-intro{padding-top:44px;padding-bottom:21px}.route-intro h1,.archive-intro h1{font-size:36px;letter-spacing:-1.5px}.all-events-section{padding-top:5px}.event-filters{margin-top:0}.archive-list{grid-template-columns:1fr;padding-bottom:52px}.archive-card{padding:16px}.archive-card h2{font-size:15px}.results-photos-section{padding-top:5px;padding-bottom:44px;display:grid;grid-template-columns:auto 1fr;gap:9px 12px}.results-photos-section>.text-link{grid-column:1/-1;margin:7px 0 0}.results-photos-icon{gap:0}.results-photos-copy h2{font-size:21px}.results-photos-copy p{font-size:10px}}
+@media(max-width:680px){
+  .hero,.hero-content{min-height:600px}
+  .hero-copy{padding-top:74px}
+  .hero h1{font-size:clamp(46px,12vw,62px);letter-spacing:-2.8px;line-height:1.02}
+  .hero-copy>p{font-size:16px;line-height:1.65}
+  .hero-eyebrow{font-size:11px;letter-spacing:1.3px}
+  .hero-actions{gap:10px}
+  .hero-actions .button{min-height:48px;padding:13px 15px;font-size:13px}
+  .hero-note{font-size:12px}
+  .hub-heading h2{font-size:26px}
+  .hub-stat span,.shortcut-text small{font-size:10px}
+  .shortcut-text strong{font-size:11px}
+  .events-section{padding-top:54px}
+  .section-heading h2{font-size:34px}
+  .eyebrow{font-size:11px}
+  .event-card{grid-template-columns:1fr;min-height:0}
+  .event-art{height:190px;min-height:190px}
+  .event-info{padding:17px}
+  .event-meta{flex-direction:row;flex-wrap:wrap;gap:9px 14px;font-size:11px}
+  .event-info h3{font-size:19px;margin:12px 0}
+  .event-bottom{font-size:12px}
+  .event-actions{gap:9px;margin-top:14px}
+  .event-action{min-height:42px;padding:0 14px;font-size:12px}
+  .archive-intro h1{font-size:40px}
+  .archive-intro p{font-size:15px}
+  .archive-card{padding:19px}
+  .archive-meta{font-size:12px}
+  .archive-card h2{font-size:19px}
+  .archive-card p{font-size:13px}
+  .archive-actions{gap:10px}
+  .archive-actions .event-action{min-width:104px}
+  .affiliate-heading .section-heading h2,.affiliate-heading h2{font-size:30px}
+  .affiliate-note{font-size:11px}
+  .affiliate-card{grid-template-columns:1fr;min-height:0}
+  .affiliate-image{height:175px;min-height:175px}
+  .affiliate-info{padding:16px}
+  .affiliate-info h3{font-size:16px}
+  .affiliate-info p{font-size:12px}
+  .affiliate-bottom strong{font-size:14px}
+  .affiliate-bottom a{font-size:12px}
+  .text-link{font-size:12px}
+  .community-inner p{font-size:14px}
+}
