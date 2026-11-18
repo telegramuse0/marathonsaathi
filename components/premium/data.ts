@@ -3,6 +3,7 @@ import type { IconName } from './Icon';
 export type Marathon = {
   id?: number;
   name: string;
+  description?: string;
   date: string;
   eventDate?: string;
   city: string;
