@@ -117,11 +117,11 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       </div>}
       <div className="event-grid" id={featuredOnly ? 'featured-events' : 'all-events'}>
         {filtered.length ? filtered.map((event, index) => (
-          <article className="event-card" key={event.id ?? event.name}>
-            <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
+          <article className={`event-card ${isPastEvent(event.eventDate || event.date) ? 'event-card-completed' : ''}`} key={event.id ?? event.name}>
+            {!isPastEvent(event.eventDate || event.date) && <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
               <span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span>
               {!event.imageUrl && <span className="event-art-label">MARATHON<br />SAATHI</span>}
-            </div>
+            </div>}
             <div className="event-info">
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
