@@ -164,12 +164,22 @@ button,input{font:inherit}
 .event-art{background:#f1eee8}
 .event-art:before,.event-art:after{display:none}
 .event-art-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;background:#f1eee8}
+.featured-events-section .event-card{border-radius:14px;box-shadow:0 5px 20px rgba(16,30,52,.045)}
+.featured-events-section .event-card:hover{box-shadow:0 15px 34px rgba(16,30,52,.12)}
+.featured-events-section .event-art{height:190px}
+.featured-events-section .event-art-image{object-fit:cover;padding:0}
+.featured-events-section .event-info{padding:18px 19px 17px}
+.featured-events-section .event-info h3{font-size:19px;line-height:1.3;margin:12px 0 13px}
+.featured-events-section .event-meta{font-size:11px;gap:15px;flex-wrap:wrap}
+.event-distance-list{display:flex;gap:6px;flex-wrap:wrap}
+.event-distance-list span{padding:6px 9px;border-radius:999px;background:#f4f5f6;color:#435064;font-size:10px;font-weight:750}
+.event-card-details{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-height:37px;margin-top:12px;padding-top:10px;border-top:1px solid #efede8;color:#77808a;font-size:10px}
+.event-card-details>span{max-width:42%;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.event-card-details strong{max-width:58%;color:#1e765b;font-size:11px;line-height:1.4;text-align:right;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .event-action-detail{background:linear-gradient(135deg,#183452,#101e34);box-shadow:0 5px 12px rgba(16,30,52,.14)}
 .event-action-detail:hover{background:#274c71}
 .event-action-register{background:linear-gradient(135deg,#ff8a45,#ed5d2d);box-shadow:0 5px 14px rgba(242,118,61,.23)}
 .event-action-register:hover{background:#df6330}
-.event-action-calendar{background:#edf7f3;color:#176b51;border:1px solid #cfe8dd}
-.event-action-calendar:hover{background:#dcefe7;color:#145b46}
 .event-actions .event-action{min-height:40px;padding:0 15px;font-size:11px;border-radius:7px}
 .affiliate-image img{object-fit:contain!important;padding:12px}
 #admin-results,#admin-published{display:none!important}
@@ -206,6 +216,10 @@ button,input{font:inherit}
   .event-info{padding:17px}
   .event-meta{flex-direction:row;flex-wrap:wrap;gap:9px 14px;font-size:11px}
   .event-info h3{font-size:19px;margin:12px 0}
+  .featured-events-section .event-art{height:190px}
+  .featured-events-section .event-info{padding:16px}
+  .featured-events-section .event-info h3{font-size:20px;margin:12px 0}
+  .event-card-details{font-size:10px}
   .event-bottom{font-size:12px}
   .event-actions{gap:9px;margin-top:14px}
   .event-action{min-height:42px;padding:0 14px;font-size:12px}

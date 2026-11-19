@@ -17,6 +17,8 @@ type MarathonRow = {
   registration_link?: string | null;
   image?: string | null;
   schedule?: string | null;
+  organizer?: string | null;
+  fee?: string | null;
 };
 
 function formatEventDate(value: string | null) {
@@ -48,24 +50,9 @@ function toPublicEvent(row: MarathonRow): Marathon {
     registrationUrl: row.registration_link?.trim() || '',
     imageUrl: row.image?.trim() || '',
     schedule: row.schedule?.trim() || '',
+    organizer: row.organizer?.trim() || '',
+    entryFee: row.fee?.trim() || '',
   };
-}
-
-function calendarUrl(event: Marathon) {
-  const date = (event.eventDate || '').slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return '';
-  const [year, month, day] = date.split('-').map(Number);
-  const start = new Date(Date.UTC(year, month - 1, day));
-  const end = new Date(Date.UTC(year, month - 1, day + 1));
-  const compact = (value: Date) => value.toISOString().slice(0, 10).replaceAll('-', '');
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: event.name,
-    dates: `${compact(start)}/${compact(end)}`,
-    details: [event.description, event.registrationUrl ? `Registration: ${event.registrationUrl}` : ''].filter(Boolean).join('\n\n'),
-    location: [event.city, event.state].filter(Boolean).join(', '),
-  });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 export default function EventsSection({ featuredOnly = true }: { featuredOnly?: boolean }) {
@@ -77,10 +64,16 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     let active = true;
 
     const loadEvents = async () => {
-      const { data, error } = await supabase
-        .from('marathons')
-        .select('id,name,description,venue,date,distance,status,registration_link,image,schedule')
-        .order('date', { ascending: true });
+      const indianToday = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit',
+      }).format(new Date());
+      const { data, error } = featuredOnly
+        ? await supabase.from('marathons')
+          .select('id,name,venue,date,distance,status,registration_link,image,organizer,fee')
+          .gte('date', indianToday).order('date', { ascending: true }).limit(60)
+        : await supabase.from('marathons')
+          .select('id,name,description,venue,date,distance,status,registration_link,image')
+          .order('date', { ascending: true });
 
       if (error) {
         console.error('Could not load public marathon events:', error);
@@ -148,16 +141,18 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                 <div className="event-actions">
                   {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
                   {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
-                  {!isPastEvent(event.eventDate || event.date) && calendarUrl(event) && <a className="event-action event-action-calendar" href={calendarUrl(event)} target="_blank" rel="noreferrer"><Icon name="calendar" size={15} /> Add to Calendar</a>}
                 </div>
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
-              <div className="event-bottom"><span>{event.distance}</span></div>
+              <div className="event-distance-list">{event.distance.split(/[,|•]/).map((distance) => distance.trim()).filter(Boolean).slice(0, 4).map((distance) => <span key={distance}>{distance}</span>)}</div>
+              <div className="event-card-details">
+                {event.organizer && <span>{event.organizer}</span>}
+                {event.entryFee && <strong>{/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee}</strong>}
+              </div>
               <div className="event-actions">
                 {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
                 {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
-                {!isPastEvent(event.eventDate || event.date) && calendarUrl(event) && <a className="event-action event-action-calendar" href={calendarUrl(event)} target="_blank" rel="noreferrer"><Icon name="calendar" size={15} /> Add to Calendar</a>}
               </div>
               </>}
             </div>

@@ -234,7 +234,11 @@ export default function EventDetailsPage() {
     const loadEvent = async () => {
       const id = Number(params?.id);
       if (!id) { setLoaded(true); return; }
-      const { data, error } = await supabase.from('marathons').select('*').eq('id', id).maybeSingle();
+      const { data, error } = await supabase
+        .from('marathons')
+        .select('id,name,venue,rating,date,distance,registration_link,organizer,status,image,description,location_details,fee,schedule,awards,runner_benefits,photos_url,results_url')
+        .eq('id', id)
+        .maybeSingle();
       if (error) console.error('Could not load event details:', error);
       if (active && data) {
         const row = data as Record<string, unknown>;

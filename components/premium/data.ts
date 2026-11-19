@@ -15,6 +15,8 @@ export type Marathon = {
   photosUrl?: string;
   resultsUrl?: string;
   schedule?: string;
+  organizer?: string;
+  entryFee?: string;
 };
 export const marathons: Marathon[] = [
   { name: 'Delhi Marathon', date: '12 Oct 2026', city: 'New Delhi', distance: 'Multiple distances', status: 'Featured' },
