@@ -30,7 +30,7 @@ export default function ContactPage() {
   return <main className="min-h-screen bg-[#faf8f4]">
     <SiteHeader />
     <section className="contact-page page-width">
-      <div className="contact-intro"><span className="eyebrow">WE’RE HERE TO HELP</span><h1>Talk to <em>our team.</em></h1><p>Race listing, website ya runner community ke baare mein sawal hai? Message bhejiye; team admin inbox me dekhegi.</p></div>
+      <div className="contact-intro"><span className="eyebrow">WE’RE HERE TO HELP</span><h1>Talk to <em>our team.</em></h1><p>Race listing, website ya runner community ke baare mein sawal hai? Message bhejiye; team admin inbox me dekhegi.</p><div className="contact-email"><span>Email us directly</span><a href="mailto:marathonsaathi@gmail.com">marathonsaathi@gmail.com</a></div></div>
       <form onSubmit={submit} className="contact-form">
         <label>Your name<input required minLength={2} maxLength={80} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" /></label>
         <label>Email address<input required type="email" maxLength={254} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" /></label>
