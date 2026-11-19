@@ -78,8 +78,8 @@ export default function EventReviewsPage() {
         </div> : <div className="review-empty">{races.length ? 'No events match that search. Try a different event name or city.' : 'Recent completed races will appear here after they are added.'}</div>}
       </> : <>
         <button type="button" className="review-back-link" onClick={() => chooseRace(null)}>← Browse recent events</button>
-        <div className="review-selected-race"><div className="review-selected-image">{selectedRace.image ? <img src={selectedRace.image} alt={`${selectedRace.name} event`} /> : <span aria-hidden="true">🏃</span>}</div><div><span className="eyebrow">SELECTED EVENT</span><h2>{selectedRace.name}</h2><p>{displayDate(selectedRace.date)} · {selectedRace.venue || 'Location not listed'}</p><small>{selectedRace.distance}</small></div></div>
-        <EventFeedback eventId={selectedRace.id} eventName={selectedRace.name} eventDate={selectedRace.date || ''} eventImage={selectedRace.image || ''} eventDistances={distances} />
+        <div className="review-selected-race"><div><span className="eyebrow">SELECTED EVENT</span><h2>{selectedRace.name}</h2><p>{displayDate(selectedRace.date)} · {selectedRace.venue || 'Location not listed'}</p><small>{selectedRace.distance}</small></div></div>
+        <EventFeedback eventId={selectedRace.id} eventName={selectedRace.name} eventDate={selectedRace.date || ''} eventDistances={distances} />
       </>}
     </section>
     <SiteFooter />
