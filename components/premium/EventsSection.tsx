@@ -63,6 +63,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
   const [events, setEvents] = useState<Marathon[]>(marathons);
   const [search, setSearch] = useState('');
   const [eventFilter, setEventFilter] = useState<'upcoming' | 'completed' | 'all'>('all');
+  const [eventRatings, setEventRatings] = useState<Record<number, { average: number; count: number }>>({});
 
   useEffect(() => {
     let active = true;
@@ -85,7 +86,23 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       }
 
       if (active) {
-        setEvents(((data || []) as MarathonRow[]).map(toPublicEvent));
+        const nextEvents = ((data || []) as MarathonRow[]).map(toPublicEvent);
+        setEvents(nextEvents);
+        const eventIds = nextEvents.map((event) => event.id).filter((id): id is number => typeof id === 'number');
+        if (eventIds.length) {
+          const { data: reviews, error: reviewError } = await supabase.from('event_feedback')
+            .select('event_id,overall_rating').eq('is_verified', true).in('event_id', eventIds);
+          if (!reviewError && active) {
+            const totals: Record<number, { total: number; count: number }> = {};
+            for (const review of reviews || []) {
+              const current = totals[review.event_id] || { total: 0, count: 0 };
+              current.total += review.overall_rating;
+              current.count += 1;
+              totals[review.event_id] = current;
+            }
+            setEventRatings(Object.fromEntries(Object.entries(totals).map(([id, value]) => [id, { average: value.total / value.count, count: value.count }])));
+          }
+        }
       }
     };
 
@@ -139,6 +156,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               {!featuredOnly ? <>
                 <h3>{event.name}</h3>
                 {event.description && <p className="event-list-description">{event.description}</p>}
+                {event.id && (eventRatings[event.id] || isPastEvent(event.eventDate || event.date)) && <EventRatingLink eventId={event.id} rating={eventRatings[event.id]} />}
                 <div className="event-actions">
                   {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
                   {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
@@ -146,6 +164,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
+              {event.id && (eventRatings[event.id] || isPastEvent(event.eventDate || event.date)) && <EventRatingLink eventId={event.id} rating={eventRatings[event.id]} />}
               <div className="event-distance-list">{event.distance.split(/[,|•]/).map((distance) => distance.trim()).filter(Boolean).slice(0, 4).map((distance) => <span key={distance}>{distance}</span>)}</div>
               <div className="event-card-details">
                 {event.organizer && <span>{event.organizer}</span>}
@@ -165,6 +184,12 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       </div>
     </section>
   );
+}
+
+function EventRatingLink({ eventId, rating }: { eventId: number; rating?: { average: number; count: number } }) {
+  return <Link href={`/reviews?eventId=${eventId}`} className="event-rating-link" aria-label={rating ? `${rating.average.toFixed(1)} stars from ${rating.count} race reviews` : 'Write the first review for this race'}>
+    <span aria-hidden="true">★</span> {rating ? <><strong>{rating.average.toFixed(1)}</strong><small>({rating.count} {rating.count === 1 ? 'review' : 'reviews'})</small></> : <small>Write the first review</small>}
+  </Link>;
 }
 
 function isPastEvent(value: string) {
