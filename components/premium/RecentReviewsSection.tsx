@@ -69,7 +69,7 @@ export default function RecentReviewsSection() {
       setGroups(eventIds.map((eventId) => {
         const event = eventMap.get(eventId);
         const score = scores.get(eventId) || { total: 0, count: 0 };
-        const location = (event?.venue || '').split(',').map((part) => part.trim()).filter(Boolean)[0] || 'India';
+        const location = (event?.venue || '').split(',').map((part: string) => part.trim()).filter(Boolean)[0] || 'India';
         return {
           eventId, eventName: event?.name || 'Race event', image: event?.image || '', date: event?.date || '',
           distance: event?.distance || '', city: location, reviews: grouped.get(eventId) || [],
