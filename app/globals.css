@@ -261,6 +261,60 @@ button,input{font:inherit}
 @media(max-width:370px){.hub-badge{display:none}.hub-stat span{max-width:45px}.hub-stats{gap:7px}.shortcut-text small{white-space:normal}.footer-main{grid-template-columns:1fr}.footer-brand{grid-column:auto}.footer-contact{grid-column:auto}.hero-actions .button{font-size:10px;padding:12px}.section-heading h2{font-size:27px}}
 @media(max-width:680px){.review-hub{padding-top:45px;padding-bottom:52px}.review-hub-intro h1{font-size:38px;letter-spacing:-1.5px}.review-hub-intro p{font-size:13px}.review-search{min-height:54px}.review-recent-heading{margin-top:34px}.review-race-select{gap:11px;padding:10px}.review-race-thumb{flex-basis:82px;width:82px;height:68px}.review-race-copy strong{font-size:12px}.review-race-copy span,.review-race-copy small{font-size:10px}.review-race-arrow{flex-basis:30px;width:30px;height:30px}.review-selected-race{gap:12px;padding:11px}.review-selected-image{flex-basis:90px;width:90px;height:74px}.review-selected-race h2{font-size:15px}.event-review-cta{align-items:flex-start;flex-direction:column;padding:15px}.event-review-cta>b{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Homepage featured race cards: show up to three side-by-side on desktop. */
+.featured-events-section .event-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.featured-events-section .event-card{display:flex;min-width:0;flex-direction:column;border-radius:14px;overflow:hidden}
+.featured-events-section .event-art{height:190px;min-height:190px;flex:0 0 190px;background:#f1eee8}
+.featured-events-section .event-art-image{object-fit:contain;padding:10px;background:#f1eee8}
+.featured-events-section .event-info{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;padding:17px}
+.featured-events-section .event-info h3{margin:10px 0 7px;font-size:19px;line-height:1.25}
+.featured-events-section .featured-event-description{font-size:11px;line-height:1.5}
+.featured-event-offer{margin-top:12px;padding:11px 0}
+.featured-event-offer strong{font-size:15px}
+.featured-events-section .event-actions{margin-top:12px}
+.featured-events-section .event-action{min-height:39px;padding-inline:12px;font-size:10px}
+.featured-event-footer{justify-content:flex-start;gap:10px;margin-top:auto;padding-top:14px;font-size:10px}
+.featured-event-organizer{gap:5px}
+.featured-event-contacts{font-size:9px}
+@media(max-width:900px){.featured-events-section .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.featured-events-section .event-grid{grid-template-columns:1fr}.featured-events-section .event-card{display:grid;grid-template-columns:36% minmax(0,1fr)}.featured-events-section .event-art{height:auto;min-height:205px;flex-basis:auto}.featured-events-section .event-info{padding:15px 13px}.featured-events-section .event-info h3{font-size:18px}.featured-events-section .event-art-image{padding:5px}.featured-events-section .event-action{min-height:38px;padding-inline:10px;font-size:10px}}
+
+/* Recent Race Reviews layout follows the compact image-led reference card. */
+.recent-reviews-section{padding-top:12px;padding-bottom:65px}
+.recent-race-reviews-panel{overflow:hidden;border:1px solid #e8e8e8;border-radius:8px;background:#fff;box-shadow:0 2px 5px rgba(16,30,52,.06)}
+.recent-race-reviews-bar{min-height:39px;display:flex;align-items:center;padding:0 20px;background:#fde5ee;color:#101820;font-size:15px;font-weight:850}
+.recent-race-review-list{display:grid;gap:0}
+.recent-race-review-row{display:grid;grid-template-columns:minmax(230px,29%) minmax(260px,30%) minmax(290px,1fr);align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid #f0edf0}
+.recent-race-poster{display:grid;height:156px;overflow:hidden;place-items:center;border-radius:9px;background:#f2f0ed;color:#e47746;font-size:36px}
+.recent-race-poster img{width:100%;height:100%;object-fit:contain;background:#f2f0ed}
+.recent-race-event-info{min-width:0}
+.recent-race-event-title{display:block;color:#121820;font-size:clamp(17px,1.8vw,21px);font-weight:900;line-height:1.25;text-transform:uppercase}
+.recent-race-event-info time{display:block;margin-top:5px;color:#898c92;font-size:12px}
+.recent-race-event-type{display:flex;align-items:center;gap:9px;margin-top:15px;color:#f12766;font-size:12px;font-weight:700}
+.recent-race-event-type span{display:flex;align-items:center;gap:5px;min-width:0}
+.recent-race-event-type i{color:#555d67;font-style:normal}
+.recent-race-distance{margin:8px 0 0;color:#7d8289;font-size:11px}
+.recent-race-rating{display:inline-flex;align-items:center;gap:10px;margin-top:12px;color:#586273;font-size:14px}
+.recent-race-rating b{border-radius:999px;background:#08b78e;padding:4px 13px;color:#fff;font-size:14px}
+.recent-race-review-side{min-width:0}
+.recent-race-review-quote{min-height:142px;padding:11px 13px;border-radius:11px;background:#f8f8f8;animation:review-slide-in .28s ease both}
+.recent-race-review-author{display:flex;align-items:center;gap:9px;color:#253043;font-size:14px}
+.recent-race-review-author>span{width:34px;height:34px;display:grid;flex:0 0 34px;place-items:center;border:2px solid #fff;border-radius:50%;background:linear-gradient(140deg,#f5b48f,#c9e9df);color:#263549;font-size:11px;font-weight:900;box-shadow:0 0 0 1px #e4e5e8}
+.recent-race-review-quote>p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:13px 0;color:#546071;font-size:12px;line-height:1.6}
+.recent-race-runner-details{display:flex;flex-wrap:wrap;align-items:center;gap:5px;color:#818791;font-size:10px}
+.recent-race-runner-details>i{font-style:normal}
+.recent-race-runner-details>span{margin-left:auto;color:#f1ae31;font-size:13px;letter-spacing:1px}
+.recent-race-runner-details>span em{color:#dedfe2;font-style:normal}
+.recent-race-review-dots{display:flex;justify-content:center;gap:9px;padding-top:9px}
+.recent-race-review-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#d4d5d7;cursor:pointer}
+.recent-race-review-dots button.is-active{background:#7f8184}
+.recent-race-reviews-link{display:flex;justify-content:flex-end;align-items:center;gap:6px;padding:0 22px 13px;color:#ff2765;font-size:12px;font-weight:850;text-transform:uppercase}
+.recent-race-reviews-link span{font-size:19px;line-height:1}
+.recent-reviews-empty{padding:26px 20px;color:#858b91;text-align:center;font-size:12px}
+@keyframes review-slide-in{from{opacity:.45;transform:translateX(7px)}to{opacity:1;transform:translateX(0)}}
+@media(max-width:900px){.recent-race-review-row{grid-template-columns:180px minmax(0,1fr);gap:14px}.recent-race-review-side{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}.recent-race-review-quote{min-height:100px}.recent-race-review-dots{padding:0 8px}}
+@media(max-width:580px){.recent-reviews-section{padding-top:5px;padding-bottom:48px}.recent-race-reviews-bar{min-height:38px;padding-inline:13px;font-size:14px}.recent-race-review-row{grid-template-columns:100px minmax(0,1fr);gap:12px;padding:12px}.recent-race-poster{height:102px}.recent-race-event-title{font-size:15px}.recent-race-event-info time{font-size:10px}.recent-race-event-type{gap:6px;margin-top:8px;font-size:10px}.recent-race-event-type svg{width:13px;height:13px}.recent-race-distance{margin-top:5px;font-size:10px}.recent-race-rating{gap:7px;margin-top:7px;font-size:11px}.recent-race-rating b{padding:3px 9px;font-size:12px}.recent-race-review-side{grid-column:1/-1;grid-template-columns:minmax(0,1fr);gap:0}.recent-race-review-quote{min-height:105px;padding:10px}.recent-race-review-quote>p{margin:8px 0;font-size:11px}.recent-race-review-author{font-size:12px}.recent-race-review-author>span{width:30px;height:30px;flex-basis:30px}.recent-race-runner-details{font-size:9px}.recent-race-review-dots{padding-top:8px}.recent-race-reviews-link{padding:0 12px 11px;font-size:10px}}
 @media(max-width:680px){.event-actions{gap:6px;margin-top:10px}.event-action{min-height:32px;padding:0 8px;font-size:9px}.affiliate-section{padding-top:0;padding-bottom:52px}.affiliate-heading{gap:9px;align-items:flex-start;flex-direction:column;margin-bottom:16px}.affiliate-note{font-size:9px}.affiliate-grid{grid-template-columns:1fr;gap:11px}.affiliate-card{display:grid;grid-template-columns:36% 1fr;min-height:130px}.affiliate-image{height:100%;min-height:130px}.affiliate-info{padding:12px}.affiliate-info h3{font-size:13px}.affiliate-info p{font-size:9px}.affiliate-bottom{margin-top:10px;padding-top:9px}}
 @media(max-width:680px){.route-intro,.archive-intro{padding-top:44px;padding-bottom:21px}.route-intro h1,.archive-intro h1{font-size:36px;letter-spacing:-1.5px}.all-events-section{padding-top:5px}.event-filters{margin-top:0}.archive-list{grid-template-columns:1fr;padding-bottom:52px}.archive-card{padding:16px}.archive-card h2{font-size:15px}.results-photos-section{padding-top:5px;padding-bottom:44px;display:grid;grid-template-columns:auto 1fr;gap:9px 12px}.results-photos-section>.text-link{grid-column:1/-1;margin:7px 0 0}.results-photos-icon{gap:0}.results-photos-copy h2{font-size:21px}.results-photos-copy p{font-size:10px}}
 @media(max-width:680px){

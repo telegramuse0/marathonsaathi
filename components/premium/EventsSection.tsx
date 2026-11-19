@@ -87,7 +87,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       const { data, error } = featuredOnly
         ? await supabase.from('marathons')
           .select('id,name,description,venue,location_details,date,distance,status,registration_link,image,organizer,organizer_contact_name,organizer_email,organizer_phone,organizer_website,lowest_price,fee,registration_closes,is_featured')
-          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(1)
+          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(3)
         : await supabase.from('marathons')
           .select('id,name,description,venue,date,distance,status,registration_link,image')
           .order('date', { ascending: true });
@@ -137,7 +137,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     return sortedEvents
       .filter((event) => featuredOnly ? Boolean(event.isFeatured) && !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
       .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
-      .slice(0, featuredOnly ? 1 : undefined);
+      .slice(0, featuredOnly ? 3 : undefined);
   }, [sortedEvents, search, eventFilter, featuredOnly]);
 
   return (
