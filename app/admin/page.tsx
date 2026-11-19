@@ -830,9 +830,7 @@ export default function AdminPage() {
 
             <nav aria-label="Admin sections" className="sticky top-2 z-20 flex gap-2 overflow-x-auto rounded-xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
               <a href="#admin-events" className="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Events</a>
-              <a href="#admin-results" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Timing &amp; photos</a>
               <a href="#admin-products" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Products</a>
-              <a href="#admin-published" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Saved links</a>
             </nav>
 
             {/* RUNNER'S STORE PRODUCT MANAGEMENT */}
@@ -1112,16 +1110,6 @@ export default function AdminPage() {
                           />
                         </div>
                       ))}
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Official Photos URL</label>
-                        <input type="url" value={eventForm.photosUrl} onChange={(e) => handleEventFormChange('photosUrl', e.target.value)} placeholder="https://official-gallery.example" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-700 mb-1.5">Official Timing / Results URL</label>
-                        <input type="url" value={eventForm.resultsUrl} onChange={(e) => handleEventFormChange('resultsUrl', e.target.value)} placeholder="https://official-results.example" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
-                      </div>
                     </div>
                   </div>
 

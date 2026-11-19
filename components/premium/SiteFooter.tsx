@@ -10,7 +10,7 @@ export default function SiteFooter() {
           <p>Every runner deserves a race worth running.</p>
           <div className="footer-social"><span>FOLLOW US</span><a aria-label="WhatsApp" href="https://whatsapp.com/channel/0029VbCF30w4NVicqzcGS236"><Icon name="whatsapp" /></a><a aria-label="Facebook" href="https://www.facebook.com/marathonsaathi" target="_blank" rel="noreferrer"><Icon name="facebook" /></a><a aria-label="Instagram" href="https://www.instagram.com/marathonsaathi"><Icon name="instagram" /></a></div>
         </div>
-        <div className="footer-links"><span className="footer-label">EXPLORE</span><a href="/events">Find a race</a><a href="/results">Results &amp; photos</a><a href="/#store">Runner’s gear</a></div>
+        <div className="footer-links"><span className="footer-label">EXPLORE</span><a href="/events">Find a race</a><a href="/#store">Runner’s gear</a></div>
         <div className="footer-contact"><span className="footer-label">EMAIL US</span><a href="mailto:marathonsaathi@gmail.com"><Icon name="mail" size={17} /><span>marathonsaathi@gmail.com</span></a></div>
       </div>
       <div className="page-width footer-bottom"><span>© 2026 MarathonSaathi. All rights reserved.</span><span>RUN WITH HEART <b>✳</b> RUN TOGETHER</span><a href="/">Back to top ↑</a></div>

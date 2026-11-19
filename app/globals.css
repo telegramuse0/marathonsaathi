@@ -163,6 +163,19 @@ button,input{font:inherit}
 .event-extra-filters select:focus{border-color:#e8a17c;box-shadow:0 0 0 3px rgba(242,118,61,.1)}
 .event-list-thumb{width:88px;height:88px;overflow:hidden;border-radius:7px;background:#f1eee8;display:grid;place-items:center;color:var(--orange);font-size:26px}
 .event-list-thumb img{display:block;width:100%;height:100%;object-fit:cover}
+.event-list-thumb img{object-fit:contain;padding:3px}
+.event-art{background:#f1eee8}
+.event-art:before,.event-art:after{display:none}
+.event-art-image{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:8px;background:#f1eee8}
+.event-action-detail{background:linear-gradient(135deg,#183452,#101e34);box-shadow:0 5px 12px rgba(16,30,52,.14)}
+.event-action-detail:hover{background:#274c71}
+.event-action-register{background:linear-gradient(135deg,#ff8a45,#ed5d2d);box-shadow:0 5px 14px rgba(242,118,61,.23)}
+.event-action-register:hover{background:#df6330}
+.event-action-calendar{background:#edf7f3;color:#176b51;border:1px solid #cfe8dd}
+.event-action-calendar:hover{background:#dcefe7;color:#145b46}
+.event-actions .event-action{min-height:40px;padding:0 15px;font-size:11px;border-radius:7px}
+.affiliate-image img{object-fit:contain!important;padding:12px}
+#admin-results,#admin-published{display:none!important}
 @media(max-width:900px){.main-nav{gap:18px}.hub-card{padding:26px 23px}.shortcut-grid{grid-template-columns:repeat(3,1fr)}.shortcut:nth-child(n+4){margin-top:4px}.community-inner{gap:17px}.community-inner h2{font-size:24px}.footer-main{gap:28px}}
 @media(max-width:680px){.page-width{width:calc(100% - 36px)}.header-inner{width:calc(100% - 34px)}.site-header{height:70px}.brand-logo{width:42px;height:42px}.brand-copy strong{font-size:17px}.menu-toggle{display:block}.main-nav{display:none;position:absolute;top:69px;left:0;right:0;background:#fff;padding:14px 20px 20px;border-bottom:1px solid var(--line);box-shadow:0 12px 20px rgba(16,30,52,.1);flex-direction:column;align-items:stretch;gap:0}.main-nav.is-open{display:flex}.main-nav>a:not(.nav-cta){padding:13px 4px;border-bottom:1px solid #f0eee9}.nav-cta{justify-content:center;margin-top:13px}
 .hero,.hero-content{min-height:565px}.hero-image{background-image:linear-gradient(90deg,rgba(9,22,40,.88),rgba(9,22,40,.39)),linear-gradient(0deg,rgba(10,23,41,.48),transparent 55%),url("https://images.unsplash.com/photo-1552674605-db6ffd4facb5?auto=format&fit=crop&w=1100&q=80");background-position:57% center}

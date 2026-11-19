@@ -16,8 +16,6 @@ type MarathonRow = {
   status: string | null;
   registration_link?: string | null;
   image?: string | null;
-  photos_url?: string | null;
-  results_url?: string | null;
   schedule?: string | null;
 };
 
@@ -49,8 +47,6 @@ function toPublicEvent(row: MarathonRow): Marathon {
     status: row.status?.trim() || 'Upcoming',
     registrationUrl: row.registration_link?.trim() || '',
     imageUrl: row.image?.trim() || '',
-    photosUrl: row.photos_url?.trim() || '',
-    resultsUrl: row.results_url?.trim() || '',
     schedule: row.schedule?.trim() || '',
   };
 }
@@ -86,7 +82,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     const loadEvents = async () => {
       const { data, error } = await supabase
         .from('marathons')
-        .select('id,name,description,venue,date,distance,status,registration_link,image,photos_url,results_url,schedule')
+        .select('id,name,description,venue,date,distance,status,registration_link,image,schedule')
         .order('date', { ascending: true });
 
       if (error) {
@@ -155,7 +151,8 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
             {!featuredOnly && <div className="event-list-thumb">
               {event.imageUrl ? <img src={event.imageUrl} alt={`${event.name} event`} loading="lazy" /> : <span aria-hidden="true">🏃</span>}
             </div>}
-            {featuredOnly && !isPastEvent(event.eventDate || event.date) && <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
+            {featuredOnly && !isPastEvent(event.eventDate || event.date) && <div className={`event-art event-art-${(index % 3) + 1}`}>
+              {event.imageUrl && <img className="event-art-image" src={event.imageUrl} alt={`${event.name} event`} loading="lazy" />}
               <span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span>
               {!event.imageUrl && <span className="event-art-label">MARATHON<br />SAATHI</span>}
             </div>}
@@ -164,31 +161,19 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                 <h3>{event.name}</h3>
                 {event.description && <p className="event-list-description">{event.description}</p>}
                 <div className="event-actions">
-                  {isPastEvent(event.eventDate || event.date) ? <>
-                    {event.id && <Link className="event-action event-action-secondary" href={`/events/${event.id}`}>View Details</Link>}
-                    {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Results</a>}
-                    {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Photos</a>}
-                  </> : <>
-                    {event.id && <Link className="event-action event-action-secondary" href={`/events/${event.id}`}>View Details</Link>}
-                    {event.registrationUrl && <a className="event-action" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
-                    {calendarUrl(event) && <a className="event-action event-action-secondary" href={calendarUrl(event)} target="_blank" rel="noreferrer">Add to Calendar</a>}
-                  </>}
+                  {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
+                  {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
+                  {!isPastEvent(event.eventDate || event.date) && calendarUrl(event) && <a className="event-action event-action-calendar" href={calendarUrl(event)} target="_blank" rel="noreferrer"><Icon name="calendar" size={15} /> Add to Calendar</a>}
                 </div>
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
               <div className="event-bottom"><span>{event.distance}</span></div>
-              {isPastEvent(event.eventDate || event.date) ? (
-                <div className="event-actions">
-                  {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Results</a>}
-                  {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Photos</a>}
-                  {!event.photosUrl && !event.resultsUrl && <a className="event-action event-action-secondary" href={event.id ? `/events/${event.id}` : '#events'}>Event details</a>}
-                </div>
-              ) : (
-                <div className="event-actions">
-                  <a className="event-action" href={event.registrationUrl || (event.id ? `/events/${event.id}` : '#events')} target={event.registrationUrl ? '_blank' : undefined} rel={event.registrationUrl ? 'noreferrer' : undefined}>Register Now <Icon name="arrow" size={15} /></a>
-                </div>
-              )}
+              <div className="event-actions">
+                {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
+                {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
+                {!isPastEvent(event.eventDate || event.date) && calendarUrl(event) && <a className="event-action event-action-calendar" href={calendarUrl(event)} target="_blank" rel="noreferrer"><Icon name="calendar" size={15} /> Add to Calendar</a>}
+              </div>
               </>}
             </div>
           </article>

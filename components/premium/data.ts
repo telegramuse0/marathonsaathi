@@ -25,6 +25,5 @@ export const marathons: Marathon[] = [
 export type Shortcut = { title: string; description: string; icon: IconName; href: string; tone: string };
 export const shortcuts: Shortcut[] = [
   { title: 'Find a race', description: 'Browse every event', icon: 'calendar', href: '/events', tone: 'orange' },
-  { title: 'Results & photos', description: 'Relive race day', icon: 'trophy', href: '/results', tone: 'blue' },
   { title: 'Runner’s gear', description: 'Explore our picks', icon: 'bag', href: '/#store', tone: 'green' },
 ];

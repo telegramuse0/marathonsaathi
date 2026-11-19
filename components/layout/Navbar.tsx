@@ -28,7 +28,6 @@ const navItems: { label: string; tab: Tab }[] = [
   { label: 'Home', tab: 'home' },
   { label: 'Browse Events', tab: 'events' },
   { label: 'Race Calendar', tab: 'calendar' },
-  { label: 'Results & Photos', tab: 'results' },
 ];
 
 function SunIcon() {

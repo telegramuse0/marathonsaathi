@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-type NavbarTab = 'home' | 'events' | 'calendar' | 'results' | 'submit' | 'admin' | 'about' | 'terms' | 'privacy' | 'contact';
+type NavbarTab = 'home' | 'events' | 'calendar' | 'submit' | 'admin' | 'about' | 'terms' | 'privacy' | 'contact';
 
 interface NavbarProps {
   activeTab: string;
@@ -79,16 +79,6 @@ export default function Navbar({ activeTab, setActiveTab, isDarkMode, setIsDarkM
           >
             Race Calendar
           </button>
-          <button 
-            onClick={() => handleTabClick('results')} 
-            className={`px-4 py-2 rounded-xl transition ${
-              activeTab === 'results' 
-                ? 'bg-orange-600 text-white shadow-md shadow-orange-600/30' 
-                : isDarkMode ? 'text-slate-300 hover:text-white hover:bg-slate-900' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-            }`}
-          >
-            Results & Photos
-          </button>
         </nav>
 
         {/* Right Actions: Theme Toggle & Mobile Hamburger */}
@@ -147,12 +137,6 @@ export default function Navbar({ activeTab, setActiveTab, isDarkMode, setIsDarkM
             className={`w-full text-left px-4 py-3 rounded-xl font-bold transition ${activeTab === 'calendar' ? 'bg-orange-600 text-white' : 'hover:bg-slate-500/10'}`}
           >
             Race Calendar
-          </button>
-          <button 
-            onClick={() => handleTabClick('results')} 
-            className={`w-full text-left px-4 py-3 rounded-xl font-bold transition ${activeTab === 'results' ? 'bg-orange-600 text-white' : 'hover:bg-slate-500/10'}`}
-          >
-            Results & Photos
           </button>
         </div>
       )}

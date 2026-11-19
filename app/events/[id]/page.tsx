@@ -394,7 +394,7 @@ export default function EventDetailsPage() {
               <img
                 src={banner}
                 alt={`${event.name} banner`}
-                className="block w-full h-[250px] sm:h-[360px] lg:h-[430px] object-cover"
+                className="block w-full h-[250px] sm:h-[360px] lg:h-[430px] object-contain bg-slate-100 p-2 sm:p-4"
               />
             ) : (
               <div className="h-[250px] sm:h-[360px] lg:h-[430px] bg-slate-200 flex items-center justify-center">
@@ -726,14 +726,6 @@ export default function EventDetailsPage() {
         </section>
 
         {/* Final registration CTA */}
-        {(event.photosUrl || event.resultsUrl) && (
-          <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-8">
-            <div className="flex flex-wrap gap-3">
-              {event.photosUrl && <a href={event.photosUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center border border-slate-200 text-slate-800 font-bold px-6 py-3 rounded-xl text-sm">Official Photos</a>}
-              {event.resultsUrl && <a href={event.resultsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center bg-orange-600 hover:bg-orange-500 text-white font-bold px-6 py-3 rounded-xl text-sm">Timing / Results</a>}
-            </div>
-          </section>
-        )}
         {event.registrationUrl && (
           <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-12">
             <div className="bg-slate-900 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-5">

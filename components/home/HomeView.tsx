@@ -73,11 +73,6 @@ export default function HomeView(props: Props) {
                 <button onClick={() => handleTabChange('events')} className="bg-orange-500 hover:bg-orange-400 text-white font-extrabold px-8 py-4 rounded-xl shadow-xl shadow-orange-500/30 transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] pulse-cta cursor-pointer">
                   Explore Marathons
                 </button>
-                <button onClick={() => handleTabChange('results')} className={`font-bold px-8 py-4 rounded-xl transition-all duration-300 hover:-translate-y-1 border cursor-pointer ${
-                  isDarkMode ? 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200' : 'bg-white hover:bg-slate-100 border-slate-300 text-slate-800 shadow-sm'
-                }`}>
-                  Check Results & Photos
-                </button>
               </div>
             </div>
 
@@ -108,7 +103,6 @@ export default function HomeView(props: Props) {
               <div className="mt-5 grid grid-cols-2 gap-2">
                 <button type="button" onClick={() => handleTabChange('events')} className="rounded-xl bg-white/10 px-3 py-3 text-left text-xs font-bold text-white transition hover:bg-white/15">Browse races <span className="float-right text-orange-300">→</span></button>
                 <button type="button" onClick={() => handleTabChange('calendar')} className="rounded-xl bg-white/10 px-3 py-3 text-left text-xs font-bold text-white transition hover:bg-white/15">Race calendar <span className="float-right text-orange-300">→</span></button>
-                <button type="button" onClick={() => handleTabChange('results')} className="rounded-xl bg-white/10 px-3 py-3 text-left text-xs font-bold text-white transition hover:bg-white/15">Results &amp; photos <span className="float-right text-orange-300">→</span></button>
                 <button type="button" onClick={() => handleTabChange('submit')} className="rounded-xl bg-white/10 px-3 py-3 text-left text-xs font-bold text-white transition hover:bg-white/15">List your event <span className="float-right text-orange-300">→</span></button>
               </div>
             </aside>

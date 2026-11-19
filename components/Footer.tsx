@@ -19,7 +19,6 @@ type IconName =
 const INTERNAL_TABS = new Set([
   'home',
   'events',
-  'results',
   'submit',
   'admin',
   'about',
@@ -222,16 +221,6 @@ export default function Footer({
                 </span>
               </button>
 
-              <button
-                type="button"
-                onClick={() => go('results')}
-                className="group flex items-center gap-2 text-[13px] font-medium text-slate-400 transition hover:text-white"
-              >
-                Results &amp; Photos
-                <span className="opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100">
-                  <Icon name="arrow" />
-                </span>
-              </button>
             </nav>
           </div>
 
