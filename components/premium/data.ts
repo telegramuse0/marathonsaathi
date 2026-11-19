@@ -7,6 +7,7 @@ export type Marathon = {
   date: string;
   eventDate?: string;
   city: string;
+  state?: string;
   distance: string;
   status: string;
   registrationUrl?: string;

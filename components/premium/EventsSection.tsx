@@ -44,6 +44,7 @@ function toPublicEvent(row: MarathonRow): Marathon {
     date: formatEventDate(row.date),
     eventDate: row.date || '',
     city: locationParts[0] || 'India',
+    state: locationParts.slice(1).join(', '),
     distance: row.distance?.trim() || 'Multiple distances',
     status: row.status?.trim() || 'Upcoming',
     registrationUrl: row.registration_link?.trim() || '',
@@ -54,10 +55,30 @@ function toPublicEvent(row: MarathonRow): Marathon {
   };
 }
 
+function calendarUrl(event: Marathon) {
+  const date = (event.eventDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return '';
+  const [year, month, day] = date.split('-').map(Number);
+  const start = new Date(Date.UTC(year, month - 1, day));
+  const end = new Date(Date.UTC(year, month - 1, day + 1));
+  const compact = (value: Date) => value.toISOString().slice(0, 10).replaceAll('-', '');
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: event.name,
+    dates: `${compact(start)}/${compact(end)}`,
+    details: [event.description, event.registrationUrl ? `Registration: ${event.registrationUrl}` : ''].filter(Boolean).join('\n\n'),
+    location: [event.city, event.state].filter(Boolean).join(', '),
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
+
 export default function EventsSection({ featuredOnly = true }: { featuredOnly?: boolean }) {
   const [events, setEvents] = useState<Marathon[]>(marathons);
   const [search, setSearch] = useState('');
   const [eventFilter, setEventFilter] = useState<'upcoming' | 'completed' | 'all'>('all');
+  const [stateFilter, setStateFilter] = useState('');
+  const [monthFilter, setMonthFilter] = useState('');
+  const [distanceFilter, setDistanceFilter] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -95,13 +116,20 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     return new Date(a.eventDate || a.date).getTime() - new Date(b.eventDate || b.date).getTime();
   }), [events, featuredOnly]);
 
+  const availableStates = useMemo(() => [...new Set(events.map((event) => event.state).filter((value): value is string => Boolean(value)))].sort(), [events]);
+  const availableDistances = useMemo(() => [...new Set(events.flatMap((event) => (event.distance || '').split(',').map((value) => value.trim()).filter(Boolean)))].sort(), [events]);
+  const availableMonths = useMemo(() => [...new Set(events.map((event) => (event.eventDate || '').slice(0, 7)).filter((value) => /^\d{4}-\d{2}$/.test(value)))].sort(), [events]);
+
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return sortedEvents
       .filter((event) => featuredOnly ? !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
       .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
+      .filter((event) => !stateFilter || event.state === stateFilter)
+      .filter((event) => !monthFilter || (event.eventDate || '').startsWith(monthFilter))
+      .filter((event) => !distanceFilter || (event.distance || '').split(',').some((value) => value.trim() === distanceFilter))
       .slice(0, featuredOnly ? 3 : undefined);
-  }, [sortedEvents, search, eventFilter, featuredOnly]);
+  }, [sortedEvents, search, eventFilter, stateFilter, monthFilter, distanceFilter, featuredOnly]);
 
   return (
     <section className={`events-section page-width ${featuredOnly ? 'featured-events-section' : 'all-events-section'}`} id="events">
@@ -115,6 +143,11 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       </div>
       {!featuredOnly && <div className="event-filters" aria-label="Filter events">
         {(['upcoming', 'completed', 'all'] as const).map((filter) => <button type="button" className={eventFilter === filter ? 'is-active' : ''} onClick={() => setEventFilter(filter)} key={filter}>{filter === 'all' ? 'All races' : filter[0].toUpperCase() + filter.slice(1)}</button>)}
+      </div>}
+      {!featuredOnly && <div className="event-extra-filters" aria-label="Filter races by state, month and distance">
+        <select aria-label="Filter by state" value={stateFilter} onChange={(e) => setStateFilter(e.target.value)}><option value="">All states</option>{availableStates.map((state) => <option key={state} value={state}>{state}</option>)}</select>
+        <select aria-label="Filter by month" value={monthFilter} onChange={(e) => setMonthFilter(e.target.value)}><option value="">All months</option>{availableMonths.map((month) => <option key={month} value={month}>{new Date(`${month}-01T00:00:00`).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</option>)}</select>
+        <select aria-label="Filter by distance" value={distanceFilter} onChange={(e) => setDistanceFilter(e.target.value)}><option value="">All distances</option>{availableDistances.map((distance) => <option key={distance} value={distance}>{distance}</option>)}</select>
       </div>}
       <div className="event-grid" id={featuredOnly ? 'featured-events' : 'all-events'}>
         {filtered.length ? filtered.map((event, index) => (
@@ -132,9 +165,14 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                 {event.description && <p className="event-list-description">{event.description}</p>}
                 <div className="event-actions">
                   {isPastEvent(event.eventDate || event.date) ? <>
+                    {event.id && <Link className="event-action event-action-secondary" href={`/events/${event.id}`}>View Details</Link>}
                     {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Results</a>}
                     {event.photosUrl && <a className="event-action event-action-secondary" href={event.photosUrl} target="_blank" rel="noreferrer">Photos</a>}
-                  </> : <a className="event-action" href={event.registrationUrl || (event.id ? `/events/${event.id}` : '#events')} target={event.registrationUrl ? '_blank' : undefined} rel={event.registrationUrl ? 'noreferrer' : undefined}>Register Now <Icon name="arrow" size={15} /></a>}
+                  </> : <>
+                    {event.id && <Link className="event-action event-action-secondary" href={`/events/${event.id}`}>View Details</Link>}
+                    {event.registrationUrl && <a className="event-action" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
+                    {calendarUrl(event) && <a className="event-action event-action-secondary" href={calendarUrl(event)} target="_blank" rel="noreferrer">Add to Calendar</a>}
+                  </>}
                 </div>
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
