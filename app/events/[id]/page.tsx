@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import SiteHeader from '@/components/premium/SiteHeader';
 import SiteFooter from '@/components/premium/SiteFooter';
+import EventFeedback from '@/components/premium/EventFeedback';
 import { supabase } from '@/lib/supabase';
 
 type EventRecord = {
@@ -724,6 +725,8 @@ export default function EventDetailsPage() {
 
           </div>
         </section>
+
+        <EventFeedback eventId={event.id} eventName={event.name} eventDate={event.date} />
 
         {/* Final registration CTA */}
         {event.registrationUrl && (

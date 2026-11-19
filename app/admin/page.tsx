@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import SiteFooter from '@/components/premium/SiteFooter';
+import AdminFeedbackPanel from '@/components/premium/AdminFeedbackPanel';
 import { supabase } from '@/lib/supabase';
 
 type AdminMarathon = {
@@ -831,7 +832,10 @@ export default function AdminPage() {
             <nav aria-label="Admin sections" className="sticky top-2 z-20 flex gap-2 overflow-x-auto rounded-xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
               <a href="#admin-events" className="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Events</a>
               <a href="#admin-products" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Products</a>
+              <a href="#admin-feedback" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Runner Feedback</a>
             </nav>
+
+            <AdminFeedbackPanel />
 
             {/* RUNNER'S STORE PRODUCT MANAGEMENT */}
             <section id="admin-products" className="scroll-mt-24 space-y-5 rounded-2xl border border-orange-200 bg-orange-50/50 p-5 sm:p-6">
