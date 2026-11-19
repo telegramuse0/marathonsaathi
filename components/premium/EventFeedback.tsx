@@ -31,7 +31,7 @@ function Stars({ value, label, onChange }: { value: number; label: string; onCha
   </div>;
 }
 
-export default function EventFeedback({ eventId, eventName, eventDate, eventImage, eventDistances }: { eventId: number; eventName: string; eventDate: string; eventImage: string; eventDistances: string[] }) {
+export default function EventFeedback({ eventId, eventName, eventDate, eventDistances }: { eventId: number; eventName: string; eventDate: string; eventDistances: string[] }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [runnerName, setRunnerName] = useState('');
   const [bibNumber, setBibNumber] = useState('');
@@ -153,7 +153,7 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventImag
         <div className="border-b border-slate-100 bg-gradient-to-r from-orange-50 to-white px-5 py-5 sm:px-7">
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-orange-600">Runner scorecard</p>
           <div className="mt-1 flex flex-wrap items-end justify-between gap-3">
-            <h2 id="event-feedback-heading" className="text-xl font-black text-slate-900 sm:text-2xl">Recent race reviews</h2>
+            <h2 id="event-feedback-heading" className="text-xl font-black text-slate-900 sm:text-2xl">{eventName} reviews</h2>
             {!loading && reviews.length > 0 && <div className="flex items-center gap-2"><Stars value={Math.round(average)} label="Average runner rating" /><p className="text-sm font-bold text-slate-700">{average.toFixed(1)} <span className="font-normal text-slate-500">({reviews.length})</span></p></div>}
           </div>
           <p className="mt-1 text-sm text-slate-600">Route, organization aur water stations par runners ki ratings.</p>
@@ -161,18 +161,17 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventImag
 
         {reviews.length > 0 && <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-7">
           {reviews.slice(0, 6).map((review) => <article key={review.id} className="race-review-card rounded-xl border border-slate-100 bg-slate-50 p-4">
-            {eventImage && <img className="race-review-image" src={eventImage} alt={`${eventName} race`} loading="lazy" />}
             <div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm text-slate-800">{review.runner_name}</strong><div className="flex items-center gap-2"><Stars value={review.overall_rating} label="Overall runner rating" /><span className="text-xs font-bold text-slate-500">{review.overall_rating}/5</span></div></div>
-            <p className="mt-2 text-xs font-semibold text-slate-600">{eventName} · {review.distance || 'Race distance'} · Bib {review.bib_number || '—'}</p>
-            <p className="mt-2 text-[11px] text-slate-500">Route {review.route_rating}/5 · Organization {review.organization_rating}/5 · Water {review.water_rating}/5</p>
+            <p className="mt-1 text-xs font-semibold text-slate-600">Bib {review.bib_number || '—'} · {review.distance || 'Race distance'}</p>
             {review.comment && <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">{review.comment}</p>}
+            <p className="mt-3 border-t border-slate-200 pt-2 text-[11px] text-slate-500">Route {review.route_rating}/5 · Organisation {review.organization_rating}/5 · Water {review.water_rating}/5</p>
             {ownerTokens[String(review.id)] && <div className="mt-4 flex gap-2 border-t border-slate-200 pt-3"><button type="button" onClick={() => startReviewEdit(review)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700">Edit review</button><button type="button" onClick={() => void deleteOwnReview(review)} className="rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-xs font-bold text-rose-700">Delete</button></div>}
           </article>)}
         </div>}
 
         {feedbackOpen ? <form id="event-review-form" onSubmit={submit} className="space-y-4 border-t border-slate-100 p-5 sm:p-7">
           <h3 className="font-bold text-slate-900">{editingReviewId !== null ? 'Edit your race review' : 'Rate your race experience'}</h3>
-          {eventImage && <div className="flex items-center gap-3 rounded-xl bg-slate-50 p-3"><img src={eventImage} alt={`${eventName} event`} className="h-16 w-20 rounded-lg object-cover" /><div><strong className="block text-sm text-slate-800">{eventName}</strong><span className="text-xs text-slate-500">Race review · {eventDate}</span></div></div>}
+          <p className="text-xs text-slate-500">{eventDate ? `Race date · ${eventDate}` : 'Race review'}</p>
           <div className="grid gap-3 sm:grid-cols-3">
             <input required minLength={2} maxLength={60} value={runnerName} onChange={(e) => setRunnerName(e.target.value)} placeholder="Runner name" aria-label="Runner name" className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
             <input required minLength={1} maxLength={30} value={bibNumber} onChange={(e) => setBibNumber(e.target.value)} placeholder="Bib number" aria-label="Bib number" className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
