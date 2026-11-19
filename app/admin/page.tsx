@@ -165,6 +165,18 @@ const formatDate = (dateString: string) => {
   });
 };
 
+const toTitleCase = (value: string) => value
+  .trim()
+  .replace(/\s+/g, ' ')
+  .split(' ')
+  .map((word) => /^[A-Z0-9]{2,5}$/.test(word) ? word : word.charAt(0).toLocaleUpperCase('en-IN') + word.slice(1).toLocaleLowerCase('en-IN'))
+  .join(' ');
+
+const toSentenceCase = (value: string) => {
+  const cleaned = value.trim().replace(/\s+/g, ' ');
+  return cleaned ? cleaned.charAt(0).toLocaleUpperCase('en-IN') + cleaned.slice(1) : '';
+};
+
 export default function AdminPage() {
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPass, setAdminPass] = useState('');
@@ -584,13 +596,13 @@ export default function AdminPage() {
   const handleAddOrUpdateEvent = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const name = eventForm.name.trim();
-    const city = eventForm.city.trim();
+    const name = toTitleCase(eventForm.name);
+    const city = toTitleCase(eventForm.city);
     const state = eventForm.state.trim();
     const date = eventForm.date.trim();
     const distance = eventForm.distance.trim();
     const registrationUrl = eventForm.registrationUrl.trim();
-    const organizer = eventForm.organizer.trim();
+    const organizer = toTitleCase(eventForm.organizer);
     const badge = eventForm.badge.trim() || 'Upcoming';
 
     if (!name || !city || !state || !date || !distance || !organizer) {
@@ -625,7 +637,7 @@ export default function AdminPage() {
       organizer,
       badge,
       bannerImage: eventForm.bannerImage || '',
-      about: eventForm.about.trim(),
+      about: toSentenceCase(eventForm.about),
       venue: eventForm.venue.trim(),
       entryFee: eventForm.entryFee.trim(),
       schedule: eventForm.schedule.trim(),

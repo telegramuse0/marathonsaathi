@@ -1,3 +1,5 @@
 {
-    "explorer.compactFolders": false
+    "explorer.compactFolders": false,
+    "git.postCommitCommand": "sync",
+    "git.confirmSync": false
 }

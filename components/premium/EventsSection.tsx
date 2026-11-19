@@ -119,6 +119,9 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       <div className="event-grid" id={featuredOnly ? 'featured-events' : 'all-events'}>
         {filtered.length ? filtered.map((event, index) => (
           <article className={`event-card ${!featuredOnly ? 'event-list-card' : ''} ${isPastEvent(event.eventDate || event.date) ? 'event-card-completed' : ''}`} key={event.id ?? event.name}>
+            {!featuredOnly && <div className="event-list-thumb">
+              {event.imageUrl ? <img src={event.imageUrl} alt={`${event.name} event`} loading="lazy" /> : <span aria-hidden="true">🏃</span>}
+            </div>}
             {featuredOnly && !isPastEvent(event.eventDate || event.date) && <div className={`event-art event-art-${(index % 3) + 1}`} style={event.imageUrl ? { backgroundImage: `linear-gradient(180deg, rgba(12,25,43,.06), rgba(12,25,43,.52)), url("${event.imageUrl.replaceAll('"', '%22')}")` } : undefined}>
               <span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span>
               {!event.imageUrl && <span className="event-art-label">MARATHON<br />SAATHI</span>}
