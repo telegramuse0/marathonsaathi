@@ -1017,35 +1017,376 @@ export default function AdminPage() {
                       <p className="mt-1 text-[10px] text-slate-400">Race se pehle ki registration deadline set karein.</p>
                     </div>
 
-      6ãİ;¶‰ËkºwµçM˜L_B‹™]™[XXİ[Û‹Y]Z[Ø˜XÚÙÜ›İ[™›[™X\‹YÜ˜YY[
-LÍYYËÌNÍL‹ÌLYLÍ
-NØ›Ş\ÚYİÎŒ\Lœ™Ø˜JM‹ÌL‹ŒM
-_B‹™]™[XXİ[Û‹Y]Z[šİ™\Ø˜XÚÙÜ›İ[™ˆÌÍÍÌ_B‹™]™[XXİ[Û‹\™YÚ\İ\Ø˜XÚÙÜ›İ[™›[™X\‹YÜ˜YY[
-LÍYYËÙ™MKÙYY™
-NØ›Ş\ÚYİÎŒ\M™Ø˜J‹LNŒKŒŒÊ_B‹™]™[XXİ[Û‹\™YÚ\İ\šİ™\Ø˜XÚÙÜ›İ[™ˆÙŒÌÌB‹™]™[XXİ[ÛœÈ™]™[XXİ[ÛÛZ[‹ZZYÚÜY[™ÎŒM\Ù›Û\Ú^™NŒL\Ø›Ü™\‹\˜Y]\ÎÜB‹˜Y™š[X]KZ[XYÙH[YŞÛØš™XİYš]˜ÛÛZ[ˆZ[\Ü[ÜY[™ÎŒLœBˆØYZ[‹\™\İ[ËØYZ[‹\X›\ÚYÙ\Ü^N››Û™HZ[\Ü[BYYXJX^]ÚYL
-^Ë›XZ[‹[˜]ÙØ\ŒNKšX‹XØ\™ÜY[™ÎŒœŒÜKœÚÜİ]YÜšYÙÜšY][\]KXÛÛ[[œÎœ™\X]
-ËYœŠ_KœÚÜİ]›XÚ[
-ŠÍ
-^ÛX\™Ú[‹]ÜK˜ÛÛ[][š]KZ[›™\ÙØ\ŒMÜK˜ÛÛ[][š]KZ[›™\ˆÙ›Û\Ú^™NŒK™›Ûİ\‹[XZ[ÙØ\Œ_BYYXJX^]ÚY
-^ËœYÙK]ÚYİÚY˜Ø[ÊL	HHÍœ
-_KšXY\‹Z[›™\İÚY˜Ø[ÊL	HHÍ
-_KœÚ]KZXY\ÚZYÚÌK˜œ˜[™[ÙÛŞİÚYœÚZYÚœK˜œ˜[™XÛÜHİ›Û™ŞÙ›Û\Ú^™NŒMÜK›Y[K]ÙÙÛ^Ù\Ü^N˜›ØÚßK›XZ[‹[˜]Ù\Ü^N››Û™NÜÜÚ][Û˜XœÛÛ]NİÜ\ÛYŒÜšYÚŒØ˜XÚÙÜ›İ[™ˆÙ™™ÜY[™ÎŒMŒŒØ›Ü™\‹X›İÛNŒ\ÛÛY˜\ŠK[[™JNØ›Ş\ÚYİÎŒLœŒ™Ø˜JM‹ÌL‹ŒJNÙ›^Y\™Xİ[Û˜ÛÛ[[Ø[YÛ‹Z][\Îœİ™]ÚÙØ\ŒK›XZ[‹[˜]‹š\Ë[Ü[Ù\Ü^N™›^K›XZ[‹[˜]˜N››İ
-›˜]‹XİJ^ÜY[™ÎŒLÜØ›Ü™\‹X›İÛNŒ\ÛÛYÙŒYYN_K›˜]‹Xİ^Ú\İYKXÛÛ[˜Ù[\ÛX\™Ú[‹]ÜŒLÜB‹š\›Ëš\›ËXÛÛ[ÛZ[‹ZZYÚM\Kš\›ËZ[XYÙ^Ø˜XÚÙÜ›İ[™Z[XYÙN›[™X\‹YÜ˜YY[
-LYË™Ø˜JKŒ‹
-K™Ø˜JKŒ‹ŒÎJJK[™X\‹YÜ˜YY[
-YË™Ø˜JLŒËK
-K˜[œÜ\™[MIJK\›
-šÎ‹ËÚ[XYÙ\Ë[œÜ\Ú˜ÛÛKÜİËLMMLÍŒKY™™™˜XØOØ]]ÏY›Ü›X]	™š]XÜ›Ü	ÏLLL	œONŠNØ˜XÚÙÜ›İ[™\ÜÚ][ÛMÉHÙ[\ŸB‹š\›ËXÛÜ^ÜY[™ÎŒÛX^]ÚYŒL	_Kš\›È^Ù›Û\Ú^™N˜Û[\
-LİËÜ
-NÛ]\‹\ÜXÚ[™Î‹LËÜKš\›ËXÛÜOœÙ›Û\Ú^™NŒMÛX^]ÚYŒÍŒKš\›Ë\İ[\İÚYÚZYÚÜšYÚŒÉNİÜINÙ›Û\Ú^™N\Û]\‹\ÜXÚ[™ÎŒ\Kš\›Ë\İ[\Ù›Û\Ú^™NŒNKš\›ËXØ\[ÛÜšYÚŒØ›İÛNŒŒœÙ›Û\Ú^™NKš\›ËXXİ[ÛœŞÙØ\\K˜]ÛÜY[™ÎŒLÜMÙ›Û\Ú^™NŒL\Kš\›Ë[›İ^ÛX\™Ú[‹]ÜŒŒÜB‹šX‹\ÙXİ[ÛİÚY˜Ø[ÊL	HH
-_KšX‹XØ\™ÜY[™ÎŒŒœMÜMÜØ›Ü™\‹\˜Y]\ÎKšX‹ZXY[™ÈÙ›Û\Ú^™NŒKšX‹X˜YÙ^ÜY[™ÎÜÙ›Û\Ú^™NÜÛ]\‹\ÜXÚ[™Î‹ÜKšX‹\İ]ŞÙØ\ŒLÛX\™Ú[‹]ÜŒNÜY[™ÎŒMKšX‹\İ]ÙØ\œKšX‹\İ]İ›Û™ŞÙ›Û\Ú^™NŒŒ\KšX‹\İ]Ü[Ù›Û\Ú^™NÛX^]ÚYMKœİ]Y]šY\ÚZYÚŒKšX‹[[šŞÙ›Û\Ú^™NŒÙØ\ŒKšX‹[[šÈİ™ŞİÚYŒŒÚZYÚŒŒKœÚÜİ]YÜšYÙÜšY][\]KXÛÛ[[œÎŒYœˆYœÙØ\ŒœÜY[™Ë]ÜŒLœKœÚÜİ]ÜY[™Î\œÙØ\KœÚÜİ]ZXÛÛİÚYŒÍÚZYÚŒÍÙ›^X˜\Ú\ÎŒÍKœÚÜİ]]^İ›Û™ŞÙ›Û\Ú^™N\KœÚÜİ]]^ÛX[Ù›Û\Ú^™NKœÚÜİ]X\œ›İŞÙ\Ü^N˜›ØÚßB‹™]™[Ë\ÙXİ[ÛÜY[™Ë]ÜœÜY[™ËX›İÛN\KœÙXİ[Û‹ZXY[™ŞØ[YÛ‹Z][\Î™›^\İ\ÙØ\ŒLœKœÙXİ[Û‹ZXY[™ÈÙ›Û\Ú^™NŒÌ\K^[[šŞÙ›Û\Ú^™NŒLİÚ]K\ÜXÙN››İÜ˜\ÛX\™Ú[‹]ÜŒÜK™]™[]ÛÛŞØ[YÛ‹Z][\Î™›^\İ\Ù›^Y\™Xİ[Û˜ÛÛ[[ÙØ\ŒLÜÛX\™Ú[ŒŒMKœÙX\˜ÚX›ŞİÚYŒL	_K™]™[YÜšYÙÜšY][\]KXÛÛ[[œÎŒYœÙØ\ŒLœK™]™[XØ\™Ù\Ü^N™ÜšYÙÜšY][\]KXÛÛ[[œÎŒÎ	HYœÛZ[‹ZZYÚŒMMÜK™]™[X\ÚZYÚŒL	NÛZ[‹ZZYÚŒMMÜK™]™[Z[™›ŞÜY[™ÎŒMLœLœK™]™[[Y]^Ù›^Y\™Xİ[Û˜ÛÛ[[ÙØ\œK™]™[Z[™›ÈŞÙ›Û\Ú^™NŒM\ÛX\™Ú[ŒL\K™]™[X›İÛ^Ù›Û\Ú^™N\K™]™[\İ]\ŞİÜ\ÛY\ÜY[™ÎœÙ›Û\Ú^™NB‹˜ÛÛ[][š]KZ[›™\ÜY[™Ë]ÜŒÜÜY[™ËX›İÛNŒÛZ[‹ZZYÚŒÙ\Ü^N™ÜšYÙÜšY][\]KXÛÛ[[œÎYœÙØ\ŒLœK˜ÛÛ[][š]K[X\šŞİÚYœÚZYÚœÙ›^X˜\Ú\ÎœK˜ÛÛ[][š]KZ[›™\ˆÙ›Û\Ú^™NŒŒœK˜ÛÛ[][š]KZ[›™\ˆÛ[™KZZYÚŒKŸK˜ÛÛ[][š]KZ[›™\‹˜]ÛÙÜšYXÛÛ[[ŒKËLNÛX\™Ú[\B‹˜ÛÛZ[™Ë\ÙXİ[ÛÙÜšY][\]KXÛÛ[[œÎŒYœÜY[™Ë]Ü\ÜY[™ËX›İÛNLÜÙØ\ŒL\K˜ÛÛZ[™ËXØ\™ÛZ[‹ZZYÚŒÜY[™ÎŒN\K˜ÛÛZ[™ËZXÛÛÛX\™Ú[‹X›İÛNŒLÜK˜ÛÛZ[™ËXØ\™ÛZ[‹ZZYÚŒK™›Ûİ\‹[XZ[ÙÜšY][\]KXÛÛ[[œÎŒYœˆYœÙØ\ŒÌM\ÜY[™Ë]ÜŒÍÜÜY[™ËX›İÛNŒÜK™›Ûİ\‹Xœ˜[™ÙÜšYXÛÛ[[ŒKËL_K™›Ûİ\‹XÛÛXİ˜^Ù›Û\Ú^™NŒLÙØ\œK™›Ûİ\‹XÛÛXİ˜Hİ™ŞÙ›^ŒMÜK™›Ûİ\‹X›İÛ^ÛZ[‹ZZYÚNÙ›^]Ü˜\Ü˜\ÙØ\\M\ÜY[™ÎŒLœÙ›Û\Ú^™NK™›Ûİ\‹X›İÛOœÜ[›XÚ[
-Š^Ù\Ü^N››Û™_BŸBYYXJX^]ÚYŒÍÌ
-^ËšX‹X˜YÙ^Ù\Ü^N››Û™_KšX‹\İ]Ü[ÛX^]ÚY\KšX‹\İ]ŞÙØ\ÜKœÚÜİ]]^ÛX[İÚ]K\ÜXÙN››Ü›X[K™›Ûİ\‹[XZ[ÙÜšY][\]KXÛÛ[[œÎŒYœŸK™›Ûİ\‹Xœ˜[™ÙÜšYXÛÛ[[˜]]ßK™›Ûİ\‹XÛÛXİÙÜšYXÛÛ[[˜]]ßKš\›ËXXİ[ÛœÈ˜]ÛÙ›Û\Ú^™NŒLÜY[™ÎŒLœKœÙXİ[Û‹ZXY[™ÈÙ›Û\Ú^™NŒÜ_BYYXJ™Y™\œË\™YXÙY[[İ[Ûœ™YXÙJ^Ê‹
-˜™Y›Ü™K
-˜Y\ÜØÜ›ÛX™Z]š[Ü˜]]ÈZ[\Ü[İ˜[œÚ][Û››Û™HZ[\Ü[_BYYXJX^]ÚY
-^Ë™]™[XXİ[ÛœŞÙØ\œÛX\™Ú[‹]ÜŒLK™]™[XXİ[ÛÛZ[‹ZZYÚŒÌœÜY[™ÎŒÙ›Û\Ú^™N\K˜Y™š[X]K\ÙXİ[ÛÜY[™Ë]ÜŒÜY[™ËX›İÛNLœK˜Y™š[X]KZXY[™ŞÙØ\\Ø[YÛ‹Z][\Î™›^\İ\Ù›^Y\™Xİ[Û˜ÛÛ[[ÛX\™Ú[‹X›İÛNŒMœK˜Y™š[X]K[›İ^Ù›Û\Ú^™N\K˜Y™š[X]KYÜšYÙÜšY][\]KXÛÛ[[œÎŒYœÙØ\ŒL\K˜Y™š[X]KXØ\™Ù\Ü^N™ÜšYÙÜšY][\]KXÛÛ[[œÎŒÍ‰HYœÛZ[‹ZZYÚŒLÌK˜Y™š[X]KZ[XYÙ^ÚZYÚŒL	NÛZ[‹ZZYÚŒLÌK˜Y™š[X]KZ[™›ŞÜY[™ÎŒLœK˜Y™š[X]KZ[™›ÈŞÙ›Û\Ú^™NŒLÜK˜Y™š[X]KZ[™›ÈÙ›Û\Ú^™N\K˜Y™š[X]KX›İÛ^ÛX\™Ú[‹]ÜŒLÜY[™Ë]Ü\_BYYXJX^]ÚY
-^Ëœ›İ]KZ[›Ë˜\˜Ú]™KZ[›ŞÜY[™Ë]ÜÜY[™ËX›İÛNŒŒ\Kœ›İ]KZ[›ÈK˜\˜Ú]™KZ[›È^Ù›Û\Ú^™NŒÍœÛ]\‹\ÜXÚ[™Î‹LK\K˜[Y]™[Ë\ÙXİ[ÛÜY[™Ë]Ü\K™]™[Yš[\œŞÛX\™Ú[‹]ÜŒK˜\˜Ú]™K[\İÙÜšY][\]KXÛÛ[[œÎŒYœÜY[™ËX›İÛNLœK˜\˜Ú]™KXØ\™ÜY[™ÎŒMœK˜\˜Ú]™KXØ\™Ù›Û\Ú^™NŒM\Kœ™\İ[Ë\İÜË\ÙXİ[ÛÜY[™Ë]Ü\ÜY[™ËX›İÛNÙ\Ü^N™ÜšYÙÜšY][\]KXÛÛ[[œÎ˜]]ÈYœÙØ\\LœKœ™\İ[Ë\İÜË\ÙXİ[Û‹^[[šŞÙÜšYXÛÛ[[ŒKËLNÛX\™Ú[ÜKœ™\İ[Ë\İÜËZXÛÛÙØ\ŒKœ™\İ[Ë\İÜËXÛÜHÙ›Û\Ú^™NŒŒ\Kœ™\İ[Ë\İÜËXÛÜHÙ›Û\Ú^™NŒL_BYYXJX^]ÚY
-^Âˆš\›Ëš\›ËXÛÛ[ÛZ[‹ZZYÚŒBˆš\›ËXÛÜ^ÜY[™Ë]ÜÍBˆš\›È^Ù›Û\Ú^™N˜Û[\
-œLËŒœ
-NÛ]\‹\ÜXÚ[™Î‹L‹Û[™KZZYÚŒKŒŸBˆš\›ËXÛÜOœÙ›Û\Ú^™NŒMœÛ[™KZZYÚŒK_Bˆš\›ËY^YXœ›İŞÙ›Û\Ú^™NŒL\Û]\‹\ÜXÚ[™ÎŒKŒÜBˆš\›ËXXİ[ÛœŞÙØ\ŒLBˆš\›ËXXİ[ÛœÈ˜]ÛÛZ[‹ZZYÚÜY[™ÎŒLÜM\Ù›Û\Ú^™NŒLÜBˆš\›Ë[›İ^Ù›Û\Ú^™NŒLœBˆšX‹ZXY[™ÈÙ›Û\Ú^™NŒœBˆšX‹\İ]Ü[‹œÚÜİ]]^ÛX[Ù›Û\Ú^™NŒLBˆœÚÜİ]]^İ›Û™ŞÙ›Û\Ú^™NŒL\Bˆ™]™[Ë\ÙXİ[ÛÜY[™Ë]ÜMBˆœÙXİ[Û‹ZXY[™ÈÙ›Û\Ú^™NŒÍBˆ™^YXœ›İŞÙ›Û\Ú^™NŒL\Bˆ™]™[XØ\™ÙÜšY][\]KXÛÛ[[œÎŒYœÛZ[‹ZZYÚŒBˆ™]™[X\ÚZYÚŒNLÛZ[‹ZZYÚŒNLBˆ™]™[Z[™›ŞÜY[™ÎŒMÜBˆ™]™[[Y]^Ù›^Y\™Xİ[Ûœ›İÎÙ›^]Ü˜\Ü˜\ÙØ\\MÙ›Û\Ú^™NŒL\Bˆ™]™[Z[™›ÈŞÙ›Û\Ú^™NŒN\ÛX\™Ú[ŒLœBˆ™™X]\™YY]™[Ë\ÙXİ[Ûˆ™]™[X\ÚZYÚŒNLBˆ™™X]\™YY]™[Ë\ÙXİ[Ûˆ™]™[Z[™›ŞÜY[™ÎŒMœBˆ™™X]\™YY]™[Ë\ÙXİ[Ûˆ™]™[Z[™›ÈŞÙ›Û\Ú^™NŒŒÛX\™Ú[ŒLœBˆ™]™[XØ\™Y]Z[ŞÙ›Û\Ú^™NŒLBˆœ™XÙ[\™]šY]ÜË\ÙXİ[ÛÜY[™Ë]Ü\ÜY[™ËX›İÛNBˆœ™XÙ[\™]šY]ÜËYÜšYÙÜšY][\]KXÛÛ[[œÎŒYœÙØ\ŒLBˆœ™XÙ[\™]šY]ËXØ\™ÛZ[‹ZZYÚŒÜY[™ÎŒMÜBˆ›YØ[\YÙ^ÜY[™Ë]ÜÜÜY[™ËX›İÛNM\Bˆ›YØ[\YÙHÙ›Û\Ú^™NŒLÜBˆ˜ÛÛXİ\YÙ^ÙÜšY][\]KXÛÛ[[œÎŒYœÙØ\ŒŒÜY[™Ë]ÜÜY[™ËX›İÛNM\Bˆ˜ÛÛXİZ[›ŞÜÜÚ][Ûœİ]XßBˆ˜ÛÛXİY›Ü›^ÜY[™ÎŒN\Bˆ™]™[X›İÛ^Ù›Û\Ú^™NŒLœBˆ™]™[XXİ[ÛœŞÙØ\\ÛX\™Ú[‹]ÜŒMBˆ™]™[XXİ[ÛÛZ[‹ZZYÚœÜY[™ÎŒMÙ›Û\Ú^™NŒLœBˆ˜\˜Ú]™KZ[›È^Ù›Û\Ú^™NBˆ˜[Y]™[Ë\ÙXİ[Ûˆ™]™[XØ\™XÛÛ\]YÜY[™ÎŒLÜBˆ˜[Y]™[Ë\ÙXİ[Ûˆ™]™[[\İXØ\™ÙÜšY][\]KXÛÛ[[œÎZ[›X^
-YœŠNÙØ\ŒLœÜY[™ÎŒLÜBˆ™]™[[\İ][XİÚYÚZYÚØ›Ü™\‹\˜Y]\ÎœÙ›Û\Ú^™NŒŒBˆ˜[Y]™[Ë\ÙXİ[Ûˆ™]™[XØ\™XÛÛ\]Y™]™[Z[™›ÈŞÙ›Û\Ú^™NŒN\Bˆ˜\˜Ú]™KZ[›ÈÙ›Û\Ú^™NŒM\Bˆ˜\˜Ú]™KXØ\™ÜY[™ÎŒN\Bˆ˜\˜Ú]™K[Y]^Ù›Û\Ú^™NŒLœBˆ˜\˜Ú]™KXØ\™Ù›Û\Ú^™NŒN\Bˆ˜\˜Ú]™KXØ\™Ù›Û\Ú^™NŒLÜBˆ˜\˜Ú]™KXXİ[ÛœŞÙØ\ŒLBˆ˜\˜Ú]™KXXİ[ÛœÈ™]™[XXİ[ÛÛZ[‹]ÚYŒLBˆ˜Y™š[X]KZXY[™ÈœÙXİ[Û‹ZXY[™È‹˜Y™š[X]KZXY[™ÈÙ›Û\Ú^™NŒÌBˆ˜Y™š[X]K[›İ^Ù›Û\Ú^™NŒL\Bˆ˜Y™š[X]KXØ\™ÙÜšY][\]KXÛÛ[[œÎŒYœÛZ[‹ZZYÚŒBˆ˜Y™š[X]KZ[XYÙ^ÚZYÚŒL\ÛZ[‹ZZYÚŒL\Bˆ˜Y™š[X]KZ[XYÙ^Ù›^X˜\Ú\ÎŒL\Bˆ˜Y™š[X]KZ[™›ŞÜY[™ÎŒMœBˆ˜Y™š[X]KZ[™›ÈŞÙ›Û\Ú^™NŒMœBˆ˜Y™š[X]KZ[™›ÈÙ›Û\Ú^™NŒLœBˆ˜Y™š[X]KX›İÛHİ›Û™ŞÙ›Û\Ú^™NŒMBˆ˜Y™š[X]KX›İÛH^Ù›Û\Ú^™NŒLœBˆ˜Y™š[X]KXXİ[ÛœŞÙØ\\ÛX\™Ú[‹]ÜŒLœBˆ˜Y™š[X]KXXİ[ÛœÈ^ÛZ[‹ZZYÚœÜY[™ËZ[›[™NŒM\Ù›Û\Ú^™NŒLœBˆ˜Y™š[X]KXXİ[Û‹Y\ØX›YÛZ[‹ZZYÚœÙ›Û\Ú^™NŒL\Bˆ^[[šŞÙ›Û\Ú^™NŒLœBˆ˜ÛÛ[][š]KZ[›™\ˆÙ›Û\Ú^™NŒMBŸB
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        Distance *
+                      </label>
+                      <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-200 bg-white p-3">
+                        {COMMON_DISTANCES.map((distanceOption) => {
+                          const selected = eventForm.distance.split(',').map((value) => value.trim()).filter(Boolean);
+                          return <label key={distanceOption} className="flex items-center gap-2 text-xs text-slate-700">
+                            <input type="checkbox" checked={selected.includes(distanceOption)} onChange={(e) => {
+                              const next = e.target.checked ? [...selected, distanceOption] : selected.filter((value) => value !== distanceOption);
+                              handleEventFormChange('distance', next.join(', '));
+                            }} />
+                            {distanceOption}
+                          </label>;
+                        })}
+                      </div>
+                      <div className="mt-2 flex gap-2">
+                        <input value={customDistance} onChange={(e) => setCustomDistance(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); const value = customDistance.trim(); const current = eventForm.distance.split(',').map((item) => item.trim()).filter(Boolean); if (value && !current.includes(value)) handleEventFormChange('distance', [...current, value].join(', ')); setCustomDistance(''); } }} placeholder="Custom distance, e.g. 8K" className="min-w-0 flex-1 px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-xs outline-none focus:border-orange-500" />
+                        <button type="button" onClick={() => { const value = customDistance.trim(); const current = eventForm.distance.split(',').map((item) => item.trim()).filter(Boolean); if (value && !current.includes(value)) handleEventFormChange('distance', [...current, value].join(', ')); setCustomDistance(''); }} className="shrink-0 rounded-lg bg-slate-900 px-3 py-2.5 text-xs font-bold text-white">Add distance</button>
+                      </div>
+                      {eventForm.distance.split(',').map((value) => value.trim()).filter((value) => value && !COMMON_DISTANCES.includes(value)).map((value) => <label key={value} className="mt-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs text-slate-700"><input type="checkbox" checked onChange={() => handleEventFormChange('distance', eventForm.distance.split(',').map((item) => item.trim()).filter((item) => item && item !== value).join(', '))} />{value}</label>)}
+                      <p className="text-[10px] text-slate-400 mt-1">Multiple distances select karein ya apna custom distance add karein.</p>
+                      </div>
+
+                    <div>
+                      <label className="flex min-h-11 items-center gap-3 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-xs font-bold text-slate-800">
+                        <input
+                          type="checkbox"
+                          checked={eventForm.isFeatured}
+                          onChange={(e) => handleEventFormChange('isFeatured', e.target.checked)}
+                          className="h-4 w-4 accent-orange-600"
+                        />
+                        Feature this race on the homepage
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        Badge
+                      </label>
+                      <select
+                        value={eventForm.badge}
+                        onChange={(e) => handleEventFormChange('badge', e.target.value)}
+                        className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
+                      >
+                        <option value="">Select badge</option>
+                        <option value="New">New</option>
+                        <option value="Popular">Popular</option>
+                        <option value="Bronze Label">Bronze Label</option>
+                        <option value="Gold Label">Gold Label</option>
+                        <option value="Platinum Label">Platinum Label</option>
+                        <option value="Scenic">Scenic</option>
+                        <option value="Upcoming">Upcoming</option>
+                      </select>
+                    </div>
+
+                  </div>
+                  </div>
+
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-3">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">2. Registration &amp; event presentation</h6><p className="mt-1 text-[10px] text-slate-500">Registration link aur event card par dikhne wali image.</p></div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      ğŸŒ Official Registration URL (optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={eventForm.registrationUrl}
+                      onChange={(e) => handleEventFormChange('registrationUrl', e.target.value)}
+                      placeholder="Optional: https://official-event-website.com/"
+                      className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
+                    />
+                  </div>
+
+                  </div>
+
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-4">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">3. Event details &amp; results</h6><p className="mt-1 text-[10px] text-slate-500">Optional details help runners decide. Results and photos links will show after race day.</p></div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        Event Banner Image
+                      </label>
+                      <label className="inline-flex items-center bg-orange-600 hover:bg-orange-500 text-white font-black px-4 py-2.5 rounded-xl text-xs cursor-pointer transition">
+                        {eventForm.bannerImage ? 'Replace Banner' : 'Upload Event Banner'}
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp,image/gif"
+                          className="hidden"
+                          onChange={(e) => {
+                            handleEventBannerImageUpload(e.target.files?.[0]);
+                            e.currentTarget.value = '';
+                          }}
+                        />
+                      </label>
+
+                      {eventForm.bannerImage && (
+                        <img
+                          src={eventForm.bannerImage}
+                          alt="Event banner preview"
+                          className="w-full h-44 object-cover rounded-xl mt-3 border border-slate-200"
+                        />
+                      )}
+
+                      <p className="text-[10px] text-slate-400 mt-1">
+                        This image appears on the event card and its details page. Max 2 MB.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {([
+                        ['about', 'About Event', 'What runners should know about the race'],
+                        ['venue', 'Venue & Location', 'Venue, route or location details'],
+                        ['entryFee', 'Entry Fees', 'Fees by race category'],
+                        ['schedule', 'Race Schedule', 'Reporting, start and flag-off timings'],
+                        ['awards', 'Awards & Prizes', 'Prize and award details'],
+                        ['runnerBenefits', 'Runner Benefits', 'T-shirt, bib, timing, refreshments etc.'],
+                      ] as const).map(([field, label, placeholder]) => (
+                        <div key={field}>
+                          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                            {label}
+                          </label>
+                          <textarea
+                            value={eventForm[field]}
+                            onChange={(e) =>
+                              setEventForm((previous) => ({
+                                ...previous,
+                                [field]: e.target.value,
+                              }))
+                            }
+                            rows={3}
+                            placeholder={placeholder}
+                            className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500 resize-none"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="submit"
+                      className="bg-[#0F172A] hover:bg-slate-800 text-white font-black px-6 py-3 rounded-xl text-xs cursor-pointer transition"
+                    >
+                      {editingEventId !== null
+                        ? 'Save Event Changes'
+                        : 'â• Add Marathon Event'}
+                    </button>
+
+                    {editingEventId !== null && (
+                      <button
+                        type="button"
+                        onClick={resetEventForm}
+                        className="bg-white border border-slate-200 text-slate-700 font-bold px-6 py-3 rounded-xl text-xs cursor-pointer"
+                      >
+                        Cancel Edit
+                      </button>
+                    )}
+                  </div>
+                </form>
+              )}
+
+              <div className="space-y-2 max-h-80 overflow-y-auto">
+                {eventsLoading ? <p className="text-sm text-slate-500">Loading events from Supabaseâ€¦</p> : marathons.length === 0 ? <p className="text-sm text-slate-500">Supabase table mein abhi koi event nahi hai.</p> : marathons.map((event) => (
+                  <div
+                    key={event.id}
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-slate-50 border border-slate-200 rounded-xl"
+                  >
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2"><strong className="text-xs">{event.name}</strong>{event.isFeatured && <span className="rounded-full bg-orange-100 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-orange-700">Featured on home</span>}</div>
+                      <p className="text-[10px] text-slate-500 mt-1">
+                        ğŸ“… {formatDate(event.date)} &nbsp;â€¢&nbsp; ğŸ“ {event.city}, {event.state}
+                      </p>
+                      <p className="text-[10px] text-slate-500 mt-1">
+                        ğŸƒ {event.distance} &nbsp;â€¢&nbsp; ğŸ¢ {event.organizer}
+                      </p>
+                      <p className="text-[10px] text-slate-500 mt-1">ğŸ’° {event.entryFee || 'Fee not set'}{event.registrationCloses ? ` â€¢ Registration closes ${formatDate(event.registrationCloses)}` : ''}</p>
+                    </div>
+
+                    <div className="flex gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => startEventEdit(event)}
+                        className="bg-white border border-slate-200 text-slate-700 font-bold px-4 py-2 rounded-lg text-xs cursor-pointer"
+                      >
+                        âœï¸ Edit
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteMarathon(event.id)}
+                        className="bg-rose-100 text-rose-700 font-bold px-4 py-2 rounded-lg text-xs cursor-pointer"
+                      >
+                        ğŸ—‘ï¸ Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* PUBLISH RESULTS & PHOTOS */}
+            <section id="admin-results" className="scroll-mt-24 bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200 space-y-5">
+              <div>
+                <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">
+                  ğŸ Publish Results & Organizer Photos
+                </h4>
+
+                <p className="text-[11px] text-slate-500 mt-1">
+                  Select the exact marathon event. Add the links only when the organizer provides them.
+                </p>
+              </div>
+
+              <form onSubmit={handlePublish} className="space-y-4">
+
+                {/* EVENT SELECT */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                    Select Event *
+                  </label>
+
+                  <select
+                    value={selectedEventId}
+                    onChange={(e) => handleSelectEvent(e.target.value)}
+                    required
+                    className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-sm outline-none focus:border-orange-500"
+                  >
+                    <option value="">Select a marathon event</option>
+
+                    {availableEvents.map((event) => (
+                      <option key={event.id} value={event.id}>
+                        {event.name} â€” {formatDate(event.date)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {selectedExistingRecord && (
+                  <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+                    This event already has a record. Please use the <strong>Edit</strong> button below.
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+
+                  {/* RESULTS URL */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      ğŸ Official Results URL
+                    </label>
+
+                    <input
+                      type="url"
+                      value={resultsUrl}
+                      onChange={(e) => setResultsUrl(e.target.value)}
+                      placeholder="https://official-results-website.com/..."
+                      className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
+                    />
+
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      Optional â€” add when organizer provides the official result link.
+                    </p>
+                  </div>
+
+                  {/* PHOTOS URL */}
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      ğŸ“¸ Organizer / Photos URL
+                    </label>
+
+                    <input
+                      type="url"
+                      value={photosUrl}
+                      onChange={(e) => setPhotosUrl(e.target.value)}
+                      placeholder="https://kwikpic.in/... or organizer gallery"
+                      className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
+                    />
+
+                    <p className="text-[10px] text-slate-400 mt-1">
+                      Optional â€” add when the organizer shares the photo gallery.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 text-[11px] text-slate-500">
+                  <strong className="text-slate-700">Rule:</strong>{' '}
+                  At least one official link is required. You can publish Results only, Photos only, or both.
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-[#0F172A] hover:bg-slate-800 text-white font-black py-3 rounded-xl text-xs cursor-pointer transition"
+                >
+                  Publish Results & Links
+                </button>
+              </form>
+            </section>
+
+            {/* PUBLISHED RECORDS */}
+            <section id="admin-published" className="scroll-mt-24 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h4 className="font-black text-sm text-[#0F172A] uppercase tracking-wider">
+                    Manage Results & Photo Links
+                  </h4>
+                  <p className="text-[10px] text-slate-500 mt-1">
+                    {resultsLinks.length} event record{resultsLinks.length === 1 ? '' : 's'} saved in Supabase.
+                  </p>
+                </div>
+              </div>
+
+              {resultsLinks.length === 0 ? (
+                <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+                  <div className="text-4xl mb-3">ğŸ“­</div>
+                  <h5 className="font-black text-sm">No Results or Photos Published Yet</h5>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Select an event above when an organizer provides the official links.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {resultsLinks.map((item) => {
+                    const event = getEvent(item.eventId);
+                    return (
+                      <div key={item.id} className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        {editingId === item.id ? (
+                          <div className="space-y-4">
+                            <div>
+                              <label className="block text-xs font-bold text-slate-700 mb-1.5">Select Event *</label>
+                              <select value={editEventId} onChange={(e) => setEditEventId(e.target.value)} className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500">
+                                {marathons.map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.name} â€” {formatDate(candidate.date)}</option>)}
+                              </select>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              <input type="url" value={editResultsUrl} onChange={(e) => setEditResultsUrl(e.target.value)} placeholder="Official Results URL" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
+                              <input type="url" value={editPhotosUrl} onChange={(e) => setEditPhotosUrl(e.target.value)} placeholder="Organizer / Photos URL" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                              <button type="button" onClick={() => saveEdit(item.id)} className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs cursor-pointer transition">Save Changes</button>
+                              <button type="button" onClick={cancelEdit} className="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl text-xs cursor-pointer transition">Cancel</button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                            <div className="min-w-0">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="text-[9px] font-black uppercase tracking-wider bg-orange-100 text-orange-700 px-2.5 py-1 rounded-full">Published</span>
+                                {event && <span className="text-[10px] font-semibold text-slate-500">{formatDate(event.date)}</span>}
+                              </div>
+                              <h5 className="font-black text-sm mt-2">{event?.name || 'Unknown Event'}</h5>
+                              {event && <p className="text-[10px] text-slate-500 mt-1">ğŸ“ {event.city}, {event.state} &nbsp;â€¢&nbsp; ğŸƒ {event.distance}</p>}
+                              <div className="flex flex-col gap-1 mt-3 text-[10px] text-slate-500 break-all">
+                                <span>ğŸ Results: {item.resultsUrl || 'Not provided'}</span>
+                                <span>ğŸ“¸ Photos: {item.photosUrl || 'Not provided'}</span>
+                              </div>
+                            </div>
+                            <div className="flex flex-wrap gap-2 shrink-0">
+                              <button type="button" onClick={() => startEdit(item)} className="bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition">âœï¸ Edit</button>
+                              <button type="button" onClick={() => handleDeleteResult(item.id)} className="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-4 py-2.5 rounded-xl text-xs cursor-pointer transition">ğŸ—‘ï¸ Delete</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          </div>
+        )}
+      </div>
+      <SiteFooter />
+    </div>
+  );
+}
