@@ -47,12 +47,12 @@ export default function RecentReviewsSection() {
     <section className="recent-reviews-section page-width" aria-labelledby="recent-reviews-title">
       <div className="section-heading">
         <div><span className="eyebrow">REAL RUNNERS · REAL RACE DAYS</span><h2 id="recent-reviews-title">Recent race <em>reviews.</em></h2></div>
-        <Link className="text-link" href="/events">Explore races <span aria-hidden="true">↗</span></Link>
+        <Link className="text-link" href="/reviews">Write a review <span aria-hidden="true">↗</span></Link>
       </div>
       {reviews.length ? <div className="recent-reviews-grid">
         {reviews.map((review) => <article key={review.id} className="recent-review-card">
           {review.eventImage && <img src={review.eventImage} alt={`${review.eventName} event`} className="recent-review-image" loading="lazy" />}
-          <Link href={`/events/${review.event_id}#event-feedback-heading`} className="recent-review-title">{review.eventName}</Link>
+          <Link href={`/reviews?eventId=${review.event_id}`} className="recent-review-title">{review.eventName}</Link>
         </article>)}
       </div> : <div className="recent-reviews-empty">{loaded ? 'Runner reviews will appear here after the first race review.' : 'Loading recent runner reviews…'}</div>}
     </section>
