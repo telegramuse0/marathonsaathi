@@ -1049,8 +1049,9 @@ export default function AdminPage() {
                           onChange={(e) => handleEventFormChange('isFeatured', e.target.checked)}
                           className="h-4 w-4 accent-orange-600"
                         />
-                        Feature this race on the homepage
+                        Show this race in Featured Events on the homepage
                       </label>
+                      <p className="mt-1.5 pl-7 text-[10px] leading-4 text-slate-500">Featured card automatically uses this event’s banner, race date, city, distances, entry fee, registration closing date and registration link. Edit those fields in this form.</p>
                     </div>
 
                     <div>
