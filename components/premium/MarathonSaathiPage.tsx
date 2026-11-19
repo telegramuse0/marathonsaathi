@@ -5,6 +5,7 @@ import EventsSection from './EventsSection';
 import CommunityBand from './CommunityBand';
 import SiteFooter from './SiteFooter';
 import AffiliateProductsSection from './AffiliateProductsSection';
+import RecentReviewsSection from './RecentReviewsSection';
 
 export default function MarathonSaathiPage() {
   return (
@@ -13,6 +14,7 @@ export default function MarathonSaathiPage() {
       <HeroSection />
       <RunnerHub />
       <EventsSection featuredOnly />
+      <RecentReviewsSection />
       <CommunityBand />
       <AffiliateProductsSection />
       <SiteFooter />

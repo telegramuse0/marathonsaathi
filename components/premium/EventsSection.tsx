@@ -19,6 +19,8 @@ type MarathonRow = {
   schedule?: string | null;
   organizer?: string | null;
   fee?: string | null;
+  registration_closes?: string | null;
+  is_featured?: boolean | null;
 };
 
 function formatEventDate(value: string | null) {
@@ -52,6 +54,8 @@ function toPublicEvent(row: MarathonRow): Marathon {
     schedule: row.schedule?.trim() || '',
     organizer: row.organizer?.trim() || '',
     entryFee: row.fee?.trim() || '',
+    registrationCloses: row.registration_closes || '',
+    isFeatured: Boolean(row.is_featured),
   };
 }
 
@@ -69,8 +73,8 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       }).format(new Date());
       const { data, error } = featuredOnly
         ? await supabase.from('marathons')
-          .select('id,name,venue,date,distance,status,registration_link,image,organizer,fee')
-          .gte('date', indianToday).order('date', { ascending: true }).limit(60)
+          .select('id,name,venue,date,distance,status,registration_link,image,organizer,fee,registration_closes,is_featured')
+          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(60)
         : await supabase.from('marathons')
           .select('id,name,description,venue,date,distance,status,registration_link,image')
           .order('date', { ascending: true });
@@ -96,16 +100,13 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     const aPast = isPastEvent(a.eventDate || a.date);
     const bPast = isPastEvent(b.eventDate || b.date);
     if (aPast !== bPast) return Number(aPast) - Number(bPast);
-    const aFeatured = a.status.toLowerCase().includes('featured') ? 0 : 1;
-    const bFeatured = b.status.toLowerCase().includes('featured') ? 0 : 1;
-    if (featuredOnly && aFeatured !== bFeatured) return aFeatured - bFeatured;
     return new Date(a.eventDate || a.date).getTime() - new Date(b.eventDate || b.date).getTime();
   }), [events, featuredOnly]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return sortedEvents
-      .filter((event) => featuredOnly ? !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
+      .filter((event) => featuredOnly ? Boolean(event.isFeatured) && !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
       .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
       .slice(0, featuredOnly ? 3 : undefined);
   }, [sortedEvents, search, eventFilter, featuredOnly]);
@@ -148,7 +149,10 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               <div className="event-distance-list">{event.distance.split(/[,|•]/).map((distance) => distance.trim()).filter(Boolean).slice(0, 4).map((distance) => <span key={distance}>{distance}</span>)}</div>
               <div className="event-card-details">
                 {event.organizer && <span>{event.organizer}</span>}
-                {event.entryFee && <strong>{/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee}</strong>}
+                <div className="event-card-price-info">
+                  <strong>{event.entryFee ? (/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee) : 'Fee details soon'}</strong>
+                  <span>{event.registrationCloses ? `Registration closes ${formatEventDate(event.registrationCloses)}` : 'Registration open'}</span>
+                </div>
               </div>
               <div className="event-actions">
                 {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
@@ -157,7 +161,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               </>}
             </div>
           </article>
-        )) : <div className="empty-state">No races found for “{search}”. Try another city.</div>}
+        )) : <div className="empty-state">{featuredOnly ? 'Featured races will appear here soon.' : `No races found for “${search}”. Try another city.`}</div>}
       </div>
     </section>
   );

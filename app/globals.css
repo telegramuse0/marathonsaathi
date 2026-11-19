@@ -176,6 +176,37 @@ button,input{font:inherit}
 .event-card-details{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-height:37px;margin-top:12px;padding-top:10px;border-top:1px solid #efede8;color:#77808a;font-size:10px}
 .event-card-details>span{max-width:42%;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .event-card-details strong{max-width:58%;color:#1e765b;font-size:11px;line-height:1.4;text-align:right;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.event-card-price-info{display:flex;flex-direction:column;align-items:flex-end;gap:4px;text-align:right}
+.event-card-price-info strong{max-width:100%;color:#1e765b;font-size:12px;line-height:1.35}
+.event-card-price-info span{color:#d26735;font-size:10px;font-weight:750;line-height:1.4}
+.recent-reviews-section{padding-top:12px;padding-bottom:75px}
+.recent-reviews-section .section-heading{margin-bottom:22px}
+.recent-reviews-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.recent-review-card{display:flex;min-width:0;min-height:220px;flex-direction:column;border:1px solid #eae7e0;border-radius:12px;background:#fff;padding:19px;box-shadow:0 5px 20px rgba(16,30,52,.04)}
+.recent-review-stars{color:#efa927;font-size:18px;letter-spacing:1px}.recent-review-stars span{color:#e7e9ed}
+.recent-review-comment{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;margin:13px 0 17px;color:#4d5969;font-size:13px;line-height:1.6}
+.recent-review-by{display:flex;flex-direction:column;gap:4px;margin-top:auto}.recent-review-by strong{color:var(--navy);font-size:12px}.recent-review-by span{color:#818894;font-size:10px}
+.recent-review-link{display:flex;align-items:center;justify-content:space-between;margin-top:13px;padding-top:11px;border-top:1px solid #efede8;color:#d96634;font-size:10px;font-weight:800}
+.recent-reviews-empty{border:1px dashed #dedbd4;border-radius:10px;background:#fff;padding:22px;color:#858b91;text-align:center;font-size:12px}
+.legal-page{max-width:850px;padding-top:76px;padding-bottom:86px}
+.legal-page h1,.contact-intro h1{margin:10px 0;color:var(--navy);font-size:clamp(38px,6vw,56px);letter-spacing:-2px;line-height:1.05}
+.legal-page h1 em,.contact-intro h1 em{color:var(--orange);font-family:Georgia,serif;font-weight:400}
+.legal-updated{color:#969ca3!important;font-size:11px!important}
+.legal-page p{color:#5f6976;font-size:14px;line-height:1.8;margin:12px 0 22px}
+.legal-page h2{margin:30px 0 6px;color:var(--navy);font-size:19px;letter-spacing:-.3px}
+.legal-page a{color:#d96634;font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.contact-page{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;padding-top:80px;padding-bottom:92px}
+.contact-intro{position:sticky;top:125px;align-self:start}
+.contact-intro p{max-width:390px;color:#6f7883;font-size:14px;line-height:1.8}
+.contact-form{display:grid;gap:17px;border:1px solid #e9e7e1;border-radius:15px;background:#fff;padding:26px;box-shadow:0 16px 42px rgba(16,30,52,.06)}
+.contact-form label{display:grid;gap:8px;color:var(--navy);font-size:12px;font-weight:800}
+.contact-form input,.contact-form textarea{width:100%;border:1px solid #e5e7eb;border-radius:9px;background:#fff;padding:13px 14px;color:var(--ink);font-size:13px;outline:none}
+.contact-form input:focus,.contact-form textarea:focus{border-color:#ef986d;box-shadow:0 0 0 3px rgba(242,118,61,.1)}
+.contact-form textarea{resize:vertical;line-height:1.6}
+.contact-privacy{margin:0;color:#858c95;font-size:10px;line-height:1.6}
+.contact-form button{display:flex;align-items:center;justify-content:center;gap:10px;min-height:48px;border:0;border-radius:8px;background:var(--orange);color:#fff;font-size:13px;font-weight:850;cursor:pointer}
+.contact-form button:hover{background:#df6330}.contact-form button:disabled{cursor:default;opacity:.75}
+.contact-notice,.contact-success{margin:0;color:#a83c32;font-size:12px}.contact-success{color:#176b51}
 .event-action-detail{background:linear-gradient(135deg,#183452,#101e34);box-shadow:0 5px 12px rgba(16,30,52,.14)}
 .event-action-detail:hover{background:#274c71}
 .event-action-register{background:linear-gradient(135deg,#ff8a45,#ed5d2d);box-shadow:0 5px 14px rgba(242,118,61,.23)}
@@ -220,6 +251,14 @@ button,input{font:inherit}
   .featured-events-section .event-info{padding:16px}
   .featured-events-section .event-info h3{font-size:20px;margin:12px 0}
   .event-card-details{font-size:10px}
+  .recent-reviews-section{padding-top:5px;padding-bottom:48px}
+  .recent-reviews-grid{grid-template-columns:1fr;gap:10px}
+  .recent-review-card{min-height:0;padding:17px}
+  .legal-page{padding-top:47px;padding-bottom:55px}
+  .legal-page p{font-size:13px}
+  .contact-page{grid-template-columns:1fr;gap:20px;padding-top:48px;padding-bottom:55px}
+  .contact-intro{position:static}
+  .contact-form{padding:19px}
   .event-bottom{font-size:12px}
   .event-actions{gap:9px;margin-top:14px}
   .event-action{min-height:42px;padding:0 14px;font-size:12px}

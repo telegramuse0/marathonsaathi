@@ -21,11 +21,17 @@ const ratingLabels = [
   ['overall_rating', 'Overall experience'],
 ] as const;
 
+function Stars({ value, label, onChange }: { value: number; label: string; onChange?: (rating: number) => void }) {
+  return <div role={onChange ? 'radiogroup' : undefined} aria-label={label} className="flex items-center gap-1" title={`${label}: ${value} out of 5`}>
+    {[1, 2, 3, 4, 5].map((star) => onChange ? (
+      <button key={star} type="button" role="radio" aria-checked={value === star} aria-label={`${star} star${star === 1 ? '' : 's'}`} onClick={() => onChange(star)} className={`text-2xl leading-none transition hover:scale-110 ${star <= value ? 'text-amber-400' : 'text-slate-200'}`}>★</button>
+    ) : <span key={star} aria-hidden="true" className={`text-lg leading-none ${star <= value ? 'text-amber-400' : 'text-slate-200'}`}>★</span>)}
+  </div>;
+}
+
 export default function EventFeedback({ eventId, eventName, eventDate }: { eventId: number; eventName: string; eventDate: string }) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [runnerName, setRunnerName] = useState('');
-  const [runnerEmail, setRunnerEmail] = useState('');
-  const [registrationReference, setRegistrationReference] = useState('');
   const [ratings, setRatings] = useState({ route_rating: 5, organization_rating: 5, water_rating: 5, overall_rating: 5 });
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(true);
@@ -54,25 +60,26 @@ export default function EventFeedback({ eventId, eventName, eventDate }: { event
     e.preventDefault();
     setSaving(true);
     setMessage('');
+    const cleanName = runnerName.trim();
+    const cleanComment = comment.trim() || null;
+    const createdAt = new Date().toISOString();
     const { error } = await supabase.from('event_feedback').insert({
       event_id: eventId,
-      runner_name: runnerName.trim(),
-      runner_email: runnerEmail.trim().toLowerCase(),
-      registration_reference: registrationReference.trim(),
+      runner_name: cleanName,
       ...ratings,
-      comment: comment.trim() || null,
-      is_verified: false,
+      comment: cleanComment,
+      is_verified: true,
     });
     setSaving(false);
     if (error) {
-      setMessage(error.code === '23505' ? 'Aap is event ke liye feedback pehle submit kar chuke hain.' : 'Feedback submit nahi hua. Thodi der baad phir try karein.');
+      setMessage('Feedback submit nahi hua. Thodi der baad phir try karein.');
       return;
     }
-    setMessage('Shukriya! Registration reference verify hone ke baad aapka feedback publish hoga.');
+    setReviews((current) => [{ id: Date.now(), runner_name: cleanName, ...ratings, comment: cleanComment, created_at: createdAt }, ...current]);
+    setMessage('Shukriya! Aapka review ab public hai.');
     setRunnerName('');
-    setRunnerEmail('');
-    setRegistrationReference('');
     setComment('');
+    setRatings({ route_rating: 5, organization_rating: 5, water_rating: 5, overall_rating: 5 });
   };
 
   const average = reviews.length ? reviews.reduce((sum, review) => sum + review.overall_rating, 0) / reviews.length : 0;
@@ -83,36 +90,32 @@ export default function EventFeedback({ eventId, eventName, eventDate }: { event
         <div className="border-b border-slate-100 bg-gradient-to-r from-orange-50 to-white px-5 py-5 sm:px-7">
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-orange-600">Runner scorecard</p>
           <div className="mt-1 flex flex-wrap items-end justify-between gap-3">
-            <h2 id="event-feedback-heading" className="text-xl font-black text-slate-900 sm:text-2xl">Event feedback</h2>
-            {!loading && reviews.length > 0 && <p className="text-sm font-bold text-slate-700">★ {average.toFixed(1)} <span className="font-normal text-slate-500">from {reviews.length} verified runner{reviews.length === 1 ? '' : 's'}</span></p>}
+            <h2 id="event-feedback-heading" className="text-xl font-black text-slate-900 sm:text-2xl">Recent race reviews</h2>
+            {!loading && reviews.length > 0 && <div className="flex items-center gap-2"><Stars value={Math.round(average)} label="Average runner rating" /><p className="text-sm font-bold text-slate-700">{average.toFixed(1)} <span className="font-normal text-slate-500">({reviews.length})</span></p></div>}
           </div>
-          <p className="mt-1 text-sm text-slate-600">Route, organization aur water stations ke baare mein apna experience share karein.</p>
+          <p className="mt-1 text-sm text-slate-600">Route, organization aur water stations par runners ki ratings.</p>
         </div>
 
         {reviews.length > 0 && <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-7">
           {reviews.slice(0, 6).map((review) => <article key={review.id} className="rounded-xl border border-slate-100 bg-slate-50 p-4">
-            <div className="flex items-center justify-between gap-3"><strong className="text-sm text-slate-800">{review.runner_name}</strong><span className="text-xs font-bold text-amber-600">★ {review.overall_rating}/5</span></div>
-            <p className="mt-1 text-[11px] text-slate-500">Route {review.route_rating}/5 · Organization {review.organization_rating}/5 · Water {review.water_rating}/5</p>
+            <div className="flex flex-wrap items-center justify-between gap-2"><strong className="text-sm text-slate-800">{review.runner_name}</strong><div className="flex items-center gap-2"><Stars value={review.overall_rating} label="Overall runner rating" /><span className="text-xs font-bold text-slate-500">{review.overall_rating}/5</span></div></div>
+            <p className="mt-2 text-[11px] text-slate-500">Route {review.route_rating}/5 · Organization {review.organization_rating}/5 · Water {review.water_rating}/5</p>
             {review.comment && <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">{review.comment}</p>}
           </article>)}
         </div>}
 
         {feedbackOpen ? <form onSubmit={submit} className="space-y-4 border-t border-slate-100 p-5 sm:p-7">
-          <h3 className="font-bold text-slate-900">Share your race experience</h3>
+          <h3 className="font-bold text-slate-900">Rate your race experience</h3>
+          <input required minLength={2} maxLength={60} value={runnerName} onChange={(e) => setRunnerName(e.target.value)} placeholder="Your name" className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400 sm:max-w-md" />
           <div className="grid gap-3 sm:grid-cols-2">
-            <input required maxLength={60} value={runnerName} onChange={(e) => setRunnerName(e.target.value)} placeholder="Your name" className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
-            <input required type="email" maxLength={254} value={runnerEmail} onChange={(e) => setRunnerEmail(e.target.value)} placeholder="Email (kept private)" className="rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
-            <input required minLength={3} maxLength={80} value={registrationReference} onChange={(e) => setRegistrationReference(e.target.value)} placeholder="Registration ID or bib number (for verification)" className="sm:col-span-2 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {ratingLabels.map(([key, label]) => <label key={key} className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
-              {label}<select aria-label={`${label} rating`} value={ratings[key]} onChange={(e) => setRatings((current) => ({ ...current, [key]: Number(e.target.value) }))} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">{[5, 4, 3, 2, 1].map((score) => <option key={score} value={score}>{score} / 5</option>)}</select>
-            </label>)}
+            {ratingLabels.map(([key, label]) => <div key={key} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-100 px-4 py-3 text-sm font-semibold text-slate-700">
+              <span>{label}</span><Stars value={ratings[key]} label={label} onChange={(rating) => setRatings((current) => ({ ...current, [key]: rating }))} />
+            </div>)}
           </div>
           <textarea maxLength={1000} rows={4} value={comment} onChange={(e) => setComment(e.target.value)} placeholder={`What should runners know about ${eventName}? (optional)`} className="w-full resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-400" />
-          <div className="flex flex-wrap items-center gap-3"><button disabled={saving} className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-black text-white transition hover:bg-orange-500 disabled:opacity-60">{saving ? 'Submitting…' : 'Submit feedback'}</button><p className="text-xs text-slate-500">Feedback is shown after registration details are checked.</p></div>
+          <div className="flex flex-wrap items-center gap-3"><button disabled={saving} className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-black text-white transition hover:bg-orange-500 disabled:opacity-60">{saving ? 'Submitting…' : 'Submit review'}</button><p className="text-xs text-slate-500">Your star rating and review appear as soon as you submit.</p></div>
           {message && <p role="status" className="text-sm font-semibold text-slate-700">{message}</p>}
-        </form> : <p className="border-t border-slate-100 px-5 py-5 text-sm text-slate-500 sm:px-7">Race ke baad runners apna feedback share kar sakenge.</p>}
+        </form> : <p className="border-t border-slate-100 px-5 py-5 text-sm text-slate-500 sm:px-7">Race ke baad runners apna review share kar sakenge.</p>}
       </div>
     </section>
   );
