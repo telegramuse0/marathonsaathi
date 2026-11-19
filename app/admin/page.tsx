@@ -711,6 +711,16 @@ export default function AdminPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const toggleFeaturedEvent = async (event: AdminMarathon) => {
+    const isFeatured = !event.isFeatured;
+    const { error } = await supabase.from('marathons').update({ is_featured: isFeatured }).eq('id', event.id);
+    if (error) {
+      alert(`Featured option update nahi hua: ${error.message}`);
+      return;
+    }
+    saveMarathons(marathons.map((item) => item.id === event.id ? { ...item, isFeatured } : item));
+  };
+
   const handleDeleteMarathon = async (id: number) => {
     const event = marathons.find((item) => item.id === id);
     if (!event) return;
@@ -1187,6 +1197,7 @@ export default function AdminPage() {
                   >
                     <div>
                       <div className="flex flex-wrap items-center gap-2"><strong className="text-xs">{event.name}</strong>{event.isFeatured && <span className="rounded-full bg-orange-100 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-orange-700">Featured on home</span>}</div>
+                      <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-[10px] font-extrabold text-orange-800"><input type="checkbox" checked={Boolean(event.isFeatured)} onChange={() => void toggleFeaturedEvent(event)} className="h-4 w-4 accent-orange-600" />Show on homepage Featured Events</label>
                       <p className="text-[10px] text-slate-500 mt-1">
                         📅 {formatDate(event.date)} &nbsp;•&nbsp; 📍 {event.city}, {event.state}
                       </p>
