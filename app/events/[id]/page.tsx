@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import SiteHeader from '@/components/premium/SiteHeader';
 import SiteFooter from '@/components/premium/SiteFooter';
-import EventFeedback from '@/components/premium/EventFeedback';
 import { supabase } from '@/lib/supabase';
 
 type EventRecord = {
@@ -60,6 +60,12 @@ function formatDate(value: string) {
     month: 'long',
     year: 'numeric',
   });
+}
+
+function isEventPast(value: string) {
+  const eventDay = String(value || '').slice(0, 10);
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  return Boolean(eventDay) && eventDay < today;
 }
 
 function splitDistances(value: string | string[] | undefined) {
@@ -730,7 +736,7 @@ export default function EventDetailsPage() {
           </div>
         </section>
 
-        <EventFeedback eventId={event.id} eventName={event.name} eventDate={event.date} eventImage={getEventBanner(event)} eventDistances={splitDistances(event.distance)} />
+        {isEventPast(event.date) && <section className="max-w-7xl mx-auto px-5 sm:px-8 pb-10"><Link href={`/reviews?eventId=${event.id}`} className="event-review-cta"><span><strong>Ran this race?</strong><small>Share your experience and help other runners.</small></span><b>Write a review <span aria-hidden="true">→</span></b></Link></section>}
 
         {/* Final registration CTA */}
         {event.registrationUrl && (
