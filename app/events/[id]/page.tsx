@@ -730,7 +730,7 @@ export default function EventDetailsPage() {
           </div>
         </section>
 
-        <EventFeedback eventId={event.id} eventName={event.name} eventDate={event.date} />
+        <EventFeedback eventId={event.id} eventName={event.name} eventDate={event.date} eventImage={getEventBanner(event)} eventDistances={splitDistances(event.distance)} />
 
         {/* Final registration CTA */}
         {event.registrationUrl && (
