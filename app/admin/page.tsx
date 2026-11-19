@@ -23,6 +23,11 @@ type AdminMarathon = {
   entryFee?: string;
   registrationCloses?: string;
   isFeatured?: boolean;
+  organizerContactName?: string;
+  organizerEmail?: string;
+  organizerPhone?: string;
+  organizerWebsite?: string;
+  lowestPrice?: number | null;
   schedule?: string;
   photosUrl?: string;
   resultsUrl?: string;
@@ -123,16 +128,17 @@ const INDIAN_STATES_AND_UTS = [
 ];
 const COMMON_DISTANCES = ['3K', '5K', '6K', '10K', '11K', '12K', '21K', 'Half Marathon', '25K', '42K', 'Full Marathon', '50K', '60K', '75K', '100K', 'Dream Run'];
 
-type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; location_details: string | null; date: string; registration_closes: string | null; is_featured: boolean | null; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; schedule: string | null; photos_url: string | null; results_url: string | null; awards: string | null; runner_benefits: string | null };
+type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; location_details: string | null; date: string; registration_closes: string | null; is_featured: boolean | null; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; organizer_contact_name: string | null; organizer_email: string | null; organizer_phone: string | null; organizer_website: string | null; lowest_price: number | null; fee: string | null; schedule: string | null; photos_url: string | null; results_url: string | null; awards: string | null; runner_benefits: string | null };
 
 const rowToEvent = (row: MarathonRow): AdminMarathon => {
-  const venue = row.venue || '';
-  const parts = venue.split(',').map((part) => part.trim());
+  const venue = row.location_details || '';
+  const parts = (row.venue || '').split(',').map((part) => part.trim());
   return {
     id: Number(row.id), name: row.name || '', city: parts[0] || venue || '', state: parts.slice(1).join(', '),
     date: row.date || '', distance: row.distance || '', registrationUrl: row.registration_link || '',
     registrationCloses: row.registration_closes || '', isFeatured: Boolean(row.is_featured),
     organizer: row.organizer || '', badge: row.status || 'Upcoming',
+    organizerContactName: row.organizer_contact_name || '', organizerEmail: row.organizer_email || '', organizerPhone: row.organizer_phone || '', organizerWebsite: row.organizer_website || '', lowestPrice: row.lowest_price,
     bannerImage: row.image || '', about: row.description || '', venue,
     entryFee: row.fee || '', schedule: row.schedule || '', photosUrl: row.photos_url || '', resultsUrl: row.results_url || '', awards: row.awards || '', runnerBenefits: row.runner_benefits || '',
   };
@@ -145,12 +151,16 @@ const eventToRow = (event: AdminMarathon) => ({
   location_details: event.venue || null,
   date: event.date,
   registration_closes: event.registrationCloses || null,
-  is_featured: Boolean(event.isFeatured),
   registration_link: event.registrationUrl || null,
   image: event.bannerImage || null,
   status: event.badge || 'Upcoming',
   distance: event.distance,
   organizer: event.organizer,
+  organizer_contact_name: event.organizerContactName || null,
+  organizer_email: event.organizerEmail || null,
+  organizer_phone: event.organizerPhone || null,
+  organizer_website: event.organizerWebsite || null,
+  lowest_price: event.lowestPrice ?? null,
   fee: event.entryFee || null,
   schedule: event.schedule || null,
   photos_url: event.photosUrl || null,
@@ -213,6 +223,8 @@ export default function AdminPage() {
 
   const [showAddEvent, setShowAddEvent] = useState(false);
   const [editingEventId, setEditingEventId] = useState<number | null>(null);
+  const [featuredEventSelection, setFeaturedEventSelection] = useState('');
+  const [featuredCardForm, setFeaturedCardForm] = useState({ image: '', date: '', distance: '', registrationCloses: '', lowestPrice: '', details: '', registrationUrl: '', location: '', organizer: '', badge: '' });
 
   const [eventForm, setEventForm] = useState({
     name: '',
@@ -220,10 +232,14 @@ export default function AdminPage() {
     state: '',
     date: '',
     registrationCloses: '',
-    isFeatured: false,
     distance: '',
     registrationUrl: '',
     organizer: '',
+    organizerContactName: '',
+    organizerEmail: '',
+    organizerPhone: '',
+    organizerWebsite: '',
+    lowestPrice: '',
     badge: '',
     bannerImage: '',
     about: '',
@@ -586,8 +602,8 @@ export default function AdminPage() {
 
   const resetEventForm = () => {
     setEventForm({
-      name: '', city: '', state: '', date: '', registrationCloses: '', isFeatured: false, distance: '', registrationUrl: '',
-      organizer: '', badge: '', bannerImage: '', about: '', venue: '',
+      name: '', city: '', state: '', date: '', registrationCloses: '', distance: '', registrationUrl: '',
+      organizer: '', organizerContactName: '', organizerEmail: '', organizerPhone: '', organizerWebsite: '', lowestPrice: '', badge: '', bannerImage: '', about: '', venue: '',
       entryFee: '', schedule: '', photosUrl: '', resultsUrl: '', awards: '', runnerBenefits: '',
     });
     setCustomDistance('');
@@ -627,6 +643,10 @@ export default function AdminPage() {
       alert('Registration closing date race date se pehle ya usi din honi chahiye.');
       return;
     }
+    if (eventForm.lowestPrice.trim() && (!Number.isFinite(Number(eventForm.lowestPrice)) || Number(eventForm.lowestPrice) < 0)) {
+      alert('Starting price zero ya usse zyada amount hona chahiye.');
+      return;
+    }
 
     const duplicate = marathons.some(
       (event) =>
@@ -646,10 +666,14 @@ export default function AdminPage() {
       state,
       date,
       registrationCloses: eventForm.registrationCloses,
-      isFeatured: eventForm.isFeatured,
       distance,
       registrationUrl,
       organizer,
+      organizerContactName: toTitleCase(eventForm.organizerContactName),
+      organizerEmail: eventForm.organizerEmail.trim().toLowerCase(),
+      organizerPhone: eventForm.organizerPhone.trim(),
+      organizerWebsite: eventForm.organizerWebsite.trim(),
+      lowestPrice: eventForm.lowestPrice.trim() ? Number(eventForm.lowestPrice) : null,
       badge,
       bannerImage: eventForm.bannerImage || '',
       about: toSentenceCase(eventForm.about),
@@ -694,10 +718,14 @@ export default function AdminPage() {
       state: event.state,
       date: event.date,
       registrationCloses: event.registrationCloses || '',
-      isFeatured: Boolean(event.isFeatured),
       distance: event.distance,
       registrationUrl: event.registrationUrl,
       organizer: event.organizer,
+      organizerContactName: event.organizerContactName || '',
+      organizerEmail: event.organizerEmail || '',
+      organizerPhone: event.organizerPhone || '',
+      organizerWebsite: event.organizerWebsite || '',
+      lowestPrice: event.lowestPrice == null ? '' : String(event.lowestPrice),
       badge: event.badge,
       bannerImage: event.bannerImage || '',
       about: event.about || '',
@@ -712,14 +740,44 @@ export default function AdminPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const toggleFeaturedEvent = async (event: AdminMarathon) => {
-    const isFeatured = !event.isFeatured;
-    const { error } = await supabase.from('marathons').update({ is_featured: isFeatured }).eq('id', event.id);
-    if (error) {
-      alert(`Featured option update nahi hua: ${error.message}`);
-      return;
+  useEffect(() => {
+    const featured = marathons.find((event) => event.isFeatured);
+    setFeaturedEventSelection(featured ? String(featured.id) : '');
+  }, [marathons]);
+
+  useEffect(() => {
+    const event = marathons.find((item) => String(item.id) === featuredEventSelection);
+    if (!event) { setFeaturedCardForm({ image: '', date: '', distance: '', registrationCloses: '', lowestPrice: '', details: '', registrationUrl: '', location: '', organizer: '', badge: '' }); return; }
+    setFeaturedCardForm({ image: event.bannerImage || '', date: event.date || '', distance: event.distance || '', registrationCloses: event.registrationCloses || '', lowestPrice: event.lowestPrice == null ? '' : String(event.lowestPrice), details: event.about || '', registrationUrl: event.registrationUrl || '', location: event.venue || `${event.city}${event.state ? `, ${event.state}` : ''}`, organizer: event.organizer || '', badge: event.badge || 'Upcoming' });
+  }, [featuredEventSelection]);
+
+  const saveFeaturedEvent = async () => {
+    const selectedId = featuredEventSelection ? Number(featuredEventSelection) : null;
+    const selected = selectedId === null ? null : marathons.find((event) => event.id === selectedId);
+    if (selectedId !== null && !selected) { alert('Featured event list se ek valid event select karein.'); return; }
+    if (selected && (!featuredCardForm.date || !featuredCardForm.distance.trim() || !featuredCardForm.registrationUrl.trim())) { alert('Featured card ke race date, distance aur registration link zaroori hain.'); return; }
+    if (featuredCardForm.registrationCloses && featuredCardForm.date && featuredCardForm.registrationCloses > featuredCardForm.date) { alert('Registration closing date race date se pehle ya usi din honi chahiye.'); return; }
+    if (featuredCardForm.lowestPrice.trim() && (!Number.isFinite(Number(featuredCardForm.lowestPrice)) || Number(featuredCardForm.lowestPrice) < 0)) { alert('Starting price zero ya usse zyada amount hona chahiye.'); return; }
+    const { error: clearError } = await supabase.from('marathons').update({ is_featured: false }).eq('is_featured', true);
+    if (clearError) { alert(`Featured event update nahi hua: ${clearError.message}`); return; }
+    if (selectedId !== null) {
+      const { error } = await supabase.from('marathons').update({
+        is_featured: true,
+        image: featuredCardForm.image.trim() || null,
+        date: featuredCardForm.date,
+        distance: toTitleCase(featuredCardForm.distance),
+        registration_closes: featuredCardForm.registrationCloses || null,
+        lowest_price: featuredCardForm.lowestPrice.trim() ? Number(featuredCardForm.lowestPrice) : null,
+        description: toSentenceCase(featuredCardForm.details),
+        registration_link: featuredCardForm.registrationUrl.trim(),
+        location_details: featuredCardForm.location.trim() || null,
+        organizer: toTitleCase(featuredCardForm.organizer),
+        status: featuredCardForm.badge.trim() || 'Upcoming',
+      }).eq('id', selectedId);
+      if (error) { alert(`Featured event save nahi hua: ${error.message}`); return; }
     }
-    saveMarathons(marathons.map((item) => item.id === event.id ? { ...item, isFeatured } : item));
+    saveMarathons(marathons.map((event) => event.id === selectedId ? { ...event, isFeatured: true, bannerImage: featuredCardForm.image.trim(), date: featuredCardForm.date, distance: toTitleCase(featuredCardForm.distance), registrationCloses: featuredCardForm.registrationCloses, lowestPrice: featuredCardForm.lowestPrice.trim() ? Number(featuredCardForm.lowestPrice) : null, about: toSentenceCase(featuredCardForm.details), registrationUrl: featuredCardForm.registrationUrl.trim(), venue: featuredCardForm.location.trim(), organizer: toTitleCase(featuredCardForm.organizer), badge: featuredCardForm.badge.trim() || 'Upcoming' } : { ...event, isFeatured: false }));
+    alert(selected ? `${selected.name} homepage featured card par set ho gaya.` : 'Homepage featured card hata diya gaya.');
   };
 
   const handleDeleteMarathon = async (id: number) => {
@@ -857,6 +915,7 @@ export default function AdminPage() {
 
             <nav aria-label="Admin sections" className="sticky top-2 z-20 flex gap-2 overflow-x-auto rounded-xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
               <a href="#admin-events" className="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Events</a>
+              <a href="#admin-featured" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Featured Card</a>
               <a href="#admin-products" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Products</a>
               <a href="#admin-reviews" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Reviews</a>
               <a href="#admin-contact-messages" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Contact Messages</a>
@@ -1055,19 +1114,6 @@ export default function AdminPage() {
                       </div>
 
                     <div>
-                      <label className="flex min-h-11 items-center gap-3 rounded-xl border border-orange-200 bg-orange-50 px-3 py-2.5 text-xs font-bold text-slate-800">
-                        <input
-                          type="checkbox"
-                          checked={eventForm.isFeatured}
-                          onChange={(e) => handleEventFormChange('isFeatured', e.target.checked)}
-                          className="h-4 w-4 accent-orange-600"
-                        />
-                        Show this race in Featured Events on the homepage
-                      </label>
-                      <p className="mt-1.5 pl-7 text-[10px] leading-4 text-slate-500">Featured card automatically uses this event’s banner, race date, city, distances, entry fee, registration closing date and registration link. Edit those fields in this form.</p>
-                    </div>
-
-                    <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         Badge
                       </label>
@@ -1091,7 +1137,22 @@ export default function AdminPage() {
                   </div>
 
                   <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-3">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">Organizer contact details</h6><p className="mt-1 text-[10px] text-slate-500">Race organizer se runners ko contact karne ke useful tareeqe.</p></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div><label className="block text-xs font-bold text-slate-700 mb-1">Contact person</label><input value={eventForm.organizerContactName} onChange={(e) => handleEventFormChange('organizerContactName', e.target.value)} placeholder="Organizer contact name" className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-xs" /></div>
+                      <div><label className="block text-xs font-bold text-slate-700 mb-1">Organizer phone</label><input type="tel" value={eventForm.organizerPhone} onChange={(e) => handleEventFormChange('organizerPhone', e.target.value)} placeholder="+91 ..." className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-xs" /></div>
+                      <div><label className="block text-xs font-bold text-slate-700 mb-1">Organizer email</label><input type="email" value={eventForm.organizerEmail} onChange={(e) => handleEventFormChange('organizerEmail', e.target.value)} placeholder="races@example.com" className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-xs" /></div>
+                      <div><label className="block text-xs font-bold text-slate-700 mb-1">Organizer website</label><input type="url" value={eventForm.organizerWebsite} onChange={(e) => handleEventFormChange('organizerWebsite', e.target.value)} placeholder="https://organizer.example" className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-xs" /></div>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-3">
                     <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">2. Registration &amp; event presentation</h6><p className="mt-1 text-[10px] text-slate-500">Registration link aur event card par dikhne wali image.</p></div>
+                  <div className="max-w-sm">
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">Lowest ticket price (₹)</label>
+                    <input type="number" min="0" step="1" value={eventForm.lowestPrice} onChange={(e) => handleEventFormChange('lowestPrice', e.target.value)} placeholder="e.g. 499" className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500" />
+                    <p className="mt-1 text-[10px] text-slate-400">Card par “₹499 onwards” ke roop me dikhaya jayega.</p>
+                  </div>
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1.5">
                       🌐 Official Registration URL (optional)
@@ -1143,7 +1204,6 @@ export default function AdminPage() {
                       {([
                         ['about', 'About Event', 'What runners should know about the race'],
                         ['venue', 'Venue & Location', 'Venue, route or location details'],
-                        ['entryFee', 'Entry Fees', 'Fees by race category'],
                         ['schedule', 'Race Schedule', 'Reporting, start and flag-off timings'],
                         ['awards', 'Awards & Prizes', 'Prize and award details'],
                         ['runnerBenefits', 'Runner Benefits', 'T-shirt, bib, timing, refreshments etc.'],
@@ -1200,14 +1260,13 @@ export default function AdminPage() {
                   >
                     <div>
                       <div className="flex flex-wrap items-center gap-2"><strong className="text-xs">{event.name}</strong>{event.isFeatured && <span className="rounded-full bg-orange-100 px-2 py-1 text-[9px] font-black uppercase tracking-wide text-orange-700">Featured on home</span>}</div>
-                      <label className="mt-2 inline-flex cursor-pointer items-center gap-2 rounded-lg border border-orange-200 bg-orange-50 px-2.5 py-1.5 text-[10px] font-extrabold text-orange-800"><input type="checkbox" checked={Boolean(event.isFeatured)} onChange={() => void toggleFeaturedEvent(event)} className="h-4 w-4 accent-orange-600" />Show on homepage Featured Events</label>
                       <p className="text-[10px] text-slate-500 mt-1">
                         📅 {formatDate(event.date)} &nbsp;•&nbsp; 📍 {event.city}, {event.state}
                       </p>
                       <p className="text-[10px] text-slate-500 mt-1">
                         🏃 {event.distance} &nbsp;•&nbsp; 🏢 {event.organizer}
                       </p>
-                      <p className="text-[10px] text-slate-500 mt-1">💰 {event.entryFee || 'Fee not set'}{event.registrationCloses ? ` • Registration closes ${formatDate(event.registrationCloses)}` : ''}</p>
+                      <p className="text-[10px] text-slate-500 mt-1">💰 {event.lowestPrice != null ? `₹${Number(event.lowestPrice).toLocaleString('en-IN')} onwards` : 'Starting price not set'}{event.registrationCloses ? ` • Registration closes ${formatDate(event.registrationCloses)}` : ''}</p>
                     </div>
 
                     <div className="flex gap-2 shrink-0">
@@ -1229,6 +1288,39 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+            </section>
+
+            <section id="admin-featured" className="scroll-mt-24 space-y-4 rounded-2xl border border-orange-200 bg-orange-50/60 p-5 sm:p-6">
+              <div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">Homepage spotlight</p><h2 className="mt-1 text-lg font-black text-slate-900">Featured event card</h2><p className="mt-1 max-w-2xl text-xs leading-5 text-slate-600">Homepage par ek hi featured event rahega. Image, race date, distance, registration deadline, starting price, details, registration link, location aur organizer badge event details se liye jayenge.</p></div>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <label className="min-w-0 flex-1 text-xs font-bold text-slate-700">Select the single featured event
+                  <select value={featuredEventSelection} onChange={(e) => setFeaturedEventSelection(e.target.value)} className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm">
+                    <option value="">No featured event</option>
+                    {marathons.map((event) => <option key={event.id} value={event.id}>{event.name} · {event.city} · {formatDate(event.date)}</option>)}
+                  </select>
+                </label>
+              </div>
+              {(() => {
+                const event = marathons.find((item) => String(item.id) === featuredEventSelection);
+                if (!event) return <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-orange-300 bg-white/70 p-4"><p className="text-xs text-slate-500">No event selected. Save to remove the current homepage featured card.</p><button type="button" onClick={() => void saveFeaturedEvent()} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700">Remove featured card</button></div>;
+                return <div className="space-y-4 rounded-xl border border-orange-100 bg-white p-4 sm:p-5">
+                  <div className="grid gap-4 sm:grid-cols-[200px_1fr]">
+                    <div className="space-y-2"><p className="text-xs font-bold text-slate-700">Featured image</p>{featuredCardForm.image ? <img src={featuredCardForm.image} alt={`${event.name} featured preview`} className="h-36 w-full rounded-lg bg-slate-100 object-contain" /> : <div className="grid h-36 place-items-center rounded-lg bg-slate-100 text-3xl">🏃</div>}<label className="inline-flex cursor-pointer rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700">Upload image<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" className="hidden" onChange={(e) => { const file = e.target.files?.[0]; if (!file) return; if (file.size > 2 * 1024 * 1024) { alert('Featured image 2 MB se chhoti honi chahiye.'); e.currentTarget.value = ''; return; } const reader = new FileReader(); reader.onload = () => setFeaturedCardForm((current) => ({ ...current, image: typeof reader.result === 'string' ? reader.result : '' })); reader.readAsDataURL(file); e.currentTarget.value = ''; }} /></label></div>
+                    <div className="grid content-start gap-3 sm:grid-cols-2">
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Race date</label><input type="date" value={featuredCardForm.date} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, date: e.target.value }))} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Registration closes</label><input type="date" max={featuredCardForm.date || undefined} value={featuredCardForm.registrationCloses} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, registrationCloses: e.target.value }))} className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Race distance / KM</label><input value={featuredCardForm.distance} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, distance: e.target.value }))} placeholder="5K, 10K, Half Marathon" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Lowest ticket price (₹)</label><input type="number" min="0" step="1" value={featuredCardForm.lowestPrice} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, lowestPrice: e.target.value }))} placeholder="499" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Location</label><input value={featuredCardForm.location} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, location: e.target.value }))} placeholder="Venue, city, state" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Organizer</label><input value={featuredCardForm.organizer} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, organizer: e.target.value }))} placeholder="Organizer name" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Organizer badge</label><input value={featuredCardForm.badge} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, badge: e.target.value }))} placeholder="Gold Label, Scenic, Popular" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div><label className="mb-1 block text-xs font-bold text-slate-700">Register button link</label><input type="url" value={featuredCardForm.registrationUrl} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, registrationUrl: e.target.value }))} placeholder="https://..." className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                      <div className="sm:col-span-2"><label className="mb-1 block text-xs font-bold text-slate-700">Event details</label><textarea rows={3} maxLength={1600} value={featuredCardForm.details} onChange={(e) => setFeaturedCardForm((p) => ({ ...p, details: e.target.value }))} placeholder="Short event description runners will see on the card" className="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-xs" /></div>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-4"><p className="text-[10px] text-slate-500">Selected event: <strong>{event.name}</strong>. The home card will show this single event with its date, price, badge and register/details buttons.</p><button type="button" onClick={() => void saveFeaturedEvent()} className="min-h-11 rounded-xl bg-orange-600 px-5 py-3 text-xs font-black text-white hover:bg-orange-500">Save featured card</button></div>
+                </div>;
+              })()}
             </section>
 
             {/* PUBLISH RESULTS & PHOTOS */}

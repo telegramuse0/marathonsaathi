@@ -19,6 +19,12 @@ export type Marathon = {
   entryFee?: string;
   registrationCloses?: string;
   isFeatured?: boolean;
+  lowestPrice?: number | null;
+  location?: string;
+  organizerContactName?: string;
+  organizerEmail?: string;
+  organizerPhone?: string;
+  organizerWebsite?: string;
 };
 export const marathons: Marathon[] = [
   { name: 'Delhi Marathon', date: '12 Oct 2026', city: 'New Delhi', distance: 'Multiple distances', status: 'Featured' },

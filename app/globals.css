@@ -231,6 +231,33 @@ button,input{font:inherit}
 .community-inner{padding-top:27px;padding-bottom:28px;min-height:0;display:grid;grid-template-columns:48px 1fr;gap:12px}.community-mark{width:46px;height:46px;flex-basis:46px}.community-inner h2{font-size:22px}.community-inner p{line-height:1.6}.community-inner>.button{grid-column:1/-1;margin:5px 0 0}
 .coming-section{grid-template-columns:1fr;padding-top:45px;padding-bottom:53px;gap:11px}.coming-card{min-height:0;padding:19px}.coming-icon{margin-bottom:13px}.coming-card p{min-height:0}.footer-main{grid-template-columns:1fr 1fr;gap:22px 15px;padding-top:25px;padding-bottom:18px}.footer-brand{grid-column:1/-1}.footer-contact>a{font-size:10px;gap:6px}.footer-contact>a svg{flex:0 0 17px}.footer-bottom{min-height:46px;flex-wrap:wrap;gap:5px 15px;padding:9px 0;font-size:8px}.footer-bottom>span:nth-child(2){display:none}
 }
+
+.featured-events-section .event-grid{grid-template-columns:minmax(0,1fr)}
+.featured-events-section .event-card{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);align-items:stretch;border-radius:18px;overflow:hidden}
+.featured-events-section .event-art{height:auto;min-height:330px;background:#f1eee8}
+.featured-events-section .event-art-image{object-fit:contain;padding:14px;background:#f1eee8}
+.featured-events-section .event-info{display:flex;flex-direction:column;align-items:flex-start;padding:27px 30px 23px}
+.featured-events-section .event-info h3{margin:13px 0 8px;font-size:clamp(24px,3vw,34px);line-height:1.12;letter-spacing:-.8px}
+.featured-events-section .featured-event-description{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 10px;font-size:13px}
+.featured-event-offer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%;margin-top:16px;padding:14px 0;border-top:1px solid #efede8;border-bottom:1px solid #efede8}
+.featured-event-offer span{color:#d26735;font-size:11px;font-weight:750}
+.featured-event-offer strong{color:#1e765b;font-size:18px;font-weight:900}
+.featured-events-section .event-actions{margin-top:16px}
+.featured-events-section .event-action{min-height:43px;padding-inline:17px;font-size:12px}
+.featured-event-footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:11px;width:100%;margin-top:auto;padding-top:18px;color:#596576;font-size:11px}
+.featured-event-location{display:inline-flex;align-items:flex-start;gap:6px;line-height:1.5}
+.featured-event-location svg{flex:0 0 auto;color:#e17745}
+.featured-event-organizer{display:flex;flex-wrap:wrap;align-items:center;gap:7px;color:#25344a;font-weight:800}
+.featured-organizer-label{color:#89909a;font-size:8px;font-weight:900;letter-spacing:1px}
+.featured-event-organizer b{border-radius:999px;background:#fff0e5;padding:5px 8px;color:#b8542c;font-size:9px;font-weight:850;text-transform:uppercase}
+.featured-event-contacts{display:flex;flex-wrap:wrap;gap:8px 14px;width:100%;margin-top:10px;color:#6d7784;font-size:10px}
+.featured-event-contacts a{color:#3d6576;text-decoration:underline;text-underline-offset:2px}
+@media(max-width:700px){
+  .featured-events-section .event-card{grid-template-columns:1fr}
+  .featured-events-section .event-art{min-height:0;height:230px}
+  .featured-events-section .event-info{padding:20px 18px}
+  .featured-events-section .event-info h3{font-size:24px}
+}
 @media(max-width:370px){.hub-badge{display:none}.hub-stat span{max-width:45px}.hub-stats{gap:7px}.shortcut-text small{white-space:normal}.footer-main{grid-template-columns:1fr}.footer-brand{grid-column:auto}.footer-contact{grid-column:auto}.hero-actions .button{font-size:10px;padding:12px}.section-heading h2{font-size:27px}}
 @media(max-width:680px){.review-hub{padding-top:45px;padding-bottom:52px}.review-hub-intro h1{font-size:38px;letter-spacing:-1.5px}.review-hub-intro p{font-size:13px}.review-search{min-height:54px}.review-recent-heading{margin-top:34px}.review-race-select{gap:11px;padding:10px}.review-race-thumb{flex-basis:82px;width:82px;height:68px}.review-race-copy strong{font-size:12px}.review-race-copy span,.review-race-copy small{font-size:10px}.review-race-arrow{flex-basis:30px;width:30px;height:30px}.review-selected-race{gap:12px;padding:11px}.review-selected-image{flex-basis:90px;width:90px;height:74px}.review-selected-race h2{font-size:15px}.event-review-cta{align-items:flex-start;flex-direction:column;padding:15px}.event-review-cta>b{font-size:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}

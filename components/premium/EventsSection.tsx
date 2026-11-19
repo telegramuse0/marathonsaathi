@@ -21,6 +21,12 @@ type MarathonRow = {
   fee?: string | null;
   registration_closes?: string | null;
   is_featured?: boolean | null;
+  lowest_price?: number | null;
+  location_details?: string | null;
+  organizer_contact_name?: string | null;
+  organizer_email?: string | null;
+  organizer_phone?: string | null;
+  organizer_website?: string | null;
 };
 
 function formatEventDate(value: string | null) {
@@ -56,6 +62,12 @@ function toPublicEvent(row: MarathonRow): Marathon {
     entryFee: row.fee?.trim() || '',
     registrationCloses: row.registration_closes || '',
     isFeatured: Boolean(row.is_featured),
+    lowestPrice: row.lowest_price,
+    location: row.location_details?.trim() || row.venue?.trim() || '',
+    organizerContactName: row.organizer_contact_name?.trim() || '',
+    organizerEmail: row.organizer_email?.trim() || '',
+    organizerPhone: row.organizer_phone?.trim() || '',
+    organizerWebsite: row.organizer_website?.trim() || '',
   };
 }
 
@@ -74,8 +86,8 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       }).format(new Date());
       const { data, error } = featuredOnly
         ? await supabase.from('marathons')
-          .select('id,name,venue,date,distance,status,registration_link,image,organizer,fee,registration_closes,is_featured')
-          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(60)
+          .select('id,name,description,venue,location_details,date,distance,status,registration_link,image,organizer,organizer_contact_name,organizer_email,organizer_phone,organizer_website,lowest_price,fee,registration_closes,is_featured')
+          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(1)
         : await supabase.from('marathons')
           .select('id,name,description,venue,date,distance,status,registration_link,image')
           .order('date', { ascending: true });
@@ -125,7 +137,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     return sortedEvents
       .filter((event) => featuredOnly ? Boolean(event.isFeatured) && !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
       .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
-      .slice(0, featuredOnly ? 3 : undefined);
+      .slice(0, featuredOnly ? 1 : undefined);
   }, [sortedEvents, search, eventFilter, featuredOnly]);
 
   return (
@@ -164,19 +176,19 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
+              {event.description && <p className="event-list-description featured-event-description">{event.description}</p>}
               {event.id && (eventRatings[event.id] || isPastEvent(event.eventDate || event.date)) && <EventRatingLink eventId={event.id} rating={eventRatings[event.id]} />}
               <div className="event-distance-list">{event.distance.split(/[,|•]/).map((distance) => distance.trim()).filter(Boolean).slice(0, 4).map((distance) => <span key={distance}>{distance}</span>)}</div>
-              <div className="event-card-details">
-                {event.organizer && <span>{event.organizer}</span>}
-                <div className="event-card-price-info">
-                  <strong>{event.entryFee ? (/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee) : 'Fee details soon'}</strong>
-                  <span>{event.registrationCloses ? `Registration closes ${formatEventDate(event.registrationCloses)}` : 'Registration open'}</span>
-                </div>
+              <div className="featured-event-offer">
+                <span>{event.registrationCloses ? `Registration closes ${formatEventDate(event.registrationCloses)}` : 'Registration open'}</span>
+                <strong>{event.lowestPrice != null ? `₹${Number(event.lowestPrice).toLocaleString('en-IN')} onwards` : event.entryFee ? (/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee) : 'Price details soon'}</strong>
               </div>
               <div className="event-actions">
-                {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>View Details</Link>}
                 {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
+                {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>Event details</Link>}
               </div>
+              <div className="featured-event-footer"><span className="featured-event-location"><Icon name="pin" size={15} /> {event.location || `${event.city}${event.state ? `, ${event.state}` : ''}`}</span><span className="featured-event-organizer"><span className="featured-organizer-label">ORGANIZER</span>{event.organizer}<b>{event.status}</b></span></div>
+              {(event.organizerContactName || event.organizerEmail || event.organizerPhone || event.organizerWebsite) && <div className="featured-event-contacts">{event.organizerContactName && <span>{event.organizerContactName}</span>}{event.organizerPhone && <a href={`tel:${event.organizerPhone}`}>{event.organizerPhone}</a>}{event.organizerEmail && <a href={`mailto:${event.organizerEmail}`}>{event.organizerEmail}</a>}{event.organizerWebsite && <a href={event.organizerWebsite} target="_blank" rel="noreferrer">Organizer website</a>}</div>}
               </>}
             </div>
           </article>
