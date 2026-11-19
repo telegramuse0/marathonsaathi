@@ -76,3 +76,4 @@ grant execute on function public.edit_own_event_feedback(bigint, text, text, tex
 grant execute on function public.delete_own_event_feedback(bigint, text) to anon, authenticated;
 
 commit;
+

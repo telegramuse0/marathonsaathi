@@ -15,6 +15,7 @@ type Review = {
   distance: string | null;
   created_at: string;
 };
+type ReviewReply = { id: number; review_id: number; author_name: string; message: string; created_at: string };
 
 const ratingLabels = [
   ['route_rating', 'Route'],
@@ -33,6 +34,7 @@ function Stars({ value, label, onChange }: { value: number; label: string; onCha
 
 export default function EventFeedback({ eventId, eventName, eventDate, eventDistances }: { eventId: number; eventName: string; eventDate: string; eventDistances: string[] }) {
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [replies, setReplies] = useState<ReviewReply[]>([]);
   const [runnerName, setRunnerName] = useState('');
   const [bibNumber, setBibNumber] = useState('');
   const [distance, setDistance] = useState(eventDistances[0] || '');
@@ -43,6 +45,11 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventDist
   const [message, setMessage] = useState('');
   const [ownerTokens, setOwnerTokens] = useState<Record<string, string>>({});
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
+  const [replyName, setReplyName] = useState('');
+  const [replyText, setReplyText] = useState('');
+  const [replySaving, setReplySaving] = useState(false);
+  const [replyMessage, setReplyMessage] = useState('');
 
   const raceDate = new Date(`${eventDate.slice(0, 10)}T23:59:59`);
   const feedbackOpen = Boolean(eventDate) && !Number.isNaN(raceDate.getTime()) && raceDate.getTime() < Date.now();
@@ -63,13 +70,39 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventDist
         .select('id,runner_name,bib_number,distance,route_rating,organization_rating,water_rating,overall_rating,comment,created_at')
         .eq('event_id', eventId).eq('is_verified', true).order('created_at', { ascending: false });
       if (active) {
-        if (!error) setReviews((data || []) as Review[]);
+        if (!error) {
+          const loadedReviews = (data || []) as Review[];
+          setReviews(loadedReviews);
+          if (loadedReviews.length) {
+            const { data: replyData } = await supabase.from('event_feedback_replies')
+              .select('id,review_id,author_name,message,created_at')
+              .in('review_id', loadedReviews.map((review) => review.id))
+              .order('created_at', { ascending: true });
+            if (active) setReplies((replyData || []) as ReviewReply[]);
+          } else setReplies([]);
+        }
         setLoading(false);
       }
     };
     void load();
     return () => { active = false; };
   }, [eventId]);
+
+  const submitReply = async (e: React.FormEvent<HTMLFormElement>, reviewId: number) => {
+    e.preventDefault();
+    const cleanName = replyName.trim();
+    const cleanMessage = replyText.trim();
+    if (cleanName.length < 2 || !cleanMessage) return;
+    setReplySaving(true);
+    setReplyMessage('');
+    const { data, error } = await supabase.from('event_feedback_replies')
+      .insert({ review_id: reviewId, author_name: cleanName, message: cleanMessage })
+      .select('id,review_id,author_name,message,created_at').single();
+    setReplySaving(false);
+    if (error || !data) { setReplyMessage('Reply submit nahi hua. Thodi der baad phir try karein.'); return; }
+    setReplies((current) => [...current, data as ReviewReply]);
+    setReplyText(''); setReplyName(''); setReplyingTo(null);
+  };
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -142,6 +175,7 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventDist
     setOwnerTokens(nextTokens);
     window.localStorage.setItem('marathonsaathi-review-keys', JSON.stringify(nextTokens));
     setReviews((current) => current.filter((item) => item.id !== review.id));
+    setReplies((current) => current.filter((item) => item.review_id !== review.id));
     setMessage('Your review has been deleted.');
   };
 
@@ -165,6 +199,14 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventDist
             <p className="mt-1 text-xs font-semibold text-slate-600">Bib {review.bib_number || '—'} · {review.distance || 'Race distance'}</p>
             {review.comment && <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">{review.comment}</p>}
             <p className="mt-3 border-t border-slate-200 pt-2 text-[11px] text-slate-500">Route {review.route_rating}/5 · Organisation {review.organization_rating}/5 · Water {review.water_rating}/5</p>
+            {replies.filter((reply) => reply.review_id === review.id).map((reply) => <div key={reply.id} className="mt-3 rounded-lg border border-slate-200 bg-white p-3"><p className="text-xs font-bold text-slate-800">{reply.author_name} <span className="font-normal text-slate-400">· {new Date(reply.created_at).toLocaleDateString()}</span></p><p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-700">{reply.message}</p></div>)}
+            <div className="mt-3 border-t border-slate-200 pt-3">
+              {replyingTo === review.id ? <form onSubmit={(e) => void submitReply(e, review.id)} className="space-y-2">
+                <div className="flex flex-wrap gap-2"><input required minLength={2} maxLength={60} value={replyName} onChange={(e) => setReplyName(e.target.value)} placeholder="Your name" aria-label="Your name" className="min-w-0 flex-1 rounded-lg border border-slate-200 px-3 py-2 text-xs" /><button disabled={replySaving} className="rounded-lg bg-orange-600 px-3 py-2 text-xs font-bold text-white disabled:opacity-60">{replySaving ? 'Posting…' : 'Post reply'}</button><button type="button" onClick={() => { setReplyingTo(null); setReplyMessage(''); }} className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-600">Cancel</button></div>
+                <textarea required maxLength={1000} rows={2} value={replyText} onChange={(e) => setReplyText(e.target.value)} placeholder="Write a helpful reply…" className="w-full rounded-lg border border-slate-200 px-3 py-2 text-xs" />
+                {replyMessage && <p role="status" className="text-xs text-rose-700">{replyMessage}</p>}
+              </form> : <button type="button" onClick={() => { setReplyingTo(review.id); setReplyMessage(''); }} className="text-xs font-bold text-orange-700 hover:text-orange-800">Reply{replies.some((reply) => reply.review_id === review.id) ? ` · ${replies.filter((reply) => reply.review_id === review.id).length}` : ''}</button>}
+            </div>
             {ownerTokens[String(review.id)] && <div className="mt-4 flex gap-2 border-t border-slate-200 pt-3"><button type="button" onClick={() => startReviewEdit(review)} className="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700">Edit review</button><button type="button" onClick={() => void deleteOwnReview(review)} className="rounded-lg border border-rose-200 bg-white px-3 py-1.5 text-xs font-bold text-rose-700">Delete</button></div>}
           </article>)}
         </div>}
@@ -190,3 +232,4 @@ export default function EventFeedback({ eventId, eventName, eventDate, eventDist
     </section>
   );
 }
+

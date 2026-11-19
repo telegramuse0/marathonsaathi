@@ -197,3 +197,4 @@ function isPastEvent(value: string) {
   const parsed = new Date(value.length === 10 ? `${value}T23:59:59` : value);
   return !Number.isNaN(parsed.getTime()) && parsed.getTime() < Date.now();
 }
+

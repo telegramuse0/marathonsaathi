@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import SiteFooter from '@/components/premium/SiteFooter';
 import AdminContactInboxPanel from '@/components/premium/AdminContactInboxPanel';
+import AdminReviewManagerPanel from '@/components/premium/AdminReviewManagerPanel';
 import { supabase } from '@/lib/supabase';
 
 type AdminMarathon = {
@@ -857,9 +858,11 @@ export default function AdminPage() {
             <nav aria-label="Admin sections" className="sticky top-2 z-20 flex gap-2 overflow-x-auto rounded-xl border border-slate-200 bg-white/95 p-2 shadow-sm backdrop-blur">
               <a href="#admin-events" className="shrink-0 rounded-lg bg-slate-900 px-3 py-2 text-xs font-bold text-white">Events</a>
               <a href="#admin-products" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Products</a>
+              <a href="#admin-reviews" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Reviews</a>
               <a href="#admin-contact-messages" className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700">Contact Messages</a>
             </nav>
 
+            <AdminReviewManagerPanel />
             <AdminContactInboxPanel />
 
             {/* RUNNER'S STORE PRODUCT MANAGEMENT */}
@@ -1402,3 +1405,4 @@ export default function AdminPage() {
     </div>
   );
 }
+

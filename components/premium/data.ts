@@ -31,3 +31,4 @@ export const shortcuts: Shortcut[] = [
   { title: 'Find a race', description: 'Browse every event', icon: 'calendar', href: '/events', tone: 'orange' },
   { title: 'Runner’s gear', description: 'Explore our picks', icon: 'bag', href: '/#store', tone: 'green' },
 ];
+

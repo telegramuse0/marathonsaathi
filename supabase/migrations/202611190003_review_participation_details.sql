@@ -27,3 +27,4 @@ create policy "Public can submit race reviews"
   );
 
 commit;
+

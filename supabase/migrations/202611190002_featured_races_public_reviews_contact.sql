@@ -59,3 +59,4 @@ create policy "Admins can delete contact messages"
   using (exists (select 1 from public.admin_users where user_id = auth.uid()));
 
 commit;
+
