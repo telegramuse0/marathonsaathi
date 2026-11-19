@@ -52,10 +52,7 @@ export default function RecentReviewsSection() {
       {reviews.length ? <div className="recent-reviews-grid">
         {reviews.map((review) => <article key={review.id} className="recent-review-card">
           {review.eventImage && <img src={review.eventImage} alt={`${review.eventName} event`} className="recent-review-image" loading="lazy" />}
-          <div className="recent-review-stars" aria-label={`${review.overall_rating} out of 5 stars`}>{'★'.repeat(review.overall_rating)}<span>{'★'.repeat(5 - review.overall_rating)}</span></div>
-          <p className="recent-review-comment">{review.comment || 'Shared a race experience with the community.'}</p>
-          <div className="recent-review-by"><strong>{review.runner_name}</strong><span>{review.eventName} · {review.distance || 'Race distance'} · Bib {review.bib_number || '—'}</span></div>
-          <Link href={`/events/${review.event_id}`} className="recent-review-link">Read race details <span aria-hidden="true">→</span></Link>
+          <Link href={`/events/${review.event_id}#event-feedback-heading`} className="recent-review-title">{review.eventName}</Link>
         </article>)}
       </div> : <div className="recent-reviews-empty">{loaded ? 'Runner reviews will appear here after the first race review.' : 'Loading recent runner reviews…'}</div>}
     </section>
