@@ -21,6 +21,7 @@ export default function SiteHeader() {
         </button>
         <nav className={`main-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Main navigation">
           <Link href="/" onClick={closeMenu}>Home</Link>
+          <Link href="/reviews" onClick={closeMenu}>Event Review</Link>
           <Link href="/events" className="nav-cta" onClick={closeMenu}>Find a race <Icon name="arrow" size={16} /></Link>
         </nav>
       </div>
