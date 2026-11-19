@@ -9,7 +9,6 @@ export type Marathon = {
   city: string;
   distance: string;
   status: string;
-  rating?: number;
   registrationUrl?: string;
   imageUrl?: string;
   photosUrl?: string;

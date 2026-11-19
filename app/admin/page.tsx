@@ -15,7 +15,6 @@ type AdminMarathon = {
   registrationUrl: string;
   organizer: string;
   badge: string;
-  rating: number;
   bannerImage?: string;
   about?: string;
   venue?: string;
@@ -63,7 +62,6 @@ const MASTER_EVENTS: AdminMarathon[] = [
     registrationUrl: 'https://jbgkolkatamarathon.com/',
     organizer: 'NEB Sports',
     badge: 'Featured',
-    rating: 4.9,
   },
   {
     id: 2,
@@ -75,7 +73,6 @@ const MASTER_EVENTS: AdminMarathon[] = [
     registrationUrl: 'https://tatamumbaimarathon.procam.in/',
     organizer: 'Procam International',
     badge: 'Gold Label',
-    rating: 5.0,
   },
   {
     id: 3,
@@ -87,7 +84,6 @@ const MASTER_EVENTS: AdminMarathon[] = [
     registrationUrl: 'https://vedantadelhihalfmarathon.procam.in/',
     organizer: 'Procam International',
     badge: 'Platinum',
-    rating: 4.8,
   },
   {
     id: 4,
@@ -99,7 +95,6 @@ const MASTER_EVENTS: AdminMarathon[] = [
     registrationUrl: 'https://nmdchyderabadmarathon.com/',
     organizer: 'Hyderabad Runners',
     badge: 'Popular',
-    rating: 4.7,
   },
   {
     id: 5,
@@ -111,13 +106,20 @@ const MASTER_EVENTS: AdminMarathon[] = [
     registrationUrl: 'https://www.skfgoarivermarathon.com/',
     organizer: 'SMRC',
     badge: 'Scenic',
-    rating: 4.9,
   },
 ];
 
 const MARATHONS_STORAGE_KEY = 'marathon_saathi_list';
 
-type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; location_details: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; rating: number | null; schedule: string | null; photos_url: string | null; results_url: string | null; awards: string | null; runner_benefits: string | null };
+const INDIAN_STATES_AND_UTS = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+  'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal',
+  'Andaman and Nicobar Islands', 'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir', 'Ladakh', 'Lakshadweep', 'Puducherry',
+];
+const COMMON_DISTANCES = ['3K', '5K', '6K', '10K', '11K', '12K', '21K', 'Half Marathon', '25K', '42K', 'Full Marathon', '50K', '60K', '75K', '100K', 'Dream Run'];
+
+type MarathonRow = { id: number; name: string; description: string | null; venue: string | null; location_details: string | null; date: string; registration_link: string | null; image: string | null; status: string | null; distance: string | null; organizer: string | null; fee: string | null; schedule: string | null; photos_url: string | null; results_url: string | null; awards: string | null; runner_benefits: string | null };
 
 const rowToEvent = (row: MarathonRow): AdminMarathon => {
   const venue = row.venue || '';
@@ -125,7 +127,7 @@ const rowToEvent = (row: MarathonRow): AdminMarathon => {
   return {
     id: Number(row.id), name: row.name || '', city: parts[0] || venue || '', state: parts.slice(1).join(', '),
     date: row.date || '', distance: row.distance || '', registrationUrl: row.registration_link || '',
-    organizer: row.organizer || '', badge: row.status || 'Upcoming', rating: Number(row.rating) || 5,
+    organizer: row.organizer || '', badge: row.status || 'Upcoming',
     bannerImage: row.image || '', about: row.description || '', venue,
     entryFee: row.fee || '', schedule: row.schedule || '', photosUrl: row.photos_url || '', resultsUrl: row.results_url || '', awards: row.awards || '', runnerBenefits: row.runner_benefits || '',
   };
@@ -137,12 +139,11 @@ const eventToRow = (event: AdminMarathon) => ({
   venue: [event.city, event.state].filter(Boolean).join(', '),
   location_details: event.venue || null,
   date: event.date,
-  registration_link: event.registrationUrl,
+  registration_link: event.registrationUrl || null,
   image: event.bannerImage || null,
   status: event.badge || 'Upcoming',
   distance: event.distance,
   organizer: event.organizer,
-  rating: event.rating,
   fee: event.entryFee || null,
   schedule: event.schedule || null,
   photos_url: event.photosUrl || null,
@@ -203,7 +204,6 @@ export default function AdminPage() {
     registrationUrl: '',
     organizer: '',
     badge: '',
-    rating: '5.0',
     bannerImage: '',
     about: '',
     venue: '',
@@ -214,6 +214,7 @@ export default function AdminPage() {
     awards: '',
     runnerBenefits: '',
   });
+  const [customDistance, setCustomDistance] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -565,9 +566,10 @@ export default function AdminPage() {
   const resetEventForm = () => {
     setEventForm({
       name: '', city: '', state: '', date: '', distance: '', registrationUrl: '',
-      organizer: '', badge: '', rating: '5.0', bannerImage: '', about: '', venue: '',
+      organizer: '', badge: '', bannerImage: '', about: '', venue: '',
       entryFee: '', schedule: '', photosUrl: '', resultsUrl: '', awards: '', runnerBenefits: '',
     });
+    setCustomDistance('');
     setEditingEventId(null);
     setShowAddEvent(false);
   };
@@ -590,20 +592,14 @@ export default function AdminPage() {
     const registrationUrl = eventForm.registrationUrl.trim();
     const organizer = eventForm.organizer.trim();
     const badge = eventForm.badge.trim() || 'Upcoming';
-    const rating = Number(eventForm.rating);
 
-    if (!name || !city || !state || !date || !distance || !registrationUrl || !organizer) {
-      alert('Please fill all required event details.');
+    if (!name || !city || !state || !date || !distance || !organizer) {
+      alert('Please fill all required event details. Registration URL can be added later.');
       return;
     }
 
     if (Number.isNaN(new Date(`${date}T00:00:00`).getTime())) {
       alert('Please enter a valid race date.');
-      return;
-    }
-
-    if (Number.isNaN(rating) || rating < 0 || rating > 5) {
-      alert('Rating must be between 0 and 5.');
       return;
     }
 
@@ -628,7 +624,6 @@ export default function AdminPage() {
       registrationUrl,
       organizer,
       badge,
-      rating,
       bannerImage: eventForm.bannerImage || '',
       about: eventForm.about.trim(),
       venue: eventForm.venue.trim(),
@@ -675,7 +670,6 @@ export default function AdminPage() {
       registrationUrl: event.registrationUrl,
       organizer: event.organizer,
       badge: event.badge,
-      rating: String(event.rating),
       bannerImage: event.bannerImage || '',
       about: event.about || '',
       venue: event.venue || '',
@@ -909,6 +903,8 @@ export default function AdminPage() {
                     </p>
                   </div>
 
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-3">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">1. Basic event information</h6><p className="mt-1 text-[10px] text-slate-500">Event ka naam, organizer, location aur race date.</p></div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">
@@ -956,14 +952,15 @@ export default function AdminPage() {
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         State *
                       </label>
-                      <input
+                      <select
                         required
-                        type="text"
                         value={eventForm.state}
                         onChange={(e) => handleEventFormChange('state', e.target.value)}
-                        placeholder="West Bengal"
                         className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
-                      />
+                      >
+                        <option value="">Select state or union territory</option>
+                        {INDIAN_STATES_AND_UTS.map((stateName) => <option key={stateName} value={stateName}>{stateName}</option>)}
+                      </select>
                     </div>
 
                     <div>
@@ -984,7 +981,7 @@ export default function AdminPage() {
                         Distance *
                       </label>
                       <div className="grid grid-cols-2 gap-2 rounded-xl border border-slate-200 bg-white p-3">
-                        {['3K','5K','6K','10K','11K','12K','21K','Half Marathon','25K','42K','Full Marathon','50K','60K','75K','100K','Dream Run'].map((distanceOption) => {
+                        {COMMON_DISTANCES.map((distanceOption) => {
                           const selected = eventForm.distance.split(',').map((value) => value.trim()).filter(Boolean);
                           return <label key={distanceOption} className="flex items-center gap-2 text-xs text-slate-700">
                             <input type="checkbox" checked={selected.includes(distanceOption)} onChange={(e) => {
@@ -995,7 +992,12 @@ export default function AdminPage() {
                           </label>;
                         })}
                       </div>
-                      <p className="text-[10px] text-slate-400 mt-1">Ek event ke liye multiple distances select kar sakte hain.</p>
+                      <div className="mt-2 flex gap-2">
+                        <input value={customDistance} onChange={(e) => setCustomDistance(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); const value = customDistance.trim(); const current = eventForm.distance.split(',').map((item) => item.trim()).filter(Boolean); if (value && !current.includes(value)) handleEventFormChange('distance', [...current, value].join(', ')); setCustomDistance(''); } }} placeholder="Custom distance, e.g. 8K" className="min-w-0 flex-1 px-3 py-2.5 bg-white border border-slate-200 rounded-lg text-xs outline-none focus:border-orange-500" />
+                        <button type="button" onClick={() => { const value = customDistance.trim(); const current = eventForm.distance.split(',').map((item) => item.trim()).filter(Boolean); if (value && !current.includes(value)) handleEventFormChange('distance', [...current, value].join(', ')); setCustomDistance(''); }} className="shrink-0 rounded-lg bg-slate-900 px-3 py-2.5 text-xs font-bold text-white">Add distance</button>
+                      </div>
+                      {eventForm.distance.split(',').map((value) => value.trim()).filter((value) => value && !COMMON_DISTANCES.includes(value)).map((value) => <label key={value} className="mt-2 inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1.5 text-xs text-slate-700"><input type="checkbox" checked onChange={() => handleEventFormChange('distance', eventForm.distance.split(',').map((item) => item.trim()).filter((item) => item && item !== value).join(', '))} />{value}</label>)}
+                      <p className="text-[10px] text-slate-400 mt-1">Multiple distances select karein ya apna custom distance add karein.</p>
                       </div>
 
                     <div>
@@ -1019,37 +1021,28 @@ export default function AdminPage() {
                       </select>
                     </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                        Rating (0–5)
-                      </label>
-                      <input
-                        type="number"
-                        min="0"
-                        max="5"
-                        step="0.1"
-                        value={eventForm.rating}
-                        onChange={(e) => handleEventFormChange('rating', e.target.value)}
-                        className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
-                      />
-                    </div>
+                  </div>
                   </div>
 
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-3">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">2. Registration &amp; event presentation</h6><p className="mt-1 text-[10px] text-slate-500">Registration link aur event card par dikhne wali image.</p></div>
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                      🌐 Official Registration URL *
+                      🌐 Official Registration URL (optional)
                     </label>
                     <input
-                      required
                       type="url"
                       value={eventForm.registrationUrl}
                       onChange={(e) => handleEventFormChange('registrationUrl', e.target.value)}
-                      placeholder="https://official-event-website.com/"
+                      placeholder="Optional: https://official-event-website.com/"
                       className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-xs outline-none focus:border-orange-500"
                     />
                   </div>
 
-                  <div className="border border-orange-200 bg-white rounded-2xl p-4 space-y-4">
+                  </div>
+
+                  <div className="rounded-xl border border-orange-100 bg-white/80 p-4 sm:p-5 space-y-4">
+                    <div><h6 className="font-black text-xs uppercase tracking-wide text-slate-800">3. Event details &amp; results</h6><p className="mt-1 text-[10px] text-slate-500">Optional details help runners decide. Results and photos links will show after race day.</p></div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1.5">
                         Event Banner Image

@@ -14,7 +14,6 @@ type MarathonRow = {
   date: string | null;
   distance: string | null;
   status: string | null;
-  rating?: number | null;
   registration_link?: string | null;
   image?: string | null;
   photos_url?: string | null;
@@ -41,13 +40,12 @@ function toPublicEvent(row: MarathonRow): Marathon {
   return {
     id: row.id,
     name: row.name?.trim() || 'Marathon',
-    description: row.description?.trim() || '',
+    description: row.description?.trim() || `A running event in ${locationParts[0] || 'India'} with ${row.distance?.trim() || 'multiple'} race categories.`,
     date: formatEventDate(row.date),
     eventDate: row.date || '',
     city: locationParts[0] || 'India',
     distance: row.distance?.trim() || 'Multiple distances',
     status: row.status?.trim() || 'Upcoming',
-    rating: row.rating == null ? 5 : Number(row.rating),
     registrationUrl: row.registration_link?.trim() || '',
     imageUrl: row.image?.trim() || '',
     photosUrl: row.photos_url?.trim() || '',
@@ -67,7 +65,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     const loadEvents = async () => {
       const { data, error } = await supabase
         .from('marathons')
-        .select('id,name,description,venue,date,distance,status,rating,registration_link,image,photos_url,results_url,schedule')
+        .select('id,name,description,venue,date,distance,status,registration_link,image,photos_url,results_url,schedule')
         .order('date', { ascending: true });
 
       if (error) {
@@ -138,7 +136,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
               <h3>{event.name}</h3>
-              <div className="event-bottom"><span>{event.distance}</span><span className="event-rating">★ {event.rating?.toFixed(1) || '5.0'}</span></div>
+              <div className="event-bottom"><span>{event.distance}</span></div>
               {isPastEvent(event.eventDate || event.date) ? (
                 <div className="event-actions">
                   {event.resultsUrl && <a className="event-action" href={event.resultsUrl} target="_blank" rel="noreferrer">Results</a>}
