@@ -748,7 +748,7 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
-    const featured = marathons.filter((event) => event.isFeatured).slice(0, 3);
+    const featured = marathons.filter((event) => event.isFeatured).slice(0, 6);
     const ids = featured.map((event) => String(event.id));
     setFeaturedEventIds(ids);
     setFeaturedEventSelection((current) => current && ids.includes(current) ? current : (ids[0] || ''));
@@ -766,7 +766,7 @@ export default function AdminPage() {
   }, [featuredEventSelection]);
 
   const saveFeaturedEvent = async () => {
-    if (featuredEventIds.length > 3) { alert('Homepage par maximum 3 featured events select kar sakte hain.'); return; }
+    if (featuredEventIds.length > 6) { alert('Homepage par maximum 6 featured events select kar sakte hain.'); return; }
     const selectedId = featuredEventSelection ? Number(featuredEventSelection) : null;
     const selected = selectedId === null ? null : marathons.find((event) => event.id === selectedId);
     if (selectedId !== null && !featuredEventIds.includes(String(selectedId))) { alert('Card details edit karne ke liye pehle event ko featured list me select karein.'); return; }
@@ -1323,9 +1323,9 @@ export default function AdminPage() {
             </section>
 
             <section id="admin-featured" className="scroll-mt-24 space-y-4 rounded-2xl border border-orange-200 bg-orange-50/60 p-5 sm:p-6">
-              <div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">Homepage spotlight</p><h2 className="mt-1 text-lg font-black text-slate-900">Featured event cards</h2><p className="mt-1 max-w-2xl text-xs leading-5 text-slate-600">Homepage par maximum 3 race cards choose karein. Har card ka poster, date, distance, registration closing, lowest price, details, registration link, location, organizer aur badge yahin manage karein.</p></div>
+              <div><p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">Homepage spotlight</p><h2 className="mt-1 text-lg font-black text-slate-900">Featured event cards</h2><p className="mt-1 max-w-2xl text-xs leading-5 text-slate-600">Homepage par maximum 6 race cards choose karein. Har card ka poster, date, distance, registration closing, lowest price, details, registration link, location, organizer aur badge yahin manage karein.</p></div>
               <div className="space-y-3 rounded-xl border border-orange-100 bg-white p-4">
-                <p className="text-xs font-bold text-slate-700">Choose up to 3 featured races ({featuredEventIds.length}/3)</p>
+                <p className="text-xs font-bold text-slate-700">Choose up to 6 featured races ({featuredEventIds.length}/6)</p>
                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                   {marathons.map((event) => {
                     const checked = featuredEventIds.includes(String(event.id));
@@ -1343,7 +1343,7 @@ export default function AdminPage() {
               </div>
               {(() => {
                 const event = marathons.find((item) => String(item.id) === featuredEventSelection && featuredEventIds.includes(String(item.id)));
-                if (!event) return <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-orange-300 bg-white/70 p-4"><p className="text-xs text-slate-500">Select up to three races above, then choose a card to edit its featured details.</p>{featuredEventIds.length === 0 && <button type="button" onClick={() => void saveFeaturedEvent()} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700">Save: remove featured cards</button>}</div>;
+                if (!event) return <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-dashed border-orange-300 bg-white/70 p-4"><p className="text-xs text-slate-500">Select up to six races above, then choose a card to edit its featured details.</p>{featuredEventIds.length === 0 && <button type="button" onClick={() => void saveFeaturedEvent()} className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs font-bold text-slate-700">Save: remove featured cards</button>}</div>;
                 return <div className="space-y-4 rounded-xl border border-orange-100 bg-white p-4 sm:p-5">
                   <div className="grid gap-4 sm:grid-cols-[200px_1fr]">
                     <div className="space-y-2"><p className="text-xs font-bold text-slate-700">Featured image</p>{featuredCardForm.image ? <img src={featuredCardForm.image} alt={`${event.name} featured preview`} className="h-36 w-full rounded-lg bg-slate-100 object-contain" /> : <div className="grid h-36 place-items-center rounded-lg bg-slate-100 text-3xl">🏃</div>}<label className="inline-flex cursor-pointer rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700">Upload image<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" className="hidden" onChange={(e) => { const file = e.target.files?.[0]; if (!file) return; if (file.size > 2 * 1024 * 1024) { alert('Featured image 2 MB se chhoti honi chahiye.'); e.currentTarget.value = ''; return; } const reader = new FileReader(); reader.onload = () => setFeaturedCardForm((current) => ({ ...current, image: typeof reader.result === 'string' ? reader.result : '' })); reader.readAsDataURL(file); e.currentTarget.value = ''; }} /></label></div>
