@@ -418,3 +418,9 @@ button,input{font:inherit}
 .featured-event-organizer{flex-wrap:nowrap;gap:6px}
 .featured-event-organizer-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .featured-event-organizer b{flex:0 0 auto;margin-left:auto}
+
+
+.footer-navigation{display:flex;flex-direction:column;align-items:flex-start;gap:13px}
+.footer-legal-links{display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding-top:11px;border-top:1px solid rgba(255,255,255,.13)}
+.footer-legal-links a{font-size:10px;color:#9fa9b6}
+.footer-legal-links a:hover{color:var(--orange)}
