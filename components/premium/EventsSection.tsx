@@ -87,7 +87,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
       const { data, error } = featuredOnly
         ? await supabase.from('marathons')
           .select('id,name,description,venue,location_details,date,distance,status,registration_link,image,organizer,organizer_contact_name,organizer_email,organizer_phone,organizer_website,lowest_price,fee,registration_closes,is_featured')
-          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(3)
+          .eq('is_featured', true).gte('date', indianToday).order('date', { ascending: true }).limit(6)
         : await supabase.from('marathons')
           .select('id,name,description,venue,date,distance,status,registration_link,image')
           .order('date', { ascending: true });
@@ -137,7 +137,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
     return sortedEvents
       .filter((event) => featuredOnly ? Boolean(event.isFeatured) && !isPastEvent(event.eventDate || event.date) : eventFilter === 'all' || (eventFilter === 'completed') === isPastEvent(event.eventDate || event.date))
       .filter((event) => `${event.name} ${event.city}`.toLowerCase().includes(query))
-      .slice(0, featuredOnly ? 3 : undefined);
+      .slice(0, featuredOnly ? 6 : undefined);
   }, [sortedEvents, search, eventFilter, featuredOnly]);
 
   return (
@@ -161,7 +161,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
             </div>}
             {featuredOnly && !isPastEvent(event.eventDate || event.date) && <div className={`event-art event-art-${(index % 3) + 1}`}>
               {event.imageUrl && <img className="event-art-image" src={event.imageUrl} alt={`${event.name} event`} loading="lazy" />}
-              <span className="event-status">{event.status}</span><span className="event-number">{String(index + 1).padStart(2, '0')}</span>
+              <span className="event-status">{event.status}</span>
               {!event.imageUrl && <span className="event-art-label">MARATHON<br />SAATHI</span>}
             </div>}
             <div className="event-info">

@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
+import { Icon } from './Icon';
 
 type Product = {
   id: number;
@@ -12,20 +14,22 @@ type Product = {
   price: number | null;
   amazon_url: string | null;
   flipkart_url: string | null;
+  is_featured: boolean | null;
 };
 
-export default function AffiliateProductsSection() {
+export default function AffiliateProductsSection({ featuredOnly = true }: { featuredOnly?: boolean }) {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     let active = true;
     const loadProducts = async () => {
-      const { data, error } = await supabase
-        .from('products')
-        .select('id,name,description,category,image_url,price,amazon_url,flipkart_url')
-        .eq('is_active', true)
+      let query = supabase.from('products')
+        .select('id,name,description,category,image_url,price,amazon_url,flipkart_url,is_featured')
+        .eq('is_active', true);
+      if (featuredOnly) query = query.eq('is_featured', true);
+      const { data, error } = await query
         .order('created_at', { ascending: false })
-        .limit(6);
+        .limit(featuredOnly ? 4 : 100);
 
       if (error) {
         console.error('Could not load affiliate products:', error);
@@ -35,14 +39,15 @@ export default function AffiliateProductsSection() {
     };
     void loadProducts();
     return () => { active = false; };
-  }, []);
+  }, [featuredOnly]);
 
   return (
     <section className="affiliate-section page-width" id="store">
       <div className="section-heading affiliate-heading">
-        <div><span className="eyebrow">GEAR UP FOR THE MILES</span><h2>Runner’s <em>favorites.</em></h2></div>
+        <div><span className="eyebrow">GEAR UP FOR THE MILES</span><h2>{featuredOnly ? <>Runner’s <em>favorites.</em></> : <>Runner’s <em>Shop.</em></>}</h2></div>
         <span className="affiliate-note">Some links may earn us a small commission.</span>
       </div>
+      {!featuredOnly && <p className="shop-intro">Explore running essentials selected for your training and race day.</p>}
       {products.length ? (
         <div className="affiliate-grid">
           {products.map((product) => {
@@ -70,6 +75,8 @@ export default function AffiliateProductsSection() {
       ) : (
         <div className="affiliate-empty">Recommended running gear will appear here soon.</div>
       )}
+      {featuredOnly && <div className="affiliate-shop-link"><Link href="/shop">Shop all running gear <Icon name="arrow" size={16} /></Link></div>}
     </section>
   );
 }
+

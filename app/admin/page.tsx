@@ -52,12 +52,13 @@ type StoreProduct = {
   amazon_url: string | null;
   flipkart_url: string | null;
   is_active: boolean;
+  is_featured: boolean;
   created_at?: string;
 };
 
 const emptyProductForm = {
   name: '', description: '', category: 'Running Shoes', image_url: '',
-  price: '', amazon_url: '', flipkart_url: '', is_active: true,
+  price: '', amazon_url: '', flipkart_url: '', is_active: true, is_featured: false,
 };
 
 const MASTER_EVENTS: AdminMarathon[] = [
@@ -316,7 +317,7 @@ export default function AdminPage() {
       setProductsLoading(true);
       const { data, error } = await supabase
         .from('products')
-        .select('id,name,description,category,image_url,price,amazon_url,flipkart_url,is_active,created_at')
+        .select('id,name,description,category,image_url,price,amazon_url,flipkart_url,is_active,is_featured,created_at')
         .order('created_at', { ascending: false });
       if (cancelled) return;
       if (error) {
@@ -346,6 +347,10 @@ export default function AdminPage() {
       alert('Price valid positive number hona chahiye.');
       return;
     }
+    if (productForm.is_featured && products.filter((product) => product.is_active && product.is_featured && product.id !== editingProductId).length >= 4) {
+      alert('Homepage par sirf 4 featured products rakh sakte hain. Pehle kisi existing product ko unfeature karein.');
+      return;
+    }
     setProductSaving(true);
     const payload = {
       name: productForm.name.trim(),
@@ -356,6 +361,7 @@ export default function AdminPage() {
       amazon_url: productForm.amazon_url.trim(),
       flipkart_url: productForm.flipkart_url.trim(),
       is_active: productForm.is_active,
+      is_featured: productForm.is_featured,
     };
     try {
       if (editingProductId !== null) {
@@ -383,7 +389,7 @@ export default function AdminPage() {
     setProductForm({
       name: product.name || '', description: product.description || '', category: product.category || 'Running Accessories',
       image_url: product.image_url || '', price: product.price === null ? '' : String(product.price),
-      amazon_url: product.amazon_url || '', flipkart_url: product.flipkart_url || '', is_active: product.is_active,
+      amazon_url: product.amazon_url || '', flipkart_url: product.flipkart_url || '', is_active: product.is_active, is_featured: Boolean(product.is_featured),
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -971,7 +977,7 @@ export default function AdminPage() {
                   <div><label className="block text-xs font-bold text-slate-700 mb-1">Amazon Affiliate URL</label><input type="url" value={productForm.amazon_url} onChange={(e) => setProductForm((p) => ({ ...p, amazon_url: e.target.value }))} placeholder="https://..." className="w-full px-3 py-3 border border-slate-200 rounded-xl text-xs" /></div>
                   <div><label className="block text-xs font-bold text-slate-700 mb-1">Flipkart Affiliate URL</label><input type="url" value={productForm.flipkart_url} onChange={(e) => setProductForm((p) => ({ ...p, flipkart_url: e.target.value }))} placeholder="https://..." className="w-full px-3 py-3 border border-slate-200 rounded-xl text-xs" /></div>
                 </div>
-                <label className="flex items-center gap-2 text-xs font-bold text-slate-700"><input type="checkbox" checked={productForm.is_active} onChange={(e) => setProductForm((p) => ({ ...p, is_active: e.target.checked }))} /> Show product in public store</label>
+                <div className="flex flex-wrap gap-x-6 gap-y-2"><label className="flex items-center gap-2 text-xs font-bold text-slate-700"><input type="checkbox" checked={productForm.is_active} onChange={(e) => setProductForm((p) => ({ ...p, is_active: e.target.checked }))} /> Show product in public store</label><label className="flex items-center gap-2 text-xs font-bold text-slate-700"><input type="checkbox" checked={productForm.is_featured} onChange={(e) => setProductForm((p) => ({ ...p, is_featured: e.target.checked }))} /> Feature on homepage (max 4)</label></div>
                 <button disabled={productSaving} type="submit" className="bg-[#FF5500] disabled:opacity-60 hover:bg-orange-600 text-white font-black px-6 py-3 rounded-xl text-xs">{productSaving ? 'Saving…' : editingProductId !== null ? 'Save Product Changes' : 'Add Product'}</button>
               </form>
 

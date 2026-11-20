@@ -269,16 +269,29 @@ button,input{font:inherit}
 .featured-events-section .event-art-image{object-fit:contain;padding:10px;background:#f1eee8}
 .featured-events-section .event-info{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;padding:17px}
 .featured-events-section .event-info h3{margin:10px 0 7px;font-size:19px;line-height:1.25}
+.featured-events-section .event-art{height:155px;min-height:155px;flex-basis:155px}
+.featured-events-section .event-info{padding:14px}
+.featured-events-section .event-info h3{font-size:17px}
+.featured-events-section .featured-event-description{-webkit-line-clamp:2}
 .featured-events-section .featured-event-description{font-size:11px;line-height:1.5}
 .featured-event-offer{margin-top:12px;padding:11px 0}
 .featured-event-offer strong{font-size:15px}
 .featured-events-section .event-actions{margin-top:12px}
 .featured-events-section .event-action{min-height:39px;padding-inline:12px;font-size:10px}
-.featured-event-footer{justify-content:flex-start;gap:10px;margin-top:auto;padding-top:14px;font-size:10px}
+.featured-event-footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;gap:9px;margin-top:auto;padding-top:12px;font-size:10px}
+.featured-event-location{min-width:0;overflow-wrap:anywhere}
+.featured-event-organizer{min-width:0;overflow-wrap:anywhere}
+.featured-event-organizer b{margin-left:auto}
 .featured-event-organizer{gap:5px}
 .featured-event-contacts{font-size:9px}
 @media(max-width:900px){.featured-events-section .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.featured-events-section .event-grid{grid-template-columns:1fr}.featured-events-section .event-card{display:grid;grid-template-columns:36% minmax(0,1fr)}.featured-events-section .event-art{height:auto;min-height:205px;flex-basis:auto}.featured-events-section .event-info{padding:15px 13px}.featured-events-section .event-info h3{font-size:18px}.featured-events-section .event-art-image{padding:5px}.featured-events-section .event-action{min-height:38px;padding-inline:10px;font-size:10px}}
+
+.affiliate-section .section-heading{display:flex}.affiliate-section .affiliate-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.affiliate-section .affiliate-image{height:145px}.affiliate-section .affiliate-info{padding:13px}.affiliate-section .affiliate-info h3{font-size:14px;line-height:1.35}.affiliate-section .affiliate-actions a{min-height:35px;padding:0 10px;font-size:10px}
+.affiliate-shop-link{display:flex;justify-content:center;margin-top:22px}.affiliate-shop-link a{display:inline-flex;align-items:center;gap:8px;border:1px solid #d9d5cb;border-radius:7px;padding:11px 16px;color:var(--navy);font-size:12px;font-weight:800;transition:background .2s,color .2s}.affiliate-shop-link a:hover{background:var(--navy);color:#fff}.shop-intro{margin:-10px 0 22px;color:#687383;font-size:13px}
+@media(max-width:900px){.affiliate-section .affiliate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.featured-events-section .event-info{padding:13px 12px}.featured-events-section .event-info h3{font-size:16px}.featured-events-section .event-art{min-height:180px}.featured-event-footer{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;font-size:9px}.affiliate-section .affiliate-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.affiliate-section .affiliate-card{display:flex;flex-direction:column;min-height:0}.affiliate-section .affiliate-image{height:112px;min-height:112px}.affiliate-section .affiliate-info{padding:11px}.affiliate-section .affiliate-info h3{font-size:12px}.affiliate-section .affiliate-actions{display:grid;grid-template-columns:1fr;gap:6px}.affiliate-section .affiliate-actions a{min-height:34px}.affiliate-section .affiliate-note{font-size:9px}}
 
 /* Recent Race Reviews layout follows the compact image-led reference card. */
 .recent-reviews-section{padding-top:12px;padding-bottom:65px}
@@ -380,4 +393,21 @@ button,input{font:inherit}
   .text-link{font-size:12px}
   .community-inner p{font-size:14px}
 }
+
+/* Compact six-card featured grid and four-product home shelf. */
+.featured-events-section .event-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.featured-events-section .event-card{min-width:0}
+.featured-events-section .event-art{height:150px;min-height:150px;flex-basis:150px}
+.featured-events-section .event-info{padding:13px}
+.featured-events-section .event-info h3{font-size:17px}
+.featured-event-footer{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;justify-content:initial;gap:8px}
+.featured-event-location,.featured-event-organizer{min-width:0;overflow-wrap:anywhere}
+.affiliate-section .affiliate-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.affiliate-section .affiliate-card{display:flex;min-height:0;flex-direction:column}
+.affiliate-section .affiliate-image{height:140px;min-height:140px}
+.affiliate-shop-link{display:flex;justify-content:center;margin-top:22px}
+.affiliate-shop-link a{display:inline-flex;align-items:center;gap:8px;border:1px solid #d9d5cb;border-radius:7px;padding:11px 16px;color:var(--navy);font-size:12px;font-weight:800}
+.shop-intro{margin:-8px 0 22px;color:#687383;font-size:13px}
+@media(max-width:900px){.featured-events-section .event-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.affiliate-section .affiliate-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.featured-events-section .event-grid{grid-template-columns:1fr}.featured-events-section .event-card{display:grid;grid-template-columns:36% minmax(0,1fr)}.featured-events-section .event-art{height:auto;min-height:180px;flex-basis:auto}.featured-events-section .event-info{padding:13px 12px}.featured-events-section .event-info h3{font-size:16px}.featured-event-footer{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;font-size:9px}.affiliate-section .affiliate-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.affiliate-section .affiliate-card{display:flex;flex-direction:column;min-height:0}.affiliate-section .affiliate-image{height:112px;min-height:112px}.affiliate-section .affiliate-info{padding:11px}.affiliate-section .affiliate-info h3{font-size:12px}.affiliate-section .affiliate-actions{display:grid;grid-template-columns:1fr;gap:6px}.affiliate-section .affiliate-actions a{min-height:34px;padding-inline:7px;font-size:10px}}
 
