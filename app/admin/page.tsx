@@ -788,7 +788,13 @@ export default function AdminPage() {
     const selectedIds = new Set(featuredEventIds.map(Number));
     if (selectedIds.size) {
       const { data, error } = await supabase.from('marathons').update({ is_featured: true }).in('id', [...selectedIds]).select('id');
-      if (error) { alert(`3 featured events save nahi hue: ${error.message}`); return; }
+      if (error) {
+        const needsDatabaseUpdate = error.message.includes('marathons_single_featured_event_idx');
+        alert(needsDatabaseUpdate
+          ? 'Database me abhi bhi one-featured-event rule hai. Supabase SQL Editor me 202611200001_remove_featured_event_unique_rule.sql ka query run karein, phir featured cards save karein.'
+          : `Featured events save nahi hue: ${error.message}`);
+        return;
+      }
       const savedIds = new Set((data || []).map((row) => Number(row.id)));
       if ([...selectedIds].some((id) => !savedIds.has(id))) { alert('Kuch selected events save nahi hue. Event permissions check karke dobara try karein.'); return; }
     }
