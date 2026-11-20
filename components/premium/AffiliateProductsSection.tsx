@@ -51,6 +51,7 @@ export default function AffiliateProductsSection({ featuredOnly = true }: { feat
       {products.length ? (
         <div className="affiliate-grid">
           {products.map((product) => {
+            const buyUrl = product.amazon_url || product.flipkart_url;
             return (
               <article className="affiliate-card" key={product.id}>
                 <div className="affiliate-image">
@@ -59,14 +60,8 @@ export default function AffiliateProductsSection({ featuredOnly = true }: { feat
                 </div>
                 <div className="affiliate-info">
                   <h3>{product.name}</h3>
-                  <div className="affiliate-actions">
-                    {product.amazon_url ? <a href={product.amazon_url} target="_blank" rel="sponsored noreferrer">Amazon <span aria-hidden="true">↗</span></a> : <span className="affiliate-action-disabled">Amazon link pending</span>}
-                    {product.flipkart_url ? <a href={product.flipkart_url} target="_blank" rel="sponsored noreferrer">Flipkart <span aria-hidden="true">↗</span></a> : <span className="affiliate-action-disabled">Flipkart link pending</span>}
-                  </div>
-                  {product.description && <p>{product.description}</p>}
-                  <div className="affiliate-bottom">
-                    <strong>{product.price !== null ? `₹${product.price.toLocaleString('en-IN')}` : 'Recommended gear'}</strong>
-                  </div>
+                  {product.price !== null && <strong className="affiliate-price">₹{product.price.toLocaleString('en-IN')}</strong>}
+                  {buyUrl ? <a className="affiliate-buy-now" href={buyUrl} target="_blank" rel="sponsored noreferrer">Buy Now <span aria-hidden="true">↗</span></a> : <span className="affiliate-buy-now is-disabled">Buy Now · Link coming soon</span>}
                 </div>
               </article>
             );
