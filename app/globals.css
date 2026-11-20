@@ -440,3 +440,10 @@ button,input{font:inherit}
 .affiliate-buy-now:hover{background:#df6330}
 .affiliate-buy-now.is-disabled{background:#a9afb7;color:#fff}
 @media(max-width:680px){.affiliate-section .affiliate-image{height:112px;min-height:112px;flex-basis:112px}.affiliate-section .affiliate-info{gap:8px;padding:11px}.affiliate-section .affiliate-info h3{font-size:12px}.affiliate-buy-now{min-height:35px;font-size:10px}}
+
+
+/* Show full product photos and keep product names uppercase. */
+.affiliate-section .affiliate-image{height:185px;min-height:185px;flex-basis:185px}
+.affiliate-section .affiliate-image img{position:absolute;inset:0;object-fit:contain!important;object-position:center;padding:14px}
+.affiliate-section .affiliate-info h3{text-transform:uppercase;letter-spacing:.2px;font-weight:850}
+@media(max-width:680px){.affiliate-section .affiliate-image{height:145px;min-height:145px;flex-basis:145px}}
