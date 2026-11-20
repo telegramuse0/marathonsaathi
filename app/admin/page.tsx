@@ -1330,7 +1330,7 @@ export default function AdminPage() {
                   {marathons.map((event) => {
                     const checked = featuredEventIds.includes(String(event.id));
                     return <label key={event.id} className={`flex min-w-0 cursor-pointer items-start gap-2 rounded-lg border p-3 text-xs ${checked ? 'border-orange-300 bg-orange-50 text-orange-900' : 'border-slate-200 bg-white text-slate-700'}`}>
-                      <input type="checkbox" checked={checked} disabled={!checked && featuredEventIds.length >= 3} onChange={(e) => setFeaturedEventIds((current) => e.target.checked ? current.length < 3 ? [...current, String(event.id)] : current : current.filter((id) => id !== String(event.id)))} className="mt-0.5 h-4 w-4 shrink-0 accent-orange-600" />
+                      <input type="checkbox" checked={checked} disabled={!checked && featuredEventIds.length >= 6} onChange={(e) => setFeaturedEventIds((current) => e.target.checked ? current.length < 6 ? [...current, String(event.id)] : current : current.filter((id) => id !== String(event.id)))} className="mt-0.5 h-4 w-4 shrink-0 accent-orange-600" />
                       <span className="min-w-0"><strong className="block truncate">{event.name}</strong><small className="mt-1 block text-[10px] text-slate-500">{event.city} · {formatDate(event.date)}</small></span>
                     </label>;
                   })}
