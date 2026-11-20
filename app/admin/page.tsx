@@ -765,7 +765,7 @@ export default function AdminPage() {
     const selected = selectedId === null ? null : marathons.find((event) => event.id === selectedId);
     if (selectedId !== null && !featuredEventIds.includes(String(selectedId))) { alert('Card details edit karne ke liye pehle event ko featured list me select karein.'); return; }
     if (selectedId !== null && !selected) { alert('Featured event list se ek valid event select karein.'); return; }
-    if (selected && (!featuredCardForm.date || !featuredCardForm.distance.trim() || !featuredCardForm.registrationUrl.trim())) { alert('Featured card ke race date, distance aur registration link zaroori hain.'); return; }
+    if (selected && (!featuredCardForm.date || !featuredCardForm.distance.trim())) { alert('Featured card ke race date aur distance zaroori hain. Registration link baad me add kar sakte hain.'); return; }
     if (featuredCardForm.registrationCloses && featuredCardForm.date && featuredCardForm.registrationCloses > featuredCardForm.date) { alert('Registration closing date race date se pehle ya usi din honi chahiye.'); return; }
     if (featuredCardForm.lowestPrice.trim() && (!Number.isFinite(Number(featuredCardForm.lowestPrice)) || Number(featuredCardForm.lowestPrice) < 0)) { alert('Starting price zero ya usse zyada amount hona chahiye.'); return; }
     if (selectedId !== null) {

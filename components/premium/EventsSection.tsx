@@ -184,7 +184,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                 <strong>{event.lowestPrice != null ? `₹${Number(event.lowestPrice).toLocaleString('en-IN')} onwards` : event.entryFee ? (/^\d+(\.\d+)?$/.test(event.entryFee) ? `₹${Number(event.entryFee).toLocaleString('en-IN')} onwards` : event.entryFee) : 'Price details soon'}</strong>
               </div>
               <div className="event-actions">
-                {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
+                {!isPastEvent(event.eventDate || event.date) && (event.registrationUrl ? <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a> : <button type="button" className="event-action event-action-register" disabled title="Registration link will be added soon">Register Now</button>)}
                 {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>Event details</Link>}
               </div>
               <div className="featured-event-footer"><span className="featured-event-location"><Icon name="pin" size={15} /> {event.location || `${event.city}${event.state ? `, ${event.state}` : ''}`}</span><span className="featured-event-organizer"><span className="featured-organizer-label">ORGANIZER</span>{event.organizer}<b>{event.status}</b></span></div>
