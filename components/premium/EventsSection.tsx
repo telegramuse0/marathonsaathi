@@ -176,7 +176,6 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
               </> : <>
               <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span></div>
               <h3>{event.name}</h3>
-              {event.description && <p className="event-list-description featured-event-description">{event.description}</p>}
               {event.id && (eventRatings[event.id] || isPastEvent(event.eventDate || event.date)) && <EventRatingLink eventId={event.id} rating={eventRatings[event.id]} />}
               <div className="event-distance-list">{event.distance.split(/[,|•]/).map((distance) => distance.trim()).filter(Boolean).slice(0, 4).map((distance) => <span key={distance}>{distance}</span>)}</div>
               <div className="featured-event-offer">
@@ -187,7 +186,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                 {!isPastEvent(event.eventDate || event.date) && (event.registrationUrl ? <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a> : <button type="button" className="event-action event-action-register" disabled title="Registration link will be added soon">Register Now</button>)}
                 {event.id && <Link className="event-action event-action-detail" href={`/events/${event.id}`}>Event details</Link>}
               </div>
-              <div className="featured-event-footer"><span className="featured-event-location"><Icon name="pin" size={15} /> {event.location || `${event.city}${event.state ? `, ${event.state}` : ''}`}</span><span className="featured-event-organizer"><span className="featured-organizer-label">ORGANIZER</span>{event.organizer}<b>{event.status}</b></span></div>
+              <div className="featured-event-footer"><span className="featured-event-location"><Icon name="pin" size={15} /> {event.location || `${event.city}${event.state ? `, ${event.state}` : ''}`}</span><span className="featured-event-organizer"><span className="featured-organizer-label">ORGANIZER</span><span className="featured-event-organizer-name">{event.organizer || 'Organizer details soon'}</span><b>{event.status}</b></span></div>
               {(event.organizerContactName || event.organizerEmail || event.organizerPhone || event.organizerWebsite) && <div className="featured-event-contacts">{event.organizerContactName && <span>{event.organizerContactName}</span>}{event.organizerPhone && <a href={`tel:${event.organizerPhone}`}>{event.organizerPhone}</a>}{event.organizerEmail && <a href={`mailto:${event.organizerEmail}`}>{event.organizerEmail}</a>}{event.organizerWebsite && <a href={event.organizerWebsite} target="_blank" rel="noreferrer">Organizer website</a>}</div>}
               </>}
             </div>
