@@ -768,18 +768,30 @@ export default function AdminPage() {
     if (selected && (!featuredCardForm.date || !featuredCardForm.distance.trim() || !featuredCardForm.registrationUrl.trim())) { alert('Featured card ke race date, distance aur registration link zaroori hain.'); return; }
     if (featuredCardForm.registrationCloses && featuredCardForm.date && featuredCardForm.registrationCloses > featuredCardForm.date) { alert('Registration closing date race date se pehle ya usi din honi chahiye.'); return; }
     if (featuredCardForm.lowestPrice.trim() && (!Number.isFinite(Number(featuredCardForm.lowestPrice)) || Number(featuredCardForm.lowestPrice) < 0)) { alert('Starting price zero ya usse zyada amount hona chahiye.'); return; }
+    if (selectedId !== null) {
+      const { error } = await supabase.from('marathons').update({
+        image: featuredCardForm.image.trim() || null,
+        date: featuredCardForm.date,
+        distance: toTitleCase(featuredCardForm.distance),
+        registration_closes: featuredCardForm.registrationCloses || null,
+        lowest_price: featuredCardForm.lowestPrice.trim() ? Number(featuredCardForm.lowestPrice) : null,
+        description: toSentenceCase(featuredCardForm.details),
+        registration_link: featuredCardForm.registrationUrl.trim(),
+        location_details: featuredCardForm.location.trim() || null,
+        organizer: toTitleCase(featuredCardForm.organizer),
+        status: featuredCardForm.badge.trim() || 'Upcoming',
+      }).eq('id', selectedId);
+      if (error) { alert(`Featured card details save nahi hue: ${error.message}`); return; }
+    }
     const { error: clearError } = await supabase.from('marathons').update({ is_featured: false }).eq('is_featured', true);
     if (clearError) { alert(`Featured event update nahi hua: ${clearError.message}`); return; }
     const selectedIds = new Set(featuredEventIds.map(Number));
-    const updates = await Promise.all([...selectedIds].map((id) => supabase.from('marathons').update(id === selectedId ? {
-      is_featured: true, image: featuredCardForm.image.trim() || null, date: featuredCardForm.date,
-      distance: toTitleCase(featuredCardForm.distance), registration_closes: featuredCardForm.registrationCloses || null,
-      lowest_price: featuredCardForm.lowestPrice.trim() ? Number(featuredCardForm.lowestPrice) : null,
-      description: toSentenceCase(featuredCardForm.details), registration_link: featuredCardForm.registrationUrl.trim(),
-      location_details: featuredCardForm.location.trim() || null, organizer: toTitleCase(featuredCardForm.organizer), status: featuredCardForm.badge.trim() || 'Upcoming',
-    } : { is_featured: true }).eq('id', id)));
-    const updateError = updates.find((result) => result.error)?.error;
-    if (updateError) { alert(`Featured event save nahi hua: ${updateError.message}`); return; }
+    if (selectedIds.size) {
+      const { data, error } = await supabase.from('marathons').update({ is_featured: true }).in('id', [...selectedIds]).select('id');
+      if (error) { alert(`3 featured events save nahi hue: ${error.message}`); return; }
+      const savedIds = new Set((data || []).map((row) => Number(row.id)));
+      if ([...selectedIds].some((id) => !savedIds.has(id))) { alert('Kuch selected events save nahi hue. Event permissions check karke dobara try karein.'); return; }
+    }
     saveMarathons(marathons.map((event) => {
       if (!selectedIds.has(event.id)) return { ...event, isFeatured: false };
       if (event.id !== selectedId) return { ...event, isFeatured: true };

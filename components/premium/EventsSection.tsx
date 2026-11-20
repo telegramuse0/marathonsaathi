@@ -174,7 +174,7 @@ export default function EventsSection({ featuredOnly = true }: { featuredOnly?: 
                   {!isPastEvent(event.eventDate || event.date) && event.registrationUrl && <a className="event-action event-action-register" href={event.registrationUrl} target="_blank" rel="noreferrer">Register Now <Icon name="arrow" size={15} /></a>}
                 </div>
               </> : <>
-              <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span><span><Icon name="pin" size={15} /> {event.city}</span></div>
+              <div className="event-meta"><span><Icon name="calendar" size={15} /> {event.date}</span></div>
               <h3>{event.name}</h3>
               {event.description && <p className="event-list-description featured-event-description">{event.description}</p>}
               {event.id && (eventRatings[event.id] || isPastEvent(event.eventDate || event.date)) && <EventRatingLink eventId={event.id} rating={eventRatings[event.id]} />}
